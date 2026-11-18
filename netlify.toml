@@ -14,7 +14,7 @@
     # script-src: own script.js plus GA4 (loaded only after consent).
     # style-src: own CSS plus the sha256 hash of the <noscript> menu style in every <head>.
     # connect-src: contact form (Web3Forms) and GA4. If you edit the <noscript> style, regenerate the hash.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'sha256-EHDQCkbTHR7gWo9ASibi3qELHDXbVr+Zg0SbGQ4ke4k='; img-src 'self' data: https://www.googletagmanager.com https://*.google-analytics.com; font-src 'self'; connect-src 'self' https://api.web3forms.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com; manifest-src 'self'; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://*.googletagmanager.com; style-src 'self' 'sha256-EHDQCkbTHR7gWo9ASibi3qELHDXbVr+Zg0SbGQ4ke4k='; img-src 'self' data: https://*.googletagmanager.com https://*.google-analytics.com https://*.g.doubleclick.net https://www.google.com; font-src 'self'; connect-src 'self' https://api.web3forms.com https://*.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.g.doubleclick.net https://www.google.com; manifest-src 'self'; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
 
 # Caching: fonts have hashed filenames, so they are safe to cache for a year.
 [[headers]]
