@@ -141,6 +141,7 @@
   --link: var(--gold-300);
   --focus: var(--cyan);
   --sh-card: var(--sh-1);
+  --glow: radial-gradient(56rem 30rem at 0 100%, rgb(177 140 62 / 7%), transparent 70%);
 
   /* Type */
   --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -223,6 +224,7 @@
   --link: var(--gold-700);
   --focus: var(--navy);
   --sh-card: var(--sh-paper);
+  --glow: linear-gradient(180deg, rgb(255 255 255 / 55%), transparent 45%);
   color-scheme: light;
 }
 
@@ -235,6 +237,7 @@
 .case-study + .case-study {
   --bg: var(--navy-800);
   --card: var(--navy);
+  --glow: radial-gradient(56rem 30rem at 100% 0, rgb(101 229 227 / 7%), transparent 70%);
 }
 
 /* Dark panels sitting inside paper sections */
@@ -370,7 +373,7 @@ ol {
 /* 3. LAYOUT ============================================================== */
 .section-pad {
   padding: var(--section-y) max(var(--gutter), calc((100% - var(--maxw)) / 2));
-  background: var(--bg);
+  background: var(--glow), var(--bg);
   color: var(--fg);
   border-top: 1px solid var(--line);
 }
@@ -539,8 +542,27 @@ p {
 }
 
 .btn-primary {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   background: var(--gold);
   color: var(--navy);
+}
+
+/* Light sweep across primary buttons on hover */
+.btn-primary::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 45%) 50%, transparent 70%);
+  content: "";
+  pointer-events: none;
+  transform: translateX(-120%);
+}
+
+.btn-primary:hover::after {
+  transform: translateX(120%);
+  transition: transform 700ms var(--ease);
 }
 
 .btn-primary:hover {
@@ -555,6 +577,7 @@ p {
 }
 
 .btn-secondary:hover {
+  border-color: var(--link);
   background: color-mix(in srgb, var(--fg) 8%, transparent);
   transform: translateY(-2px);
 }
@@ -613,6 +636,16 @@ p {
   background: rgb(21 38 67 / 94%);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
+  transition:
+    background-color var(--t-slow) var(--ease),
+    border-color var(--t-slow) var(--ease),
+    box-shadow var(--t-slow) var(--ease);
+}
+
+.site-header.is-scrolled {
+  border-bottom-color: rgb(211 185 120 / 28%);
+  background: rgb(15 29 52 / 92%);
+  box-shadow: 0 10px 30px rgb(8 15 30 / 35%);
 }
 
 .brand {
@@ -775,23 +808,38 @@ p {
   justify-content: center;
   padding: var(--s-8) max(var(--gutter), calc((100% - var(--maxw)) / 2)) var(--s-9);
   overflow: hidden;
+  isolation: isolate;
+  /* No photo: navy base, darker toward the bottom so the offer strip sits on a calm field */
   background:
-    linear-gradient(180deg, rgb(21 38 67 / 88%), rgb(21 38 67 / 72%)),
-    url("assets/images/tp193-audi-mobile.webp") center / cover no-repeat,
+    linear-gradient(180deg, transparent 55%, var(--navy-900)),
+    radial-gradient(90% 60% at 50% 0, var(--navy-800), transparent 70%),
     var(--navy);
   border-top: 0;
 }
 
-/* Fine grid, fading out toward the edges */
+/* Fine grid, fading out toward the edges; drifts one cell diagonally on a loop */
 .hero::before {
   position: absolute;
-  inset: 0;
+  z-index: -1;
+  inset: -64px 0 0 -64px;
   background-image:
-    linear-gradient(rgb(101 229 227 / 6%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(101 229 227 / 6%) 1px, transparent 1px);
+    linear-gradient(rgb(101 229 227 / 7%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(101 229 227 / 7%) 1px, transparent 1px);
   background-size: 64px 64px;
   content: "";
-  mask-image: radial-gradient(ellipse at 30% 40%, #000 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse at 35% 40%, #000 15%, transparent 72%);
+  pointer-events: none;
+}
+
+/* Two soft brand glows (gold top right, cyan bottom left) that drift slowly */
+.hero::after {
+  position: absolute;
+  z-index: -1;
+  inset: -15%;
+  background:
+    radial-gradient(38vmax 30vmax at 78% 22%, rgb(211 185 120 / 15%), transparent 70%),
+    radial-gradient(34vmax 26vmax at 12% 88%, rgb(101 229 227 / 13%), transparent 70%);
+  content: "";
   pointer-events: none;
 }
 
@@ -815,6 +863,16 @@ p {
   margin-top: var(--s-2);
 }
 
+/* Gold two-tone line with a slow shimmer (plain gold-300 where clip-text is unsupported) */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero h1 span {
+    background: linear-gradient(100deg, var(--gold-300) 0 40%, #f3e6c4 50%, var(--gold-300) 60% 100%) 100% 0 / 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
 .hero-lead {
   color: var(--ink-muted);
 }
@@ -823,31 +881,88 @@ p {
   margin-top: var(--s-2);
 }
 
-.offer-strip {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-3) var(--s-6);
-  margin-top: var(--s-4);
-  padding-top: var(--s-5);
-  border-top: 1px solid var(--line-dark);
+/* "See plans": a real third option beside the buttons, not a tiny label */
+.hero-actions .link-arrow {
+  min-height: 48px;
+  padding: 0 var(--s-2);
   color: var(--ink);
-  font-family: var(--font-mono);
-  font-size: var(--fs-label);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  background: linear-gradient(var(--gold-300), var(--gold-300)) 0 calc(100% - 11px) / 100% 2px no-repeat;
+  transition:
+    color var(--t-med) var(--ease),
+    background-size var(--t-med) var(--ease);
+}
+
+.hero-actions .link-arrow:hover,
+.hero-actions .link-arrow:focus-visible {
+  color: var(--gold-300);
+  background-size: 100% 3px;
+}
+
+.hero-actions .link-arrow [aria-hidden="true"] {
+  transition: transform var(--t-med) var(--ease);
+}
+
+.hero-actions .link-arrow:hover [aria-hidden="true"] {
+  transform: translate(2px, -2px);
+}
+
+/* Offer strip: four readable chips with a check mark */
+.offer-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-2);
+  margin-top: var(--s-4);
+  color: var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .offer-strip li {
   display: flex;
   align-items: center;
   gap: var(--s-2);
+  padding: 10px 14px;
+  border: 1px solid rgb(211 185 120 / 30%);
+  border-radius: var(--r-md);
+  background: rgb(15 29 52 / 72%);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
-.offer-strip li::before {
-  width: 6px;
-  height: 6px;
-  background: var(--cyan);
-  content: "";
+.icon-check {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: var(--cyan);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.6;
+}
+
+@media (min-width: 768px) {
+  .offer-strip {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .offer-strip li {
+    border-radius: var(--r-pill);
+  }
+}
+
+/* WhatsApp glyph inside buttons */
+.btn .icon-wa {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  fill: currentcolor;
 }
 
 /* Canvas dots: a strip under the copy on phones, a side panel on desktop */
@@ -866,10 +981,6 @@ p {
 @media (min-width: 768px) {
   .hero {
     padding-bottom: 112px;
-    background:
-      linear-gradient(90deg, rgb(21 38 67 / 92%), rgb(21 38 67 / 45%)),
-      url("assets/images/tp193-audi-2560.webp") center bottom / cover no-repeat,
-      var(--navy);
   }
 
   .hero-caption {
@@ -903,6 +1014,20 @@ p {
     radial-gradient(circle at 1px 1px, rgb(101 229 227 / 14%) 1px, transparent 0) 0 0 / 28px 28px,
     linear-gradient(180deg, var(--navy-800), var(--navy));
   border-top: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Same drifting brand glow as the home hero, softer */
+.page-header::after {
+  position: absolute;
+  z-index: -1;
+  inset: -20%;
+  background:
+    radial-gradient(34vmax 22vmax at 85% 15%, rgb(211 185 120 / 11%), transparent 70%),
+    radial-gradient(30vmax 20vmax at 5% 95%, rgb(101 229 227 / 9%), transparent 70%);
+  content: "";
+  pointer-events: none;
 }
 
 .page-header h1 {
@@ -1100,6 +1225,12 @@ p {
 .work-teaser-image img,
 .case-study-image img {
   width: 100%;
+  transition: transform 1.2s var(--ease);
+}
+
+.work-teaser-image:hover img,
+.case-study-image:hover img {
+  transform: scale(1.04);
 }
 
 .work-teaser-copy,
@@ -1171,6 +1302,7 @@ p {
   top: 0;
   left: var(--s-6);
   padding: 4px var(--s-3);
+  z-index: 2;
   transform: translateY(-50%);
   border-radius: var(--r-pill);
   background: var(--gold);
@@ -1915,8 +2047,43 @@ legend span,
 
 .footer-contact {
   display: grid;
-  gap: var(--s-2);
+  gap: var(--s-1);
   font-style: normal;
+}
+
+.footer-contact-row {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.footer-contact-row:last-child {
+  align-items: flex-start;
+  padding-top: 10px;
+}
+
+.footer-contact-row a {
+  transition: color var(--t-fast) var(--ease);
+}
+
+.footer-contact-row a:hover {
+  color: var(--ink);
+}
+
+.icon-sm {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: var(--gold-300);
+}
+
+.icon-fill {
+  fill: currentcolor;
+}
+
+.footer-contact-row:last-child .icon-sm {
+  margin-top: 2px;
 }
 
 .footer-nav,
@@ -2117,6 +2284,240 @@ legend span,
   body.motion-ready [data-reveal].is-visible {
     opacity: 1;
     transform: none;
+  }
+
+  /* Kicker line draws in as its section heading appears */
+  body.motion-ready .section-kicker[data-reveal] .kicker-line {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 900ms var(--ease) 150ms;
+  }
+
+  body.motion-ready .section-kicker[data-reveal].is-visible .kicker-line {
+    transform: none;
+  }
+
+  /* Home hero: copy rises in on load */
+  .hero-content-inner > * {
+    animation: rise-in 600ms var(--ease) both;
+  }
+
+  .hero-content-inner > :nth-child(2) { animation-delay: 80ms; }
+  .hero-content-inner > :nth-child(3) { animation-delay: 160ms; }
+  .hero-content-inner > :nth-child(4) { animation-delay: 240ms; }
+  .hero-content-inner > :nth-child(5) { animation-delay: 320ms; }
+
+  .hero h1 span {
+    animation: shimmer 9s linear infinite;
+  }
+
+  .hero::after {
+    animation: hero-drift 22s var(--ease) infinite alternate;
+  }
+
+  .hero::before {
+    animation: grid-drift 40s linear infinite;
+  }
+
+  .page-header::after {
+    animation: hero-drift 26s var(--ease) infinite alternate;
+  }
+
+  .hero.is-offscreen::before,
+  .hero.is-offscreen::after,
+  .hero.is-offscreen h1 span {
+    animation-play-state: paused;
+  }
+
+  /* Live status dot: a soft ring pulses out */
+  .status-dot {
+    position: relative;
+  }
+
+  .status-dot::after {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--gold-300);
+    content: "";
+    animation: pulse-ring 2.4s var(--ease) infinite;
+  }
+
+  /* Featured plan: a gold light travels round the border */
+  .tier-featured::after {
+    position: absolute;
+    z-index: 1;
+    inset: -1px;
+    padding: 2px;
+    border-radius: inherit;
+    background: conic-gradient(from var(--angle), transparent 0 62%, var(--gold-300) 82%, transparent 100%);
+    content: "";
+    pointer-events: none;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: border-spin 6s linear infinite;
+  }
+}
+
+@property --angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* Highlight starts off the left edge, sweeps right in ~2.7s, then rests */
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  30%,
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes hero-drift {
+  to {
+    transform: translate3d(-5%, 4%, 0) scale(1.08);
+  }
+}
+
+@keyframes grid-drift {
+  to {
+    transform: translate3d(64px, 64px, 0);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  80%,
+  100% {
+    opacity: 0;
+    transform: scale(2.8);
+  }
+}
+
+@keyframes border-spin {
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* Cards: lift, gold hairline and a pointer-following spotlight */
+:is(.service-card, .included-item, .concept-card, .why-item, .tier-card) {
+  position: relative;
+  isolation: isolate;
+  transition:
+    transform var(--t-med) var(--ease),
+    border-color var(--t-med) var(--ease),
+    box-shadow var(--t-med) var(--ease);
+}
+
+:is(.service-card, .included-item, .concept-card, .why-item, .tier-card)::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 0), rgb(211 185 120 / 14%), transparent 70%);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-slow) var(--ease);
+}
+
+@media (hover: hover) {
+  :is(.service-card, .included-item, .concept-card, .why-item, .tier-card):hover {
+    border-color: var(--link);
+    box-shadow: var(--sh-card), 0 18px 40px rgb(8 15 30 / 18%);
+    transform: translateY(-4px);
+  }
+
+  .tier-featured:hover {
+    box-shadow: var(--glow-gold), 0 18px 40px rgb(8 15 30 / 25%);
+  }
+
+  :is(.service-card, .included-item, .concept-card, .why-item, .tier-card):hover::before {
+    opacity: 1;
+  }
+
+  :is(.included-item, .concept-card, .why-item) > .icon,
+  .service-card-icon {
+    transition: transform var(--t-slow) var(--ease);
+  }
+
+  :is(.included-item, .concept-card, .why-item):hover > .icon,
+  .service-card:hover .service-card-icon {
+    transform: translateY(-2px) rotate(-6deg) scale(1.08);
+  }
+}
+
+/* Steps: a line joins them (down the side on phones, across on desktop) */
+.process-steps {
+  position: relative;
+  isolation: isolate;
+}
+
+.process-steps::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: var(--s-6);
+  width: 2px;
+  background: linear-gradient(180deg, var(--cyan), var(--gold-300));
+  content: "";
+  opacity: 0.6;
+  transform-origin: top;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .process-steps::before {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .process-steps::before {
+    top: 0;
+    right: 0;
+    bottom: auto;
+    left: 0;
+    width: auto;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--gold-300));
+    transform-origin: left;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body.motion-ready .process-steps::before {
+    transform: scaleY(0);
+    transition: transform 1.2s var(--ease) 200ms;
+  }
+
+  body.motion-ready .process-steps.is-drawn::before {
+    transform: none;
+  }
+
+  @media (min-width: 1024px) {
+    body.motion-ready .process-steps::before {
+      transform: scaleX(0);
+    }
   }
 }
 

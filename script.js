@@ -62,7 +62,7 @@
   /* Reveal on scroll: fade + 12px rise, once, stagger capped at four items */
   if ("IntersectionObserver" in window && !reducedMotion.matches) {
     const targets = $$(
-      ".service-card, .included-item, .concept-card, .tier-card, .process-step, .why-item, .case-study, .founder, .faq-item",
+      ".service-card, .included-item, .concept-card, .tier-card, .process-step, .why-item, .case-study, .founder, .faq-item, .section-pad:not(.page-header) > .section-kicker, .section-pad:not(.page-header) > h2",
     );
     if (targets.length) {
       document.body.classList.add("motion-ready");
@@ -80,6 +80,8 @@
             const el = entry.target;
             observer.unobserve(el);
             el.classList.add("is-visible");
+            // The first visible step draws the line that joins the steps
+            if (el.matches(".process-step")) el.parentElement.classList.add("is-drawn");
             // Drop the hook afterwards so hover transitions behave normally
             setTimeout(() => {
               el.removeAttribute("data-reveal");
@@ -91,6 +93,31 @@
       );
       targets.forEach((el) => observer.observe(el));
     }
+  }
+
+  /* Header: shadow once the page scrolls */
+  const header = $(".site-header");
+  if (header) {
+    const onScroll = () => header.classList.toggle("is-scrolled", window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  /* Card spotlight: a soft glow follows the pointer (mouse and trackpad only) */
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    const cardSelector = ".service-card, .included-item, .concept-card, .why-item, .tier-card";
+    document.addEventListener(
+      "pointermove",
+      (event) => {
+        if (reducedMotion.matches || !(event.target instanceof Element)) return;
+        const card = event.target.closest(cardSelector);
+        if (!card) return;
+        const box = card.getBoundingClientRect();
+        card.style.setProperty("--mx", `${Math.round(event.clientX - box.left)}px`);
+        card.style.setProperty("--my", `${Math.round(event.clientY - box.top)}px`);
+      },
+      { passive: true },
+    );
   }
 
   /* Contact form */
@@ -298,6 +325,7 @@
     if ("IntersectionObserver" in window) {
       new IntersectionObserver(([entry]) => {
         visible = entry.isIntersecting;
+        hero.classList.toggle("is-offscreen", !visible); // pauses the CSS glow loops
         update();
       }).observe(hero);
     } else {
