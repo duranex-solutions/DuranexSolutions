@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://duranexsolutions.com/</loc>
-    <lastmod>2026-11-09</lastmod>
-  </url>
+  <url><loc>https://duranexsolutions.com/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://duranexsolutions.com/websites/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://duranexsolutions.com/software/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://duranexsolutions.com/work/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://duranexsolutions.com/about/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://duranexsolutions.com/contact/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://duranexsolutions.com/terms/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://duranexsolutions.com/privacy/</loc><lastmod>2026-11-18</lastmod></url>
 </urlset>
