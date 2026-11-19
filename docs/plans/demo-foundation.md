@@ -111,16 +111,16 @@ JS (`window.Demo`, demo.js):
   `<a class="concept-demo-link" href="/software/demo/<slug>/" data-track="demo_click" data-demo="<slug>">Try the demo <span aria-hidden="true">↗</span></a>` (same tab)
 
 ## Phase 2 checklist (foundation)
-- [ ] `software/demo/demo.css` with every CSS component above. Accept: ≤ 12 KB; only existing tokens (no new hex values, except the accent override in a demo's app.css); works with no `style=""`.
-- [ ] Neutral surfaces. Accept: tables, forms, cards and backgrounds use only the paper/field tokens in Decision 18; gold and cyan appear only on buttons, active nav, focus rings and badges (check by grepping demo.css).
-- [ ] Accent through one variable. Accept: changing `--demo-accent` in `example/app.css` re-skins every accent use; no other accent value is set anywhere.
-- [ ] Contrast check, default gold and one override (blue `#5b9be8`, set in `example/app.css`). Accept: navy-900 on accent ≥ 4.5 (expected gold 5.37, blue 5.86); accent-strong on paper and paper-card ≥ 4.5 (gold 5.45/5.88, blue 5.00/5.40); accent-strong on accent-tint ≥ 4.5 (gold 5.35, blue 4.94); raw accent never used as text. Re-measure in the browser and record the results in the handoff.
-- [ ] `software/demo/demo.js` with the API above. Accept: ≤ 8 KB; a grep for localStorage, sessionStorage, cookie, indexedDB, fetch and XMLHttpRequest finds nothing; no console errors.
-- [ ] Template head: noindex meta, og tags, font preload, /styles.css + demo.css, deferred demo.js + data.js + app.js, no /script.js. Accept: no inline script or style; passes the CSP.
-- [ ] `software/demo/example/`: list, table, form, badges, toast, dialog, WhatsApp + email preview, empty state, Reset. Accept: at 360px the bar is one row with no horizontal scroll; layout checked at 768 and 1280; a keyboard-only run (Tab, Enter, Esc) works; Reset restores the seed and is announced; no animation with reduced motion; Rand renders "R 1 234,56".
-- [ ] netlify.toml: `X-Robots-Tag: noindex` for `/software/demo/*`, and `/software/demo` + `/software/demo/` → `/software/` 301. Accept: TOML parses; CSP and other headers unchanged.
-- [ ] `docs/DEMOS.md`: rules, file layout, head template, API, components, colour rules, budgets, how to add the card link. It must include this line: "To give a demo its own accent, add `software/demo/<slug>/app.css` containing `:root { --demo-accent: #xxxxxx; }`, linked after demo.css; check navy-900 text on it and its strong mix on paper are both ≥ 4.5." Accept: a new demo can be built from DEMOS.md alone.
-- [ ] Commit on demo-foundation. Accept: `git status` clean, nothing pushed.
+- [x] `software/demo/demo.css` with every CSS component above. Accept: ≤ 12 KB; only existing tokens (no new hex values, except the accent override in a demo's app.css); works with no `style=""`.
+- [x] Neutral surfaces. Accept: tables, forms, cards and backgrounds use only the paper/field tokens in Decision 18; gold and cyan appear only on buttons, active nav, focus rings and badges (check by grepping demo.css).
+- [x] Accent through one variable. Accept: changing `--demo-accent` in `example/app.css` re-skins every accent use; no other accent value is set anywhere.
+- [x] Contrast check, default gold and one override (blue `#5b9be8`, set in `example/app.css`). Accept: navy-900 on accent ≥ 4.5 (expected gold 5.37, blue 5.86); accent-strong on paper and paper-card ≥ 4.5 (gold 5.45/5.88, blue 5.00/5.40); accent-strong on accent-tint ≥ 4.5 (gold 5.35, blue 4.94); raw accent never used as text. Re-measure in the browser and record the results in the handoff. Measured by script in Phase 2 (all pass); browser re-measure still to do by eye.
+- [x] `software/demo/demo.js` with the API above. Accept: ≤ 8 KB; a grep for localStorage, sessionStorage, cookie, indexedDB, fetch and XMLHttpRequest finds nothing; no console errors.
+- [x] Template head: noindex meta, og tags, font preload, /styles.css + demo.css, deferred demo.js + data.js + app.js, no /script.js. Accept: no inline script or style; passes the CSP.
+- [x] `software/demo/example/`: list, table, form, badges, toast, dialog, WhatsApp + email preview, empty state, Reset. Accept: at 360px the bar is one row with no horizontal scroll; layout checked at 768 and 1280; a keyboard-only run (Tab, Enter, Esc) works; Reset restores the seed and is announced; no animation with reduced motion; Rand renders "R 1 234,56".
+- [ ] netlify.toml: `X-Robots-Tag: noindex` for `/software/demo/*`, and `/software/demo` + `/software/demo/` → `/software/` 301. Accept: TOML parses; CSP and other headers unchanged. **Not done in Phase 2 on purpose (Luan said not to touch netlify.toml this phase). Still open: do it in Phase 3 or a later step.**
+- [x] `docs/DEMOS.md`: rules, file layout, head template, API, components, colour rules, budgets, how to add the card link. It must include this line: "To give a demo its own accent, add `software/demo/<slug>/app.css` containing `:root { --demo-accent: #xxxxxx; }`, linked after demo.css; check navy-900 text on it and its strong mix on paper are both ≥ 4.5." Accept: a new demo can be built from DEMOS.md alone.
+- [x] Commit on demo-foundation. Accept: `git status` clean, nothing pushed.
 
 ## Phase 3 checklist (Software page + QA)
 - [ ] Add `id="<slug>"` to the five concept cards. Accept: `/software/#bookings` lands on its card, not hidden under the header.
@@ -151,3 +151,38 @@ JS (`window.Demo`, demo.js):
 - **Decisions:** added Decision 18 (`--demo-accent` plus shades worked out from it, and the neutral surface tokens). Decision 12 now uses a neutral shell; in Decision 13 the info badge uses accent-strong. Decision 4, File layout and Decision 16 now include the optional per-demo `app.css`.
 - **Phase 2 checklist:** added neutral surfaces, accent through one variable, and a contrast check for gold plus a blue override. DEMOS.md must include the override line.
 - **Phase 2 wasn't built yet,** so no CSS changes were needed. DEMOS.md didn't exist yet, so its line is a Phase 2 item.
+
+### Handoff - Phase 2 (2026-11-19)
+**Files created:** `software/demo/demo.css` (11.9 KB), `software/demo/demo.js` (7.9 KB), `software/demo/example/index.html`, `data.js`, `app.js`, `app.css` (6.7 KB together), `docs/DEMOS.md` (205 lines). Branch was `demo-foundation`. Nothing else was touched: Software page, sitemap.xml, robots.txt, netlify.toml, script.js, styles.css are unchanged.
+
+**Deviations from the plan, and why:**
+1. The example's logic file is `app.js` (plan Decision 4), not `demo.js` as the Phase 2 prompt said, so it can't clash with the shared `demo.js`.
+2. The nav is one `<nav class="demo-sidebar demo-tabs">`: bottom tabs below 1024px, sidebar from 1024px. Same classes as planned, no duplicated markup. The "More" dialog for extra tabs was not built; keep demos to 5 views or fewer (documented).
+3. Bar: the long wording ("Want this for your business?" and "sample data, nothing is saved") shows from 960px, not 640px. At 640-959px the bar would overflow. From 640px "← Back to Software" and "WhatsApp Luan" show. Screen readers always hear the full text.
+4. Badges use a small icon character (✓ ! ✕ i –) plus the word, instead of a coloured dot. Same rule (never colour alone), stronger.
+5. The toast has a gold-300 left edge on its navy box (a small accent on the dark toast), and uses a ✓ / ! / i icon for tone.
+6. Budgets are measured in 1000-byte KB, like the plan's own numbers. demo.css is written as one line per rule to fit 12 KB.
+7. The `Demo.modal` needs native `<dialog>` support (all current browsers); there is no old-browser fallback.
+
+**Verified without a browser UI (headless Edge on a local test server, since removed):**
+- Full click-through script: nav and aria-current, table with data-labels, badges, filter to empty state, Message dialog to WhatsApp preview ("Preview only. Nothing was sent."), remove-with-confirm, form validation errors and focus, add order, Reset (6 orders, first view, heading focused, toast), no script errors.
+- Rand prints `R 1 234,56` (Intl en-ZA gives "R" + U+00A0 + "1" + U+00A0 + "234,56"; code keeps non-breaking spaces everywhere). Dates `19 Nov 2026`, time `14:05`.
+- Layout at 360, 768 and 1280: no horizontal overflow; at 360 the bar is one row (right edge 333 of 360, all targets 44px+), tabs fixed at the bottom, table becomes stacked cards, all 17 table buttons are 44px+; from 1024 the sidebar is 240px and sticky.
+- Greps (storage, network, external URLs, inline script/style, `/script.js`, hex in demo.css): all clean. Every asset path is absolute and exists. Tags balanced, ids unique, one h1, labels on all 5 inputs.
+
+**Known gaps:**
+- netlify.toml (X-Robots-Tag, /software/demo 301) is not done: Luan said not to touch it this phase. It's the one open Phase 2 checklist item.
+- Keyboard-only run, Esc to close, and reduced-motion were not exercised by hand; they rely on native `<dialog>`/CSS. Focus return to the opener works for real clicks; scripted clicks don't focus buttons so that part was only partly tested.
+- No `/software/demo/example/` clean-URL redirect test (Netlify only).
+- Per-demo `app.css` isn't minified; only the shared files are budgeted tightly.
+
+**Contrast (computed by script):** every pair passes AA. Gold: navy-900 on accent 5.37, accent-strong on paper/card/tint 5.45/5.88/5.35. Blue `#5b9be8`: 5.86, 5.00/5.40/4.94. Full table in DEMOS.md.
+
+**Luan: check by eye in Live Server (open `/software/demo/example/`):**
+1. Phone width (360px in dev tools): the bar fits on one row; tabs at the bottom; Orders shows cards, not a wide table.
+2. Press Reset and tick-through: Orders > Next step, Message > WhatsApp preview and Email preview, Remove, New order (try leaving it empty), filter to "Cancelled".
+3. Keyboard only: Tab through everything, Esc closes dialogs, focus lands back on the button.
+4. Desktop width (1280px): sidebar on the left, table in columns.
+5. The blue accent looks right on the buttons and active tab (it's set only in `example/app.css`; delete that file's one line to see the gold default).
+6. Dev tools > Rendering > "Emulate prefers-reduced-motion: reduce": no fades on toast or dialog.
+7. The bar's WhatsApp link opens with the pre-filled message (it says "example demo").

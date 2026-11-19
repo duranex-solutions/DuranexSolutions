@@ -1,0 +1,4 @@
+/* Accent for this demo only. Check navy-900 text on it and its strong mix on paper are both 4.5 or more. */
+:root {
+  --demo-accent: #5b9be8;
+}

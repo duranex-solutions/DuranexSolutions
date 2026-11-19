@@ -1,0 +1,128 @@
+/* Shared demo kit. Reuses /styles.css tokens; one accent variable. Docs: docs/DEMOS.md */
+/* 1. Tokens: the accent and the shades worked out from it */
+:root { --demo-accent: var(--gold); --demo-on-accent: var(--navy-900); --demo-accent-strong: color-mix(in srgb, var(--demo-accent) 60%, var(--navy-900)); --demo-accent-tint: color-mix(in srgb, var(--demo-accent) 14%, var(--field-bg)); --demo-bar-h: 48px; --demo-tabs-h: 60px; }
+/* 2. Base: calm neutral page, paper surface roles */
+html { scroll-padding-top: calc(var(--demo-bar-h) + 16px); }
+.demo-body { --bg: var(--paper); --fg: var(--paper-ink); --muted: var(--paper-muted); --line: var(--paper-line); --card: var(--paper-card); --link: var(--demo-accent-strong); --focus: var(--demo-accent-strong); background: var(--paper); color: var(--paper-ink); color-scheme: light; padding-bottom: calc(var(--demo-tabs-h) + env(safe-area-inset-bottom)); }
+@media (max-width: 639px) { .demo-sr-sm, .demo-sr-md { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
+@media (min-width: 640px) and (max-width: 959px) { .demo-sr-md { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
+/* 3. Demo bar (stays Duranex navy, ignores the accent) */
+.demo-bar { --focus: var(--cyan); position: sticky; z-index: 50; top: 0; display: flex; height: var(--demo-bar-h); flex-wrap: nowrap; align-items: center; gap: var(--s-2); padding: 0 var(--s-3); border-bottom: 1px solid var(--line-dark); background: var(--navy-900); color: var(--ink); font-size: var(--fs-small); }
+.demo-bar__label { display: flex; min-width: 0; flex: 1; align-items: center; gap: var(--s-2); white-space: nowrap; }
+.demo-bar__pill { padding: 2px 10px; border: 1px solid var(--gold-300); border-radius: var(--r-pill); color: var(--gold-300); font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.14em; text-transform: uppercase; }
+.demo-bar__back,
+.demo-bar__reset,
+.demo-bar__wa { display: inline-flex; min-width: 44px; min-height: 44px; flex: 0 0 auto; align-items: center; justify-content: center; gap: 6px; padding: 0 var(--s-2); border: 0; background: none; color: var(--ink); cursor: pointer; font-weight: 600; white-space: nowrap; }
+.demo-bar__reset { padding: 0 var(--s-3); border: 1px solid var(--line-dark); border-radius: var(--r-pill); }
+.demo-bar__back:hover,
+.demo-bar__wa:hover,
+.demo-bar__reset:hover { color: var(--gold-300); }
+.demo-bar svg { width: 18px; height: 18px; flex: 0 0 auto; fill: currentcolor; }
+.demo-bar__reset svg { fill: none; stroke: currentcolor; stroke-width: 2; }
+/* 4. App shell: bottom tabs on phones, sidebar from 1024px */
+.demo-app { display: grid; grid-template-columns: minmax(0, 1fr); }
+.demo-main { width: 100%; min-width: 0; max-width: 64rem; padding: var(--s-5) var(--gutter) var(--s-7); }
+.demo-main:focus { outline: none; }
+.demo-main h1 { font-size: clamp(1.5rem, 1rem + 2vw, 2.25rem); line-height: 1.2; }
+.demo-view h2 { font-size: var(--fs-h3); line-height: 1.25; }
+.demo-view h2:focus { outline: none; }
+.demo-kicker { color: var(--paper-muted); font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.14em; text-transform: uppercase; }
+.demo-view { display: grid; gap: var(--s-5); margin-top: var(--s-5); }
+.demo-tabs { position: fixed; z-index: 40; inset: auto 0 0; padding-bottom: env(safe-area-inset-bottom); border-top: 1px solid var(--paper-line); background: var(--paper-card); }
+.demo-tabs ul { display: flex; }
+.demo-tabs li { flex: 1 1 0; min-width: 0; }
+.demo-tabs a { display: flex; min-height: var(--demo-tabs-h); align-items: center; justify-content: center; padding: 0 var(--s-1); box-shadow: inset 0 3px 0 transparent; color: var(--paper-ink); font-size: var(--fs-small); font-weight: 600; text-align: center; }
+.demo-tabs a[aria-current="page"] { background: var(--demo-accent-tint); box-shadow: inset 0 3px 0 var(--demo-accent-strong); font-weight: 800; }
+.demo-brand { display: none; }
+@media (min-width: 1024px) {
+  .demo-body { padding-bottom: 0; }
+  .demo-app { grid-template-columns: 15rem minmax(0, 1fr); }
+  .demo-sidebar { position: sticky; z-index: auto; top: var(--demo-bar-h); height: calc(100vh - var(--demo-bar-h)); padding: var(--s-5) var(--s-3); border-top: 0; border-right: 1px solid var(--paper-line); }
+  .demo-brand { display: block; margin-bottom: var(--s-4); padding: 0 var(--s-3); font-size: var(--fs-h4); font-weight: 800; }
+  .demo-sidebar ul { display: grid; gap: var(--s-1); }
+  .demo-sidebar a { min-height: 44px; justify-content: flex-start; padding: 0 var(--s-3); border-radius: var(--r-sm); box-shadow: inset 4px 0 0 transparent; text-align: left; }
+  .demo-sidebar a[aria-current="page"] { box-shadow: inset 4px 0 0 var(--demo-accent-strong); }
+  .demo-main { padding: var(--s-6) var(--s-6) var(--s-8); }
+}
+/* 5. Cards, stats, layout helpers */
+.demo-card { padding: var(--s-5); border: 1px solid var(--paper-line); border-radius: var(--r-md); background: var(--paper-card); box-shadow: var(--sh-paper); }
+.demo-card h3 { margin-bottom: var(--s-2); font-size: var(--fs-h4); }
+.demo-card p + p { margin-top: var(--s-3); }
+.demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: var(--s-4); }
+.demo-stat { display: block; margin-top: var(--s-1); font-size: 1.75rem; font-weight: 800; line-height: 1.2; }
+.demo-toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s-3); }
+.demo-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.demo-muted { color: var(--paper-muted); }
+.demo-body .btn:hover { transform: none; }
+.demo-body .btn-primary { background: var(--demo-accent); color: var(--demo-on-accent); }
+.demo-body .btn-primary::after { content: none; }
+.demo-body .btn-primary:hover { background: color-mix(in srgb, var(--demo-accent) 80%, var(--field-bg)); }
+.demo-body .btn.demo-btn--sm { min-height: 44px; padding: 0 var(--s-4); font-size: var(--fs-small); }
+/* 6. Forms: .form-field from styles.css, plus selects */
+.demo-form { display: grid; max-width: 34rem; gap: var(--s-4); }
+.form-field select { width: 100%; min-height: 48px; padding: var(--s-3) var(--s-4); border: 1px solid var(--field-border); border-radius: var(--r-sm); background: var(--field-bg); color: var(--paper-ink); }
+/* 7. Status badges: icon + word, never colour only */
+.demo-badge { --tone: var(--paper-muted); display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border: 1px solid var(--tone); border-radius: var(--r-pill); background: var(--paper-card); color: var(--tone); font-size: var(--fs-small); font-weight: 700; line-height: 1.5; white-space: nowrap; }
+.demo-badge__icon { font-size: 0.8125rem; line-height: 1; }
+.demo-badge--ok { --tone: var(--success); }
+.demo-badge--warn { --tone: var(--gold-700); }
+.demo-badge--error { --tone: var(--error); }
+.demo-badge--info { --tone: var(--demo-accent-strong); }
+/* 8. Table that becomes stacked cards on phones */
+.demo-table { width: 100%; border: 1px solid var(--paper-line); border-collapse: collapse; border-radius: var(--r-md); background: var(--paper-card); }
+.demo-table th { padding: var(--s-3); border-bottom: 2px solid var(--paper-line); color: var(--paper-muted); font-size: var(--fs-small); text-align: left; }
+.demo-table td { padding: var(--s-3); border-bottom: 1px solid var(--paper-line); vertical-align: middle; }
+.demo-table .is-num { text-align: right; white-space: nowrap; }
+@media (max-width: 639px) {
+  .demo-table,
+  .demo-table tbody,
+  .demo-table tr,
+  .demo-table td { display: block; }
+  .demo-table { border: 0; background: none; }
+  .demo-table thead { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); }
+  .demo-table tr { margin-bottom: var(--s-3); padding: var(--s-2) var(--s-4); border: 1px solid var(--paper-line); border-radius: var(--r-md); background: var(--paper-card); }
+  .demo-table td { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--s-2); padding: var(--s-2) 0; border: 0; }
+  .demo-table td::before { color: var(--paper-muted); content: attr(data-label); font-size: var(--fs-small); font-weight: 700; }
+  .demo-table .is-num { text-align: left; }
+}
+/* 9. Toast (aria-live region created by demo.js) */
+.demo-toast { position: fixed; z-index: 70; bottom: calc(var(--demo-tabs-h) + var(--s-4) + env(safe-area-inset-bottom)); left: 50%; display: flex; max-width: min(26rem, calc(100% - 2 * var(--gutter))); align-items: center; gap: var(--s-3); padding: var(--s-3) var(--s-4); border-left: 4px solid var(--gold-300); border-radius: var(--r-md); background: var(--navy-900); box-shadow: var(--sh-2); color: var(--ink); font-weight: 600; opacity: 0; pointer-events: none; transform: translate(-50%, 8px); }
+.demo-toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+.demo-toast__icon { display: grid; width: 24px; height: 24px; flex: 0 0 auto; place-items: center; border: 1px solid; border-radius: 50%; font-size: var(--fs-small); }
+@media (min-width: 1024px) {
+  .demo-toast { bottom: var(--s-5); }
+}
+/* 10. Modal: native <dialog> */
+.demo-dialog { width: min(34rem, calc(100% - 2 * var(--s-4))); max-height: calc(100dvh - 2 * var(--s-4)); padding: 0; overflow: auto; border: 1px solid var(--paper-line); border-radius: var(--r-lg); background: var(--paper-card); box-shadow: var(--sh-2); color: var(--paper-ink); }
+.demo-dialog::backdrop { background: rgb(15 29 52 / 60%); }
+.demo-dialog__head,
+.demo-dialog__body,
+.demo-dialog__foot { padding: var(--s-4) var(--s-5); }
+.demo-dialog__head { border-bottom: 1px solid var(--paper-line); }
+.demo-dialog__title { font-size: var(--fs-h3); line-height: 1.25; }
+.demo-dialog__foot { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--s-2); border-top: 1px solid var(--paper-line); }
+/* 11. Empty state */
+.demo-empty { display: grid; justify-items: center; gap: var(--s-3); padding: var(--s-7) var(--s-4); border: 1px dashed var(--field-border); border-radius: var(--r-md); background: var(--paper-card); text-align: center; }
+.demo-empty svg { width: 40px; height: 40px; fill: none; stroke: var(--paper-muted); stroke-width: 1.5; }
+.demo-empty h3 { font-size: var(--fs-h4); }
+/* 12. Message preview (simulated WhatsApp or email) */
+.demo-preview { overflow: hidden; border: 1px solid var(--paper-line); border-radius: var(--r-md); background: var(--paper); }
+.demo-preview__label { padding: var(--s-2) var(--s-4); background: var(--navy-900); color: var(--ink); font-size: var(--fs-small); font-weight: 700; }
+.demo-preview__meta { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s-1) var(--s-3); margin: 0; padding: var(--s-3) var(--s-4) 0; font-size: var(--fs-small); }
+.demo-preview__meta dt { color: var(--paper-muted); font-weight: 700; }
+.demo-preview__meta dd { margin: 0; overflow-wrap: anywhere; }
+.demo-preview__body { margin: var(--s-3) var(--s-4) var(--s-4); padding: var(--s-3) var(--s-4); border: 1px solid var(--paper-line); background: var(--paper-card); white-space: pre-line; }
+.demo-preview--whatsapp .demo-preview__body { max-width: 92%; margin-left: auto; border-radius: var(--r-md) var(--r-md) 2px var(--r-md); background: color-mix(in srgb, var(--success) 12%, var(--field-bg)); }
+/* 13. Motion: only when the visitor has not asked for less */
+@media (prefers-reduced-motion: no-preference) {
+  .demo-toast { transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease); }
+  .demo-dialog[open] { animation: demo-in var(--t-med) var(--ease); }
+  @keyframes demo-in {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-body *,
+  .demo-body *::before,
+  .demo-body *::after { animation: none !important; transition: none !important; }
+}
