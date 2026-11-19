@@ -8,7 +8,8 @@ Shared foundation (template, demo bar, CSS/JS kit, conventions doc, Software-pag
 - Fictional South African businesses and people. No real company names or logos. Rand amounts with en-ZA formatting.
 - Never invent stats, testimonials or clients.
 - Mobile-first. Fully keyboard-operable. WCAG AA contrast (check gold and cyan on navy too). Respect prefers-reduced-motion. Fast on a cheap Android phone: no heavy JS, no extra fonts or images, small CSS/JS budgets.
-- Reuse the existing design tokens. Do not redesign the site. Do not touch the main header or menu.
+- Reuse the existing design tokens (fonts, navy, gold, cyan) as the default. Demo working surfaces (tables, forms, cards, backgrounds) are calm and neutral; gold and cyan are accents only (buttons, active nav, focus rings, badges). The accent colour is ONE overridable CSS variable on the demo page, so each fictional business can use its own accent.
+- Do not redesign the site. Do not touch the main header or menu.
 - Copy is en-ZA, first person, plain and honest.
 - Never push, merge or deploy. Commit on the current branch only.
 
@@ -34,7 +35,7 @@ Project notes: docs/ is committed to git (the repo is public; Netlify 404s /docs
 1. **Indexing:** `noindex, follow` meta. Out of sitemap.xml, not disallowed in robots.txt, plus `X-Robots-Tag: noindex` for `/software/demo/*` in netlify.toml. Reason: thin sample-data pages, the Software page should rank, and crawlers must fetch the page to see the noindex. No canonical (it would conflict with noindex). Keep og/twitter tags so shared WhatsApp links preview well.
 2. **No GA, no consent banner on demo pages.** Demo pages don't load /script.js. Reason: no storage or cookies at all, which matches the rules. Interest is measured by the Software-page click event.
 3. **CSS:** load `/styles.css` (tokens, base, .btn, .form-field; already cached) plus `/software/demo/demo.css`. Reason: reuses tokens without copying them and leaves the site CSS alone.
-4. **Files:** shared `/software/demo/demo.css` + `/software/demo/demo.js`. Each demo has `index.html` + `data.js` (seed) + `app.js` (logic). Reason: one path for one header rule; `app.js` avoids a name clash with the shared demo.js.
+4. **Files:** shared `/software/demo/demo.css` + `/software/demo/demo.js`. Each demo has `index.html` + `data.js` (seed) + `app.js` (logic) + optional `app.css` (accent override and demo-specific styles). Reason: one path for one header rule; `app.js` avoids a name clash with the shared demo.js.
 5. **Slugs:** `client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`, plus `example` (placeholder). Reason: short and plain. Cards have no ids, so Phase 3 adds matching ids and "← Back to Software" goes to `/software/#<slug>`.
 6. **`/software/demo/`** 301s to `/software/` (netlify.toml). Reason: no empty index page.
 7. **Demo bar:** sticky top, 48px, `flex-wrap: nowrap`, targets ≥ 44px. Below 640px: "Demo" pill ("· sample data, nothing is saved" visually hidden), "← Software" ("Back to" hidden), Reset (icon + word), WhatsApp as an icon with the accessible name "Want this for your business? WhatsApp Luan (opens in a new tab)". Full wording from 640px. Reason: four items fit in 328px; screen readers always hear the full text.
@@ -42,17 +43,28 @@ Project notes: docs/ is committed to git (the repo is public; Netlify 404s /docs
 9. **Reset:** `Demo.reset()` deep-clones the seed (`structuredClone`, JSON fallback), closes any dialog, re-renders, returns to the first view, focuses its heading and announces "Demo reset to sample data" in the live region. Reason: the same state as a fresh load, with clear feedback.
 10. **Modals:** native `<dialog>` + `showModal()`, with focus returned to the opener. Reason: built-in focus trap, Esc handling and inert background, no library.
 11. **Tables:** a real `<table>`. Below 640px, `display:block` rows with `td::before { content: attr(data-label) }`. `Demo.table()` adds `data-label` and explicit ARIA table roles. Reason: stacked cards on phones without losing semantics (Safari drops them on `display:block`).
-12. **App layout:** `.demo-app` grid, with a sidebar from 1024px and a fixed bottom tab bar below that (max 5 tabs, extras in a "More" dialog). Views switch by hash (`#view-…`), active tab has `aria-current="page"`. Navy shell, paper content. Reason: app feel, back button and deep links work, and `.form-field` is designed for paper.
-13. **Status badges:** paper-card background, 1px border + text in the status colour, a dot and always a word. Tones: ok = success, warn = gold-700, error = error, info = navy, neutral = paper-muted. Reason: all ≥ 4.5 on paper-card; never colour alone.
+12. **App layout:** `.demo-app` grid, with a sidebar from 1024px and a fixed bottom tab bar below that (max 5 tabs, extras in a "More" dialog). Views switch by hash (`#view-…`), active tab has `aria-current="page"`. Neutral shell (paper background, paper-card sidebar and tab bar); the accent marks the active view. Reason: app feel, back button and deep links work, and `.form-field` is designed for paper.
+13. **Status badges:** paper-card background, 1px border + text in the status colour, a dot and always a word. Tones: ok = success, warn = gold-700, error = error, info = `--demo-accent-strong`, neutral = paper-muted. Reason: all ≥ 4.5 on paper-card; never colour alone.
 14. **GA event:** `demo_click` through the existing `[data-track]` delegate, params `link_url` + `demo_name` (from `data-demo`), a one-line change in script.js. Reason: matches the `*_click` convention, and fires only after consent because `track()` checks gtag.
 15. **Motion:** toast and dialog fades only under `prefers-reduced-motion: no-preference`. Reason: rule compliance.
-16. **Budgets (raw):** demo.css ≤ 12 KB, demo.js ≤ 8 KB, per demo data.js + app.js ≤ 30 KB, no new fonts or images. Reason: the whole site's script.js is 16 KB; a demo then adds ≤ ~50 KB over the cached styles.css and fonts.
+16. **Budgets (raw):** demo.css ≤ 12 KB, demo.js ≤ 8 KB, per demo data.js + app.js + app.css ≤ 30 KB, no new fonts or images. Reason: the whole site's script.js is 16 KB; a demo then adds ≤ ~50 KB over the cached styles.css and fonts.
 17. **Copy timing:** the reworded copy mentions demos, so it's committed in Phase 3 but must not reach `main` before the first real demo is linked. `example` is never linked from the site.
+18. **Accent + neutral surfaces.**
+    - **The one variable:** `--demo-accent`, default `var(--gold)`. A demo overrides it in its own `app.css` with `:root { --demo-accent: #…; }`, linked after demo.css.
+    - **Shades worked out from it in demo.css** (never overridden):
+      - `--demo-on-accent: var(--navy-900)`: text on accent fills.
+      - `--demo-accent-strong: color-mix(in srgb, var(--demo-accent) 60%, var(--navy-900))`: accent text, focus rings, active-nav indicator.
+      - `--demo-accent-tint: color-mix(in srgb, var(--demo-accent) 14%, #fff)`: active nav and selected-row background.
+    - **Neutral surfaces (existing tokens):** `--paper` app background, `--paper-card` cards and sidebar, `--field-bg` fields, `--paper-line` borders, `--paper-ink` text, `--paper-muted` secondary text.
+    - **The demo bar stays Duranex** (navy-900, gold-300, cyan focus) and ignores `--demo-accent`.
+    - **Raw accent:** only as a fill (with navy-900 text) or a tint, never as text or the only sign of state. Gold is just 2.79 on paper.
+    - **An override must pass:** navy-900 on the accent ≥ 4.5, and its strong mix on paper ≥ 4.5. Mid-to-light colours pass.
+    - **Reason:** one value re-skins a demo, and the worked-out shades keep AA. A linked file is needed because the CSP blocks inline `<style>`; setting it from JS would make the colour flash. `color-mix` is already used in styles.css.
 
 ## File layout
 - New, shared: `software/demo/demo.css`, `software/demo/demo.js`
-- New placeholder: `software/demo/example/index.html`, `software/demo/example/data.js`, `software/demo/example/app.js`
-- Later projects: `software/demo/<slug>/index.html`, `data.js`, `app.js`
+- New placeholder: `software/demo/example/index.html`, `software/demo/example/data.js`, `software/demo/example/app.js`, `software/demo/example/app.css`
+- Later projects: `software/demo/<slug>/index.html`, `data.js`, `app.js`, optional `app.css`
 - Docs: `docs/DEMOS.md` (new), `docs/plans/demo-foundation.md` (this file)
 - Edited: `netlify.toml` (X-Robots-Tag, /software/demo 301), `software/index.html` (card ids, note, FAQ + JSON-LD), `styles.css` (`.concept-demo-link` only), `script.js` (demo_name + events comment)
 - Unchanged on purpose: `sitemap.xml`, `robots.txt`, main header and menu
@@ -99,12 +111,15 @@ JS (`window.Demo`, demo.js):
   `<a class="concept-demo-link" href="/software/demo/<slug>/" data-track="demo_click" data-demo="<slug>">Try the demo <span aria-hidden="true">↗</span></a>` (same tab)
 
 ## Phase 2 checklist (foundation)
-- [ ] `software/demo/demo.css` with every CSS component above. Accept: ≤ 12 KB; only existing tokens (no new hex values); works with no `style=""`.
+- [ ] `software/demo/demo.css` with every CSS component above. Accept: ≤ 12 KB; only existing tokens (no new hex values, except the accent override in a demo's app.css); works with no `style=""`.
+- [ ] Neutral surfaces. Accept: tables, forms, cards and backgrounds use only the paper/field tokens in Decision 18; gold and cyan appear only on buttons, active nav, focus rings and badges (check by grepping demo.css).
+- [ ] Accent through one variable. Accept: changing `--demo-accent` in `example/app.css` re-skins every accent use; no other accent value is set anywhere.
+- [ ] Contrast check, default gold and one override (blue `#5b9be8`, set in `example/app.css`). Accept: navy-900 on accent ≥ 4.5 (expected gold 5.37, blue 5.86); accent-strong on paper and paper-card ≥ 4.5 (gold 5.45/5.88, blue 5.00/5.40); accent-strong on accent-tint ≥ 4.5 (gold 5.35, blue 4.94); raw accent never used as text. Re-measure in the browser and record the results in the handoff.
 - [ ] `software/demo/demo.js` with the API above. Accept: ≤ 8 KB; a grep for localStorage, sessionStorage, cookie, indexedDB, fetch and XMLHttpRequest finds nothing; no console errors.
 - [ ] Template head: noindex meta, og tags, font preload, /styles.css + demo.css, deferred demo.js + data.js + app.js, no /script.js. Accept: no inline script or style; passes the CSP.
 - [ ] `software/demo/example/`: list, table, form, badges, toast, dialog, WhatsApp + email preview, empty state, Reset. Accept: at 360px the bar is one row with no horizontal scroll; layout checked at 768 and 1280; a keyboard-only run (Tab, Enter, Esc) works; Reset restores the seed and is announced; no animation with reduced motion; Rand renders "R 1 234,56".
 - [ ] netlify.toml: `X-Robots-Tag: noindex` for `/software/demo/*`, and `/software/demo` + `/software/demo/` → `/software/` 301. Accept: TOML parses; CSP and other headers unchanged.
-- [ ] `docs/DEMOS.md`: rules, file layout, head template, API, components, colour rules, budgets, how to add the card link. Accept: a new demo can be built from DEMOS.md alone.
+- [ ] `docs/DEMOS.md`: rules, file layout, head template, API, components, colour rules, budgets, how to add the card link. It must include this line: "To give a demo its own accent, add `software/demo/<slug>/app.css` containing `:root { --demo-accent: #xxxxxx; }`, linked after demo.css; check navy-900 text on it and its strong mix on paper are both ≥ 4.5." Accept: a new demo can be built from DEMOS.md alone.
 - [ ] Commit on demo-foundation. Accept: `git status` clean, nothing pushed.
 
 ## Phase 3 checklist (Software page + QA)
@@ -130,3 +145,9 @@ JS (`window.Demo`, demo.js):
 2. styles.css lines 100-230 (tokens + surfaces), 459-600 (labels, buttons), 1062-1130 (cards), 1717-1860 (forms).
 3. software/index.html lines 1-45 (head pattern) and 171 (WhatsApp icon svg).
 4. netlify.toml (CSP and headers).
+
+### Amendment (2026-11-19): neutral surfaces, overridable accent
+- **Rules:** the design-tokens rule was replaced with Luan's wording. "Do not redesign… menu" is kept as its own bullet.
+- **Decisions:** added Decision 18 (`--demo-accent` plus shades worked out from it, and the neutral surface tokens). Decision 12 now uses a neutral shell; in Decision 13 the info badge uses accent-strong. Decision 4, File layout and Decision 16 now include the optional per-demo `app.css`.
+- **Phase 2 checklist:** added neutral surfaces, accent through one variable, and a contrast check for gold plus a blue override. DEMOS.md must include the override line.
+- **Phase 2 wasn't built yet,** so no CSS changes were needed. DEMOS.md didn't exist yet, so its line is a Phase 2 item.
