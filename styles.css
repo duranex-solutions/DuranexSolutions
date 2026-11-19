@@ -1129,6 +1129,28 @@ p {
   color: var(--muted);
 }
 
+/* "Try the demo" link on a Software card (added per card once its demo exists) */
+.concept-card[id] {
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+
+.concept-demo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 44px;
+  margin-top: var(--s-2);
+  color: var(--link);
+  font-weight: 500;
+  background: linear-gradient(currentcolor, currentcolor) 0 calc(100% - 8px) / 0 1px no-repeat;
+  transition: background-size var(--t-med) var(--ease);
+}
+
+.concept-demo-link:hover,
+.concept-demo-link:focus-visible {
+  background-size: 100% 1px;
+}
+
 @media (min-width: 768px) {
   .service-grid,
   .why-grid,

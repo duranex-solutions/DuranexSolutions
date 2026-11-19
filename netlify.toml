@@ -38,6 +38,12 @@
   [headers.values]
     Content-Type = "application/manifest+json"
 
+# Demo pages are sample-data tools: keep them out of search results (crawlers must still fetch them to see this).
+[[headers]]
+  for = "/software/demo/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+
 # CSS/JS are not fingerprinted, so always revalidate (Netlify serves 304s).
 [[headers]]
   for = "/*.css"

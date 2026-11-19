@@ -334,7 +334,7 @@
     }
   }
 
-  /* Analytics: GA4 loads only after the visitor accepts the notice. Events: form_submit, whatsapp_click, call_click, email_click */
+  /* Analytics: GA4 loads only after the visitor accepts the notice. Events: form_submit, whatsapp_click, call_click, email_click, demo_click */
   const GA_ID = "G-NFSFGBQR6D";
   const CONSENT_KEY = "dx-analytics";
   const readConsent = () => {
@@ -410,5 +410,13 @@
   document.addEventListener("click", (e) => {
     const el = e.target.closest("[data-track]");
     if (el) track(el.dataset.track, { link_url: el.href });
+  });
+
+  // Software page "Try the demo" links: send demo_click only if consent is granted and GA is already loaded.
+  // Nothing is queued: with no consent or no gtag, the click is simply not recorded.
+  document.addEventListener("click", (e) => {
+    const el = e.target.closest("[data-demo-link]");
+    if (!el || readConsent() !== "granted" || typeof window.gtag !== "function") return;
+    window.gtag("event", "demo_click", { demo_name: el.dataset.demoLink, link_url: el.href, transport_type: "beacon" });
   });
 })();

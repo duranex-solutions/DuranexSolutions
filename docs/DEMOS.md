@@ -196,10 +196,27 @@ By hand:
 - [ ] Budgets met (above).
 
 ## Linking a finished demo from the Software page
-(Placeholder. Phase 3 of the demo foundation project fills this in: card ids, the `.concept-demo-link` style and the GA `demo_click` event.)
-
-The planned link, added as the last child of the demo's card in `software/index.html` only once the demo exists:
+Each concept card on `/software/` has an id equal to its demo slug (`client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`), so `/software/#<slug>` lands on the card and the demo bar's "Back to Software" link goes there. The `.concept-demo-link` style is in `styles.css`. No card has the link yet. Add it only when the demo is finished, as the last child of its card:
 ```html
-<a class="concept-demo-link" href="/software/demo/<slug>/" data-track="demo_click" data-demo="<slug>">Try the demo <span aria-hidden="true">↗</span></a>
+<a class="concept-demo-link" href="/software/demo/<slug>/" data-demo-link="<slug>">Try the demo <span aria-hidden="true">↗</span></a>
 ```
-Never link `example`. Demo URLs stay out of `sitemap.xml` and are not disallowed in `robots.txt` (the page must be fetchable to see its noindex).
+Same tab. Never link `example`.
+
+### Analytics event
+- `script.js` has one delegated click listener on `[data-demo-link]`. It sends GA4 event **`demo_click`** with parameters `demo_name` (the data attribute value, i.e. the slug), `link_url` and `transport_type: "beacon"` (so a same-tab navigation does not cancel it).
+- It sends only when consent is `"granted"` (localStorage `dx-analytics`) AND `window.gtag` is already a function. Otherwise it does nothing and queues nothing. The consent and GA loading code is untouched.
+- The demo pages themselves load no GA and no consent banner, so interest is measured only by this click.
+- Optional: register `demo_name` as a custom dimension in GA (Admin > Custom definitions > Create custom dimension, scope Event, parameter `demo_name`) to see it in reports.
+
+### Indexing
+- Demo pages carry `<meta name="robots" content="noindex, follow">`, and `netlify.toml` adds the header `X-Robots-Tag: noindex` for `/software/demo/*`.
+- Demo URLs are not in `sitemap.xml` and not disallowed in `robots.txt`. Reason: the pages are thin sample-data screens, the Software page is the one that should rank, and crawlers must be able to fetch a page to see its noindex. No canonical link (it would contradict noindex). og/twitter tags stay so WhatsApp link previews work.
+- `/docs/*` is already blocked with a 404 rule in `netlify.toml`.
+
+### When a demo ships
+1. Run the definition of done above.
+2. Add the link snippet to the end of its card in `software/index.html`.
+3. Confirm the slug in `data-demo-link` equals the folder name and the card id.
+4. Confirm `/software/#<slug>` lands on the card, and the demo's back link points to it.
+5. Confirm the demo is not in `sitemap.xml` and is not disallowed in `robots.txt`.
+6. The reworded note and case-studies FAQ mention demos: do not merge to `main` before the first real demo is linked.

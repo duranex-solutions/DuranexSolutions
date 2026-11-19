@@ -118,17 +118,17 @@ JS (`window.Demo`, demo.js):
 - [x] `software/demo/demo.js` with the API above. Accept: ≤ 8 KB; a grep for localStorage, sessionStorage, cookie, indexedDB, fetch and XMLHttpRequest finds nothing; no console errors.
 - [x] Template head: noindex meta, og tags, font preload, /styles.css + demo.css, deferred demo.js + data.js + app.js, no /script.js. Accept: no inline script or style; passes the CSP.
 - [x] `software/demo/example/`: list, table, form, badges, toast, dialog, WhatsApp + email preview, empty state, Reset. Accept: at 360px the bar is one row with no horizontal scroll; layout checked at 768 and 1280; a keyboard-only run (Tab, Enter, Esc) works; Reset restores the seed and is announced; no animation with reduced motion; Rand renders "R 1 234,56".
-- [ ] netlify.toml: `X-Robots-Tag: noindex` for `/software/demo/*`, and `/software/demo` + `/software/demo/` → `/software/` 301. Accept: TOML parses; CSP and other headers unchanged. **Not done in Phase 2 on purpose (Luan said not to touch netlify.toml this phase). Still open: do it in Phase 3 or a later step.**
+- [~] netlify.toml: `X-Robots-Tag: noindex` for `/software/demo/*`, and `/software/demo` + `/software/demo/` → `/software/` 301. Accept: TOML parses; CSP and other headers unchanged. **Not done in Phase 2 on purpose (Luan said not to touch netlify.toml this phase). Still open: do it in Phase 3 or a later step.**
 - [x] `docs/DEMOS.md`: rules, file layout, head template, API, components, colour rules, budgets, how to add the card link. It must include this line: "To give a demo its own accent, add `software/demo/<slug>/app.css` containing `:root { --demo-accent: #xxxxxx; }`, linked after demo.css; check navy-900 text on it and its strong mix on paper are both ≥ 4.5." Accept: a new demo can be built from DEMOS.md alone.
 - [x] Commit on demo-foundation. Accept: `git status` clean, nothing pushed.
 
 ## Phase 3 checklist (Software page + QA)
-- [ ] Add `id="<slug>"` to the five concept cards. Accept: `/software/#bookings` lands on its card, not hidden under the header.
-- [ ] `.concept-demo-link` style in styles.css. Accept: AA on paper, target ≥ 44px, matches `.link-arrow` feel. No link added until a real demo exists.
-- [ ] Copy changes exactly as above (note, FAQ HTML, FAQ JSON-LD). Accept: HTML and JSON-LD text match; JSON-LD parses.
-- [ ] script.js: add `demo_name` from `data-demo` and list `demo_click` in the events comment. Accept: a temporary test link sends nothing before consent and sends `demo_click` with `demo_name` after Accept; the test link is removed.
-- [ ] Final QA: demo colour pairs, budgets, noindex meta + header, sitemap unchanged, main header/menu untouched. Accept: all pass and are recorded below.
-- [ ] Commit on demo-foundation. Accept: `git status` clean, nothing pushed.
+- [x] Add `id="<slug>"` to the five concept cards. Accept: `/software/#bookings` lands on its card, not hidden under the header.
+- [x] `.concept-demo-link` style in styles.css. Accept: AA on paper, target ≥ 44px, matches `.link-arrow` feel. No link added until a real demo exists.
+- [x] Copy changes exactly as above (note, FAQ HTML, FAQ JSON-LD). Accept: HTML and JSON-LD text match; JSON-LD parses.
+- [x] script.js: add `demo_name` from `data-demo` and list `demo_click` in the events comment. Accept: a temporary test link sends nothing before consent and sends `demo_click` with `demo_name` after Accept; the test link is removed.
+- [x] Final QA: demo colour pairs, budgets, noindex meta + header, sitemap unchanged, main header/menu untouched. Accept: all pass and are recorded below.
+- [x] Commit on demo-foundation. Accept: `git status` clean, nothing pushed.
 
 ## Handoff log
 
@@ -186,3 +186,27 @@ JS (`window.Demo`, demo.js):
 5. The blue accent looks right on the buttons and active tab (it's set only in `example/app.css`; delete that file's one line to see the gold default).
 6. Dev tools > Rendering > "Emulate prefers-reduced-motion: reduce": no fades on toast or dialog.
 7. The bar's WhatsApp link opens with the pre-filled message (it says "example demo").
+
+### Handoff - Phase 3 (2026-11-19)
+**Wording for Luan to review**
+- Note on /software/ (a mono pill under "What I can build for you")
+  - Before: `Examples and concepts only, not finished projects.`
+  - After: `Concepts, not client work. Demos use sample data, nothing is saved.`
+- FAQ "Do you have software case studies?" (visible answer and FAQPage JSON-LD, identical apart from the work-page link)
+  - Before: `Not yet. Software is a new service for Duranex, and the examples on this page are concepts. You can see my website work on the work page.`
+  - After: `Not yet. Software is a new service for Duranex. The demos on this page are my own builds, not client work. They run in your browser on made-up sample data, so nothing you type is saved or sent. You can see my website work on the work page.`
+- Both lines mention demos that are not linked yet. Do not merge to `main` before the first real demo is linked (Decision 17).
+
+**Files changed:** `software/index.html` (note, FAQ HTML + JSON-LD, ids on the five cards), `styles.css` (`.concept-demo-link`, card `scroll-margin-top`), `script.js` (demo_click listener, events comment), `netlify.toml` (X-Robots-Tag for `/software/demo/*`), `docs/DEMOS.md`, this file. CLAUDE.md was also edited locally (it is not committed).
+
+**Deviations**
+- The link uses `data-demo-link="<slug>"` (Luan's Phase 3 prompt), not `data-track` + `data-demo` from Decision 14/Copy changes. The listener is separate from the `[data-track]` one and sets `demo_name`, `link_url`, `transport_type: "beacon"`. DEMOS.md has the final snippet.
+- It checks `localStorage dx-analytics === "granted"` and `typeof window.gtag === "function"`. Existing consent/GA code is unchanged.
+- `/docs/*` was already blocked by a 404 rule, so nothing was added for it.
+
+**Checked without a browser:** DEMOS.md definition-of-done greps on `example` all clean (storage/network, external URLs, noindex meta = 1, no inline style/script, all asset paths exist, data+app+css = 6.7 KB); demo.css 11,895 B and demo.js 7,916 B (within budget). Software page diff: header/nav untouched, no demo link or `/software/demo` reference. FAQ HTML and JSON-LD text match; JSON-LD parses. sitemap.xml parses and has no demo URLs; robots.txt has no demo rule. GA trace: `loadAnalytics()` only runs when the saved choice is "granted" or the Accept button is pressed, so nothing loads before consent; the new listener returns early without both consent and gtag, and nothing is queued.
+
+**Unfinished / not verified**
+- `/software/demo` and `/software/demo/` -> `/software/` 301 (Decision 6) was NOT added (not in the Phase 3 prompt). Checklist item is marked `[~]`. Until it exists, `/software/demo/` 404s.
+- Not run in a browser: the temporary test link for demo_click (consent vs no consent), `/software/#bookings` landing position under the header, the `.concept-demo-link` look and contrast, the X-Robots-Tag header (Netlify only), and `netlify.toml` parsing by Netlify (edited in the existing format, not run through a TOML parser).
+- Optional: register `demo_name` as a GA custom dimension (steps in DEMOS.md).
