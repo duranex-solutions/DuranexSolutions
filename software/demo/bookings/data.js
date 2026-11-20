@@ -1,4 +1,4 @@
-/* Sample data for a made-up salon: all people and numbers are fictional. Dates are relative to today. */
+/* Fictional sample data, relative to today. */
 (function () {
  "use strict";
  const BS = window.BookingSlots;

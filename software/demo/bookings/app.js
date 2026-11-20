@@ -1,4 +1,4 @@
-/* Bookings demo: customer wizard and owner diary for a made-up salon. In memory only. */
+/* Bookings demo: customer wizard and owner diary. In memory only. */
 (function () {
  "use strict";
  const D = window.Demo, BS = window.BookingSlots, el = D.el, hm = BS.toHM;
@@ -262,7 +262,12 @@
  }
  $("#c-next").onclick = next;
  $$("[data-step]").forEach((b) => { b.onclick = () => go(+b.dataset.step); });
- $("#f-name").onkeydown = $("#f-phone").onkeydown = (e) => { if (e.key === "Enter") next(); };
+ document.onkeydown = (e) => {
+  const t = e.target, r = t.type === "radio";
+  if (e.key !== "Enter" || t.disabled || !(r || /^f-(name|phone)$/.test(t.id))) return;
+  e.preventDefault();
+  if (r && !t.checked) t.click(); else if (!r || t.closest("#c-body")) next();
+ };
  $("#d-diary").onclick = () => { D.go("owner"); setTimeout(scrollHi, 120); };
  $("#d-again").onclick = () => { focusSel = "#c-h"; upd((x) => { x.ui.customer = fresh(x); }); };
  $("#c-back").onclick = () => go(D.store.get().ui.customer.step - 1);

@@ -1,4 +1,4 @@
-/* Booking slot logic: pure functions, no DOM. Dates are "YYYY-MM-DD", times are minutes since midnight. */
+/* Slot logic: pure, no DOM. Dates "YYYY-MM-DD", times in minutes. */
 (function (g) {
  "use strict";
  const p2 = (n) => (n < 10 ? "0" : "") + n;
