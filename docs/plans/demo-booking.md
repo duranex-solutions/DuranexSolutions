@@ -186,14 +186,14 @@ In budget: about 28.5 KB. If over: first drop the move preview, then simplify th
 - [x] Commit "Booking demo: build" (no push). Update the Handoff log.
 
 ## Phase 3 checklist (QA and ship prep)
-- [ ] DEMOS.md definition-of-done greps (Git Bash). Done when: every grep prints what DEMOS.md expects.
-- [ ] Budgets: `wc -c` of data, slots, app and app.css. Done when: the total is 30 000 or less.
+- [x] DEMOS.md definition-of-done greps (Git Bash). Done when: every grep prints what DEMOS.md expects.
+- [x] Budgets: `wc -c` of data, slots, app and app.css. Done when: the total is 30 000 or less.
 - [ ] Screenshots with headless Edge from a local node server at 360, 768 and 1280px, for: customer steps, confirmation, owner day/week, dialogs. Done when: no sideways scroll, the bar is one row at 360px, and the sidebar appears from 1024px.
 - [ ] Keyboard-only pass, the full path from booking to diary to reschedule. Done when: Tab, Enter, Space and Esc work, focus is always visible, and it lands on step and view headings.
 - [ ] Reduced motion (OS setting). Done when: there are no fades and no smooth scroll.
 - [ ] Dates and money. Done when: every amount shows `R 1 234,56`, dates show `21 Nov 2026`, and no day is off by one when the clock is set to 00:30 and to 23:30.
 - [ ] Contrast of `#e07a8a` re-checked by eye and recorded in the handoff note.
-- [ ] Ship prep:
+- [x] Ship prep:
   - add the card link to `#bookings` (DEMOS.md snippet)
   - put back the demo wording that the 2026-11-20 hotfix removed (the note and FAQ answer, both the visible text and the JSON-LD; text from commit a1fbd5f)
   - the demo is not in sitemap.xml or robots.txt
@@ -301,3 +301,19 @@ At 360px (browser device toolbar):
 6. Owner view: the day is a list (time, name, service, "with Lerato"); blocks show stripes with "Blocked: ...". The week is 7 rows with counts.
 7. The Reschedule dialog fits the screen, and the day strip in it is not cramped.
 8. No sideways scroll on any screen.
+
+### Handoff - Phase 3 (2026-11-20)
+
+**Changed** (only `software/index.html` and this plan):
+- Added the "Try the demo ↗" link as the last child of the `#bookings` card, exactly as DEMOS.md gives it, with `href="/software/demo/bookings/"` and `data-demo-link="bookings"`. GA event `demo_click` is already wired in `script.js` (no change).
+- Restored the demo wording the hotfix `7cb64e2` removed, by reversing that commit's change to this file: the note ("Concepts, not client work. Demos use sample data, nothing is saved."), the FAQ answer and the FAQ JSON-LD.
+- Indexing needed no change: the page has the noindex meta, `netlify.toml` already has the `/software/demo/*` header, and `sitemap.xml` and `robots.txt` have no demo entries (as DEMOS.md says).
+
+**QA findings:** the brief's findings slot still held the placeholder text, so I treated it as "none" and fixed nothing. Send the findings and I will do them as a follow-up.
+
+**DEMOS.md greps (all as expected):** no storage/network; no external URLs; noindex 1; no style, inline script or `/script.js`; no missing assets; no canonical. Budget 29 922 of 30 000 bytes. "Preview only. Nothing was sent." comes from the shared `previewEl`.
+
+**Not done, still open for the human checklist:**
+- Slug: the brief said `/software/demo/booking/`, but the folder, card id and DEMOS.md all use `bookings`. I used `bookings`.
+- No browser run happened this phase: screenshots at 360/768/1280, keyboard-only pass, reduced motion, the 00:30 / 23:30 date check, and the by-eye accent contrast (ratios in the Phase 2 note) are unticked.
+- Don't merge to `main` until those pass: the Software page now carries the demo wording and the link.
