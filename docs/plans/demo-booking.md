@@ -168,22 +168,22 @@ Owner day (agenda)       Owner week (7 rows)
 In budget: about 28.5 KB. If over: first drop the move preview, then simplify the week chips to counts only.
 
 ## Phase 2 checklist (build)
-- [ ] Install Node LTS (`winget install OpenJS.NodeJS.LTS`). Done when: `node -v` prints v20 or higher.
-- [ ] Copy example to `software/demo/bookings/` and update the head, h1, nav (2 items), WhatsApp text (`bookings`), back link `/software/#bookings`, and the slots.js script tag. Done when: the page opens with no console errors.
-- [ ] `slots.js` and `docs/tests/bookings-slots.test.js`. Done when: `node --test docs/tests` passes. The tests cover:
+- [x] Install Node LTS (`winget install OpenJS.NodeJS.LTS`). Done when: `node -v` prints v20 or higher.
+- [x] Copy example to `software/demo/bookings/` and update the head, h1, nav (2 items), WhatsApp text (`bookings`), back link `/software/#bookings`, and the slots.js script tag. Done when: the page opens with no console errors.
+- [x] `slots.js` and its tests. Done when: the slot tests pass. (Luan's Phase 2 brief: tests ran as a throwaway script and were deleted, so there is no `docs/tests/` file.) The tests cover:
   - Sunday and after-closing (first bookable day)
   - month rollover (30 Nov to 1 Dec)
   - a 180-min fit that stops at the lunch block and at closing
   - "Any stylist" pick
   - `ignoreId`
   - `resolveSeed` for all 7 start weekdays: no clashes, at least 11 bookings
-- [ ] `data.js` per the outline. Done when: the seed has 5 services, 3 stylists and 11 to 13 bookings, with dates on open days only.
-- [ ] Customer wizard: the 4 steps, summary, Change/Back, confirmation with the inline preview. Done when: a booking can be made with mouse and with keyboard only.
-- [ ] Owner day and week views, desktop grid and phone agenda/rows, legend, highlight. Done when: the new booking shows "New" on its day, and blocked times show stripes and text.
-- [ ] Cancel and reschedule modals, toasts and the move preview. Done when: both update the diary, and focus returns sensibly.
-- [ ] Reset and the toggle keep state. Done when: switching views keeps the step and choices, and Reset restores the seed and step 1.
-- [ ] Add the one-line DEMOS.md note (extra pure-logic file allowed inside the budget; tests in docs/tests).
-- [ ] Commit "Booking demo: build" (no push). Update the Handoff log.
+- [x] `data.js` per the outline. Done when: the seed has 5 services, 3 stylists and 11 to 13 bookings, with dates on open days only.
+- [x] Customer wizard: the 4 steps, summary, Change/Back, confirmation with the inline preview. Done when: a booking can be made with mouse and with keyboard only.
+- [x] Owner day and week views, desktop grid and phone agenda/rows, legend, highlight. Done when: the new booking shows "New" on its day, and blocked times show stripes and text.
+- [x] Cancel and reschedule modals, toasts and the move preview. Done when: both update the diary, and focus returns sensibly.
+- [x] Reset and the toggle keep state. Done when: switching views keeps the step and choices, and Reset restores the seed and step 1.
+- [x] Add the one-line DEMOS.md note (extra pure-logic file allowed inside the budget; tests in docs/tests).
+- [x] Commit "Booking demo: build" (no push). Update the Handoff log.
 
 ## Phase 3 checklist (QA and ship prep)
 - [ ] DEMOS.md definition-of-done greps (Git Bash). Done when: every grep prints what DEMOS.md expects.
@@ -213,3 +213,91 @@ In budget: about 28.5 KB. If over: first drop the move preview, then simplify th
   3. `software/demo/example/index.html`, `app.js`, `data.js`
   4. grep `software/demo/demo.js` for `D.modal`, `D.previewEl`, `toDate`, `show` (don't read it in full)
   5. grep `software/demo/demo.css` for `.demo-tabs`, `.demo-toast`, `.demo-dialog`
+
+### Handoff - Phase 2 (2026-11-20)
+
+**Files created** (all in `software/demo/bookings/`): `index.html`, `slots.js`, `data.js`, `app.js`, `app.css`.
+**Files changed:** `docs/DEMOS.md` (one line on the optional logic file, and `slots.js` added to the `wc -c` check) and this plan. No shared kit file (`demo.css`, `demo.js`, `styles.css`) was touched. `software/index.html`, `sitemap.xml`, `robots.txt` and `netlify.toml` are untouched.
+
+**Budget:** data 2 296 + slots 4 148 + app.js 16 431 + app.css 7 047 = **29 922 bytes** (limit 30 000). Only 78 bytes spare, so any addition needs a cut elsewhere.
+
+**Deviations from the plan, and why**
+- **Budget cuts.** The first build was 36 KB. I used the plan's two fallbacks, then went further:
+  - the reschedule WhatsApp preview is gone (the move just shows the toast and the "Moved" badge)
+  - week chips are gone: the week is 7 rows on phone and 7 count buttons from 960px
+  - the phone progress bar is gone (the heading already says "Step 3 of 4: ...")
+  - the selected option has no tick glyph (it has a tint, a 2px accent border and bold text)
+- **More markup is static, in `index.html`** (outside the budget): the step list, the Step 4 form, the summary, the confirmation card. JS only fills them. The step list items are buttons, disabled for the current and later steps (current has `aria-current="step"`).
+- **Week label** reads "Week of 20 Nov 2026" (shorter than a range).
+- **Highlight and diary date** are set when the booking is confirmed, not only by the "See it in the owner's diary" button. So switching to Owner view with the tabs also lands on it.
+- **Toast after a move** shows straight away (there is no preview dialog now).
+- **API changes in `slots.js`:** `resolveSeed(raw, today, data)` takes the data (services, stylists, hours); `pickStylist(ids, date, data)` has no `start` argument (it never used it); `firstBookable` takes one options object. `parse` and `fromHM` are not exported.
+- **Tests** were a throwaway node script outside the repo, deleted afterwards as you asked. The plan had `docs/tests/bookings-slots.test.js`; it does not exist. Say if you want the tests kept.
+- **Node:** it was already installed (v26.13.1, in `C:\Program Files\nodejs`), but it is not on the Git Bash PATH. Use `export PATH="$PATH:/c/Program Files/nodejs"`.
+- **Reschedule dialog Cancel** is a `<form method="dialog">` button (native close), not JS.
+
+**Slot test results** (node, 13 groups, all passed, today set to different dates):
+- a 180-min service stops at closing (Sat 10:00 is the last start) and at the lunch block
+- a 60-min cut cannot start at 11:30, 12:00 or 12:30 for Lerato, but can for a stylist without lunch
+- a booking blocks overlapping starts but not touching ones; `ignoreId` frees the booking's own slot
+- "Any stylist" lists everyone free; the pick is the one with the fewest bookings that day, ties by list order
+- today after closing has no starts, so the first bookable day is the next open day
+- today at 10:10 first offers 10:30; at 10:30 it offers 10:30
+- Sunday is closed, is never an open day, and a Sunday visit starts on Monday
+- 30 Nov rolls to 1 Dec; 31 Dec rolls to 1 Jan
+- the seed, for all 7 start weekdays: 12 or 13 bookings, no clashes, only open days, unique ids
+- Saturday 14:00: the preselected day is Monday, and the strip shows Saturday as "Full"
+
+A jsdom run (also deleted) clicked through the whole app at 6 clock settings (Sunday 10:00, Saturday 14:00, Monday 00:30, a Wednesday, 30 Nov 23:30, 1 Dec 08:10): no script errors. It covered service, stylist, day, time, details errors, Back keeping choices, confirm, preview, the diary highlight, details modal, reschedule (with and without a time), cancel, week and day, Today, and Reset. jsdom has no layout, so it cannot check looks.
+
+**Self-checks**
+- DEMOS.md greps: storage/network none; external URLs none; noindex 1; no `<style>`, inline script or `/script.js`; no missing asset paths; no canonical.
+- HTML: tags balanced, 36 ids and none repeated, 1 `<h1>`, a label on every input, no dangling `aria-*` references. Every clickable thing is a button, link or input (the generated option/time/day inputs sit inside labels).
+- Contrast (sRGB formula, accent `#e07a8a`; accent-strong = `#8c5568`, tint = `#fbecef`):
+
+| Pair | Ratio |
+|---|---|
+| navy-900 on accent fill (primary button) | 5.88 |
+| navy-900 on hovered primary | 7.36 |
+| accent-strong on paper / paper-card / white | 5.16 / 5.57 / 5.81 |
+| accent-strong on tint (selected, New item) | 5.08 |
+| paper-ink on tint | 13.22 |
+| paper-muted on tint (small text in a New item) | 4.93 |
+| paper-muted on paper-card / white / paper | 5.40 / 5.63 / 5.00 |
+| paper-ink on blocked stripes (paper-line / paper-card) | 9.91 / 14.48 |
+| Moved badge (gold-700 on paper-card) | 5.71 |
+| UI edges: accent-strong on paper / tint, field-border on white | 5.16 / 5.08 / 3.76 |
+
+  All pass. One informational miss: the accent fill against the paper is 2.55 (the button boundary only; its label text is 5.88, so the button is still identified by its text). Re-check by eye.
+
+**Known gaps** (nothing here was seen in a browser)
+- No visual check at all: layouts, the day grid row heights, the sticky Back/Next bar, toast position and the focus rings are only reasoned from the CSS. Phase 3 has the screenshots.
+- Focus return after dialogs follows the shared kit (back to the booking button, or to the view heading if the diary re-rendered); only the logic ran in jsdom.
+- Scrolling to the new booking after "See it in the owner's diary" could not run in jsdom.
+- "Full" is also shown for today when no start is left (after closing or fully past); it is the same word.
+- The diary's day arrows step through Sundays too, which show an empty "Closed on Sundays" card. It is not wrong, but it is one extra click.
+- The accent is only a candidate until you see it.
+
+**Click-through for you (Live Server on `/software/demo/bookings/`)**
+At desktop width (about 1280px):
+1. The step list shows 4 steps, and the "Your booking" summary sits on the right. Pick a service. Does the selected card look clearly chosen?
+2. Next to Stylist (Any stylist is preselected), Next to Date and time. Pick a day, then a time. The summary fills in and each row has "Change".
+3. Click "1. Service" in the step list and pick a longer service, such as Knotless braids. Come back to Date and time. Is a day or time cleared with a note if it no longer fits?
+4. Next to Your details, press Confirm with nothing typed (errors, focus on name). Type a name and `071 000 0000`, press Enter.
+5. "You're booked" shows the reference and a WhatsApp preview that says "Preview only. Nothing was sent."
+6. Click "See it in the owner's diary". Your booking is outlined and marked New, and the page scrolls to it.
+7. Click it. Reschedule: pick another time and Move booking. The toast appears and it is marked Moved.
+8. Click it again, Cancel booking, then Cancel booking. The toast shows and it disappears.
+9. Click Week, then a day header. Try the arrows and Today. Find a day with a stripe block (lunch).
+10. Click Reset in the bar: back to Customer view, step 1, toast shown.
+11. Press Tab through the whole thing. Esc closes dialogs. The focus ring is always visible.
+
+At 360px (browser device toolbar):
+1. The demo bar is one row and the two tabs sit at the bottom.
+2. Back / Next sits just above the tabs and stays put while you scroll. The toast appears above it, not under it.
+3. The day strip shows 7 days without sideways scroll, and each is easy to tap. A full day says "Full".
+4. Times are 3 across, in Morning and Afternoon groups.
+5. Step 4 shows the summary under the form.
+6. Owner view: the day is a list (time, name, service, "with Lerato"); blocks show stripes with "Blocked: ...". The week is 7 rows with counts.
+7. The Reschedule dialog fits the screen, and the day strip in it is not cramped.
+8. No sideways scroll on any screen.

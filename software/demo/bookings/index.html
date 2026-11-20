@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en-ZA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bookings demo: Marula Hair Studio | Duranex Software Solutions demo</title>
+    <meta name="description" content="A booking demo on made-up sample data from Duranex Software Solutions. Book an appointment, then see it in the owner's diary. Nothing you type is saved or sent." />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="author" content="Duranex Software Solutions" />
+    <meta name="theme-color" content="#0f1d34" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Duranex Software Solutions" />
+    <meta property="og:locale" content="en_ZA" />
+    <meta property="og:title" content="Bookings demo: Marula Hair Studio | Duranex Software Solutions demo" />
+    <meta property="og:description" content="A booking demo on made-up sample data from Duranex Software Solutions. Book an appointment, then see it in the owner's diary. Nothing you type is saved or sent." />
+    <meta property="og:url" content="https://duranexsolutions.com/software/demo/bookings/" />
+    <meta property="og:image" content="https://duranexsolutions.com/assets/images/og-share.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Bookings demo: Marula Hair Studio | Duranex Software Solutions demo" />
+    <meta name="twitter:description" content="A booking demo on made-up sample data from Duranex Software Solutions. Book an appointment, then see it in the owner's diary. Nothing you type is saved or sent." />
+    <meta name="twitter:image" content="https://duranexsolutions.com/assets/images/og-share.png" />
+
+    <link rel="icon" href="/assets/logos/favicon.ico" sizes="any" />
+    <link rel="icon" href="/assets/logos/android-chrome-192x192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/assets/logos/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/assets/logos/favicon-16x16.png" type="image/png" sizes="16x16" />
+    <link rel="apple-touch-icon" href="/assets/logos/apple-touch-icon.png" />
+    <link rel="manifest" href="/assets/logos/site.webmanifest" />
+    <link rel="preload" href="/assets/fonts/xn7gYHE41ni1AdIRggexSg.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/software/demo/demo.css" />
+    <link rel="stylesheet" href="/software/demo/bookings/app.css" />
+    <script src="/software/demo/demo.js" defer></script>
+    <script src="/software/demo/bookings/slots.js" defer></script>
+    <script src="/software/demo/bookings/data.js" defer></script>
+    <script src="/software/demo/bookings/app.js" defer></script>
+  </head>
+  <body class="demo-body" data-page="demo-bookings">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="demo-bar">
+      <p class="demo-bar__label"><span class="demo-bar__pill">Demo</span><span class="demo-sr-md">&middot; sample data, nothing is saved</span></p>
+      <a class="demo-bar__back" href="/software/#bookings"><span aria-hidden="true">&larr;</span><span><span class="demo-sr-sm">Back to </span>Software</span></a>
+      <button class="demo-bar__reset" type="button" data-demo-reset>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg>Reset<span class="visually-hidden"> demo to sample data</span>
+      </button>
+      <a class="demo-bar__wa" href="https://wa.me/27836095579?text=Hi%20Luan%2C%20I%20tried%20your%20bookings%20demo." target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.04 2a9.86 9.86 0 0 0-8.45 14.95L2.2 22l5.18-1.36A9.9 9.9 0 1 0 12.04 2Zm0 17.94a8.03 8.03 0 0 1-4.1-1.12l-.3-.18-3.07.8.82-2.99-.2-.31a8.03 8.03 0 1 1 6.85 3.8Zm4.4-6.02c-.24-.12-1.43-.7-1.65-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.02-.37.1-.49.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.46-.4-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.11 3.64.58.25 1.03.4 1.38.51.58.18 1.1.16 1.52.1.46-.07 1.43-.58 1.63-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28Z"/></svg><span class="demo-sr-sm"><span class="demo-sr-md">Want this for your business? </span>WhatsApp Luan <span aria-hidden="true">&nearr;</span></span><span class="visually-hidden"> (opens in a new tab)</span>
+      </a>
+    </header>
+
+    <div class="demo-app">
+      <nav class="demo-sidebar demo-tabs" aria-label="Demo sections">
+        <p class="demo-brand" aria-hidden="true">Marula Hair Studio</p>
+        <ul>
+          <li><a href="#view-customer">Customer view</a></li>
+          <li><a href="#view-owner">Owner view</a></li>
+        </ul>
+      </nav>
+
+      <main class="demo-main" id="main" tabindex="-1">
+        <p class="demo-kicker">A fictional salon in Kiaat Heights, made up for this demo</p>
+        <h1>Marula Hair Studio</h1>
+
+        <section class="demo-view" data-view="customer" aria-labelledby="h-customer">
+          <h2 id="h-customer">Customer view: book an appointment</h2>
+          <p class="demo-muted">Pick a service and a time. Then open Owner view to see it in the diary.</p>
+          <div class="bk-grid" id="c-wiz">
+            <div class="bk-main">
+              <ol class="bk-steps" id="c-steps" aria-label="Booking steps">
+                <li><button class="bk-step" type="button" data-step="1">1. Service</button></li>
+                <li><button class="bk-step" type="button" data-step="2">2. Stylist</button></li>
+                <li><button class="bk-step" type="button" data-step="3">3. Date and time</button></li>
+                <li><button class="bk-step" type="button" data-step="4">4. Your details</button></li>
+              </ol>
+              <div class="demo-card">
+                <h3 id="c-h" tabindex="-1"></h3>
+                <p class="demo-muted" id="c-note" aria-live="polite" hidden></p>
+                <div id="c-body"></div>
+                <div class="demo-form" id="c-form" hidden>
+                  <div class="form-field">
+                    <label for="f-name">Your name</label>
+                    <input id="f-name" autocomplete="off" aria-describedby="f-name-err" />
+                    <span class="field-error" id="f-name-err" hidden></span>
+                  </div>
+                  <div class="form-field">
+                    <label for="f-phone">Mobile number</label>
+                    <input id="f-phone" type="tel" inputmode="tel" autocomplete="off" placeholder="071 000 0000" aria-describedby="f-phone-err" />
+                    <span class="field-error" id="f-phone-err" hidden></span>
+                  </div>
+                  <p class="demo-muted">Made-up details are fine. Nothing is sent or saved.</p>
+                </div>
+                <p class="field-error" id="c-err" hidden></p>
+              </div>
+              <div class="bk-nav">
+                <button class="btn btn-secondary" type="button" id="c-back">Back</button>
+                <button class="btn btn-primary" type="button" id="c-next">Next</button>
+              </div>
+            </div>
+            <aside class="demo-card bk-sum" aria-label="Your booking so far">
+              <h3>Your booking</h3>
+              <dl>
+                <div class="bk-row"><dt>Service</dt><dd data-r="service"><span></span><button class="bk-chg" type="button" data-step="1" aria-label="Change service">Change</button></dd></div>
+                <div class="bk-row"><dt>Stylist</dt><dd data-r="stylist"><span></span><button class="bk-chg" type="button" data-step="2" aria-label="Change stylist">Change</button></dd></div>
+                <div class="bk-row"><dt>Date</dt><dd data-r="date"><span></span><button class="bk-chg" type="button" data-step="3" aria-label="Change date">Change</button></dd></div>
+                <div class="bk-row"><dt>Time</dt><dd data-r="time"><span></span><button class="bk-chg" type="button" data-step="3" aria-label="Change time">Change</button></dd></div>
+                <div class="bk-row"><dt>Price</dt><dd data-r="price"><span></span></dd></div>
+              </dl>
+            </aside>
+          </div>
+          <div id="c-done" hidden>
+            <div class="demo-card bk-done">
+              <h3 id="c-done-h" tabindex="-1"><span aria-hidden="true">&check; </span>You're booked</h3>
+              <p id="d-what"></p>
+              <p class="demo-muted" id="d-ref"></p>
+              <div id="d-wa"></div>
+              <div class="demo-actions">
+                <button class="btn btn-primary" type="button" id="d-diary">See it in the owner's diary</button>
+                <button class="btn btn-secondary" type="button" id="d-again">Make another booking</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="demo-view" data-view="owner" aria-labelledby="h-owner" hidden>
+          <h2 id="h-owner">Owner view: the diary</h2>
+          <p class="demo-muted">Tap a booking to cancel or move it. Your booking is marked New.</p>
+          <div class="demo-toolbar bk-tools">
+            <div class="bk-seg" role="group" aria-label="Diary view">
+              <button class="btn btn-secondary demo-btn--sm" type="button" id="o-day" aria-pressed="true">Day</button>
+              <button class="btn btn-secondary demo-btn--sm" type="button" id="o-week" aria-pressed="false">Week</button>
+            </div>
+            <div class="bk-seg" role="group" aria-label="Move through the diary">
+              <button class="btn btn-secondary demo-btn--sm" type="button" id="o-prev"><span aria-hidden="true">&lsaquo;</span></button>
+              <button class="btn btn-secondary demo-btn--sm" type="button" id="o-today">Today</button>
+              <button class="btn btn-secondary demo-btn--sm" type="button" id="o-next"><span aria-hidden="true">&rsaquo;</span></button>
+            </div>
+          </div>
+          <p class="bk-label" id="o-label" tabindex="-1" aria-live="polite"></p>
+          <ul class="bk-legend" aria-label="Legend">
+            <li><span class="bk-sw"></span>Booking</li>
+            <li><span class="bk-sw is-new"></span>New</li>
+            <li><span class="bk-sw is-moved"></span>Moved</li>
+            <li><span class="bk-sw is-block"></span>Blocked</li>
+          </ul>
+          <div id="o-body"></div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="demo-dialog" id="move-dialog" aria-labelledby="mv-title">
+      <div class="demo-dialog__head"><h2 class="demo-dialog__title" id="mv-title">Reschedule</h2></div>
+      <div class="demo-dialog__body">
+        <div class="form-field">
+          <label for="mv-sty">Stylist</label>
+          <select id="mv-sty"></select>
+        </div>
+        <div id="mv-pick"></div>
+        <p class="field-error" id="mv-err" hidden></p>
+      </div>
+      <form method="dialog" class="demo-dialog__foot">
+        <button class="btn btn-secondary demo-btn--sm">Cancel</button>
+        <button class="btn btn-primary demo-btn--sm" type="button" id="mv-go">Move booking</button>
+      </form>
+    </dialog>
+  </body>
+</html>

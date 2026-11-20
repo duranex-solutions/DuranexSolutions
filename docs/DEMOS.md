@@ -21,6 +21,7 @@ software/demo/<slug>/app.js       this demo's logic
 software/demo/<slug>/app.css      accent override and demo-only styles (optional)
 ```
 Budget per demo: `data.js` + `app.js` + `app.css` together at most 30 KB. KB means 1000 bytes. No new fonts or images.
+A demo may add one pure-logic file (no DOM, so it can be tested in node), for example `bookings/slots.js`, loaded after `demo.js` and before `data.js`. It counts in the same 30 KB. Tests for it are not kept in the repo.
 Slugs: `client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`. `example` is the placeholder and is never linked from the site.
 
 ## Head and page template
@@ -176,7 +177,7 @@ grep -noE "https?://[^\"' )]+" $D/* | grep -vE "duranexsolutions\.com|wa\.me/278
 grep -c 'name="robots" content="noindex, follow"' $D/index.html                                                                     # expect 1
 grep -nE "<style|style=\"|<script>|/script\.js" $D/index.html                                                                       # expect no output
 grep -oE '(href|src)="/[^"#?]*' $D/index.html | sed -E 's/(href|src)="//' | sort -u | while read p; do [ -e ".$p" ] || echo MISSING $p; done   # expect no output
-wc -c $D/data.js $D/app.js $D/app.css                                                                                               # sum 30000 or less
+wc -c $D/data.js $D/app.js $D/app.css $D/slots.js                                                                                # sum 30000 or less (slots.js only if the demo has one)
 ```
 The only external URLs allowed are the site's own (`duranexsolutions.com`, in the og tags) and the WhatsApp number link.
 
