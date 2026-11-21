@@ -1,0 +1,96 @@
+/* Client portal demo. Accent lavender. navy-900 on it 5.57, accent-strong on paper 5.23, on card 5.64, on tint 5.14 (script, Phase 1). */
+:root { --demo-accent: #9b87e0; }
+/* Modes: login and practice have no navigation */
+.demo-app[data-mode="login"] .demo-sidebar,
+.demo-app[data-mode="practice"] .demo-sidebar,
+.demo-app[data-mode="login"] .cp-head { display: none; }
+.demo-body:has(.demo-app:not([data-mode="client"])) { padding-bottom: 0; }
+@media (min-width: 1024px) {
+  .demo-app[data-mode="login"],
+  .demo-app[data-mode="practice"] { grid-template-columns: minmax(0, 1fr); }
+}
+.demo-main { max-width: 72rem; }
+.demo-body:has(.demo-app:not([data-mode="client"])) .demo-toast { bottom: var(--s-5); }
+/* Portal header: who, the view switch, log out, the next step */
+.cp-head { margin-top: var(--s-4); padding: var(--s-3) var(--s-4); border: 1px solid var(--paper-line); border-radius: var(--r-md); background: var(--paper-card); }
+.cp-head__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--s-3); }
+.cp-head__ctl { display: contents; }
+.cp-who { margin: 0; }
+.cp-who__co { display: block; color: var(--paper-muted); }
+#logout { grid-column: 2; grid-row: 1; }
+.cp-switch { display: flex; grid-column: 1 / -1; grid-row: 2; }
+.cp-switch button { min-height: 44px; flex: 1 1 0; padding: 0 var(--s-4); border: 1px solid var(--field-border); background: var(--field-bg); color: var(--paper-ink); cursor: pointer; font-weight: 600; }
+.cp-switch button:first-child { border-radius: var(--r-sm) 0 0 var(--r-sm); }
+.cp-switch button:last-child { margin-left: -1px; border-radius: 0 var(--r-sm) var(--r-sm) 0; }
+.cp-switch button[aria-pressed="true"] { position: relative; border-color: var(--demo-accent-strong); background: var(--demo-accent-tint); font-weight: 800; }
+.cp-next { margin: var(--s-3) 0 0; padding-top: var(--s-3); border-top: 1px solid var(--paper-line); color: var(--paper-muted); font-size: var(--fs-small); }
+@media (min-width: 640px) {
+  .cp-head__row { display: flex; justify-content: space-between; }
+  .cp-head__ctl { display: flex; align-items: center; gap: var(--s-3); }
+  .cp-who__co { display: inline; }
+  .cp-who__co::before { content: ", "; }
+  .cp-switch { min-width: 20rem; }
+}
+/* Login */
+.cp-login { display: grid; width: 100%; max-width: 28rem; gap: var(--s-4); margin-inline: auto; }
+.cp-login .demo-card { display: grid; gap: var(--s-3); }
+.cp-login .demo-card p + p { margin-top: 0; }
+.cp-wide { width: 100%; }
+/* Try this */
+.cp-tips ol { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.cp-tips li { display: flex; align-items: flex-start; gap: var(--s-3); }
+.cp-tips .is-done { font-weight: 700; }
+.cp-tick { display: grid; width: 24px; height: 24px; flex: 0 0 auto; place-items: center; border: 1px solid var(--demo-accent-strong); border-radius: 50%; color: var(--demo-accent-strong); font-size: var(--fs-small); font-weight: 700; }
+.is-done .cp-tick { background: var(--demo-accent-strong); color: var(--field-bg); }
+.cp-end { font-weight: 700; }
+/* Overview */
+.cp-two { display: grid; align-items: start; gap: var(--s-4); }
+@media (min-width: 1024px) { .cp-two { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.cp-todo { display: grid; gap: var(--s-3); margin: 0; padding: 0; list-style: none; }
+.cp-todo li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2); padding-bottom: var(--s-3); border-bottom: 1px solid var(--paper-line); }
+.cp-todo li:last-child { padding-bottom: 0; border-bottom: 0; }
+.cp-todo span { min-width: 0; flex: 1 1 12rem; }
+/* Quotes */
+.cp-quotes { display: grid; gap: var(--s-4); }
+@media (min-width: 1024px) { .cp-quotes { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; } }
+.cp-quote { display: grid; gap: var(--s-2); }
+.cp-quote p, .cp-quote h3 { margin: 0; }
+.cp-price strong { font-size: 1.25rem; }
+.cp-qact { margin-top: var(--s-2); }
+.cp-qact > .btn { flex: 1 1 0; }
+.cp-decided { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin-top: var(--s-2); }
+.cp-decided p { flex-basis: 100%; }
+@media (min-width: 640px) { .cp-qact > .btn { flex: 0 0 auto; } }
+/* Invoices and the dialogs */
+.cp-status { display: grid; justify-items: start; gap: 2px; }
+.cp-block { display: grid; gap: var(--s-3); }
+.cp-block p { margin: 0; }
+.cp-dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-1) var(--s-4); margin: 0; }
+.cp-dl dt { color: var(--paper-muted); }
+.cp-dl dd { margin: 0; text-align: right; }
+.cp-lines { padding-top: var(--s-3); border-top: 1px solid var(--paper-line); }
+.cp-lines dt { color: var(--paper-ink); }
+.cp-lines .cp-total, .cp-lines dt:last-of-type { font-weight: 800; }
+.cp-warn { padding: var(--s-3); border: 1px solid var(--error); border-radius: var(--r-sm); color: var(--error); font-weight: 700; }
+/* Tall dialogs: keep the title and buttons in view while the middle scrolls */
+.demo-dialog__head { position: sticky; top: 0; z-index: 1; background: var(--paper-card); }
+.demo-dialog__foot { position: sticky; bottom: 0; background: var(--paper-card); }
+.cp-ch { display: grid; gap: var(--s-2); }
+.cp-ch h3 { margin: 0; font-size: 1rem; }
+/* Reminders */
+.cp-form { max-width: 36rem; }
+.cp-fs { display: grid; min-width: 0; margin: 0; padding: 0; border: 0; }
+.cp-fs legend { margin-bottom: var(--s-1); padding: 0; font-weight: 700; }
+.cp-check { display: flex; min-height: 44px; align-items: center; gap: var(--s-3); cursor: pointer; }
+.cp-check input { width: 20px; height: 20px; flex: 0 0 auto; accent-color: var(--demo-accent-strong); }
+@media (max-width: 639px) { .cp-form .demo-actions > .btn { width: 100%; } }
+/* Practice view */
+.cp-tools { align-items: flex-start; }
+.cp-export { display: grid; width: 100%; max-width: 24rem; gap: var(--s-2); }
+.cp-export p { margin: 0; font-size: var(--fs-small); }
+@media (min-width: 640px) { .cp-export { width: auto; } }
+.cp-cn { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+/* Five bottom tabs at 360px */
+@media (max-width: 479px) { .demo-tabs a { padding: 0; font-size: 0.75rem; white-space: nowrap; } .demo-tabs a[aria-current="page"] { font-weight: 700; } }
+/* Long toast messages: a fixed box centred with left 50% shrinks to half the screen, so size it by its text */
+.demo-toast { width: max-content; }

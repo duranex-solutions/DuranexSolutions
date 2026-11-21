@@ -1,0 +1,78 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /Length 2583 >>
+stream
+0 0 0 rg BT /F2 22 Tf 56.00 772 Td (Larkspur Lane Physiotherapy) Tj ET
+0.333 0.333 0.333 rg BT /F1 11 Tf 56.00 754 Td (Monthly summary, prepared by Quillstone Bookkeeping) Tj ET
+0.706 0.137 0.094 rg BT /F2 40 Tf 96.52 692 Td (SAMPLE, FICTIONAL) Tj ET
+0.333 0.333 0.333 rg BT /F1 10 Tf 135.90 674 Td (Demo document. Not a real practice. All names and figures are made up.) Tj ET
+0 0 0 rg BT /F2 14 Tf 56.00 627 Td (Income) Tj ET
+0.8 0.8 0.8 RG 56 619 m 539.28 619 l S
+0 0 0 rg BT /F1 11 Tf 56.00 601 Td (Consultations (112 sessions)) Tj ET
+0 0 0 rg BT /F1 11 Tf 479.35 601 Td (R 61 600,00) Tj ET
+0 0 0 rg BT /F1 11 Tf 56.00 583 Td (Medical aid claims paid) Tj ET
+0 0 0 rg BT /F1 11 Tf 479.35 583 Td (R 18 450,00) Tj ET
+0 0 0 rg BT /F1 11 Tf 56.00 565 Td (Product sales) Tj ET
+0 0 0 rg BT /F1 11 Tf 485.47 565 Td (R 2 150,00) Tj ET
+0.8 0.8 0.8 RG 56 557 m 539.28 557 l S
+0 0 0 rg BT /F2 11 Tf 56.00 543 Td (Total income) Tj ET
+0 0 0 rg BT /F2 11 Tf 479.35 543 Td (R 82 200,00) Tj ET
+0 0 0 rg BT /F2 14 Tf 56.00 509 Td (Expenses) Tj ET
+0.8 0.8 0.8 RG 56 501 m 539.28 501 l S
+0 0 0 rg BT /F1 11 Tf 56.00 483 Td (Rent) Tj ET
+0 0 0 rg BT /F1 11 Tf 479.35 483 Td (R 14 000,00) Tj ET
+0 0 0 rg BT /F1 11 Tf 56.00 465 Td (Staff wages) Tj ET
+0 0 0 rg BT /F1 11 Tf 479.35 465 Td (R 31 500,00) Tj ET
+0 0 0 rg BT /F1 11 Tf 56.00 447 Td (Equipment and supplies) Tj ET
+0 0 0 rg BT /F1 11 Tf 485.47 447 Td (R 4 870,00) Tj ET
+0 0 0 rg BT /F1 11 Tf 56.00 429 Td (Software and admin) Tj ET
+0 0 0 rg BT /F1 11 Tf 485.47 429 Td (R 1 980,00) Tj ET
+0 0 0 rg BT /F1 11 Tf 56.00 411 Td (Utilities) Tj ET
+0 0 0 rg BT /F1 11 Tf 485.47 411 Td (R 2 650,00) Tj ET
+0.8 0.8 0.8 RG 56 403 m 539.28 403 l S
+0 0 0 rg BT /F2 11 Tf 56.00 389 Td (Total expenses) Tj ET
+0 0 0 rg BT /F2 11 Tf 479.35 389 Td (R 55 000,00) Tj ET
+0 0 0 rg BT /F2 14 Tf 56.00 355 Td (Net for the month) Tj ET
+0 0 0 rg BT /F2 14 Tf 463.01 355 Td (R 27 200,00) Tj ET
+0 0 0 rg BT /F2 14 Tf 56.00 315 Td (Notes) Tj ET
+0.8 0.8 0.8 RG 56 307 m 539.28 307 l S
+0 0 0 rg BT /F1 11 Tf 66.00 287 Td (-  Sessions up 8% on the previous month, mostly from the new Saturday morning slot.) Tj ET
+0 0 0 rg BT /F1 11 Tf 66.00 267 Td (-  Two medical aid claims (R 3 200 total) still outstanding; follow up next month.) Tj ET
+0 0 0 rg BT /F1 11 Tf 66.00 247 Td (-  Treatment bed replaced in room 2; cost included under equipment.) Tj ET
+0 0 0 rg BT /F1 11 Tf 66.00 227 Td (-  Next month: review supplier prices before the year-end slowdown.) Tj ET
+0.333 0.333 0.333 rg BT /F1 8 Tf 178.11 36 Td (SAMPLE, FICTIONAL  |  Prepared for demonstration purposes only) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Title (Sample monthly summary (fictional)) /Producer () >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000257 00000 n 
+0000000354 00000 n 
+0000000456 00000 n 
+0000003090 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R /Info 7 0 R >>
+startxref
+3168
+%%EOF
