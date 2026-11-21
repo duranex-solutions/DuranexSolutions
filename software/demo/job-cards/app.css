@@ -22,7 +22,7 @@
 @media (min-width: 1024px) {
   .jc-nav-tech { display: none; }
   .jc-split { display: grid; grid-template-columns: minmax(0, 1fr) 375px; align-items: start; gap: var(--s-5); }
-  .jc-phone { position: sticky; top: calc(var(--demo-bar-h) + var(--s-4)); display: flex; height: min(760px, calc(100vh - var(--demo-bar-h) - 32px)); flex-direction: column; overflow: hidden; border: 10px solid var(--navy-900); border-radius: 32px; background: var(--paper-card); box-shadow: var(--sh-2); }
+  .jc-phone { position: sticky; top: calc(var(--demo-bar-h) + var(--s-4)); display: flex; height: min(760px, calc(100vh - var(--demo-bar-h) - 32px)); flex-direction: column; overflow: clip; border: 10px solid var(--navy-900); border-radius: 32px; background: var(--paper-card); box-shadow: var(--sh-2); }
   .jc-phone > h3 { padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--paper-line); font-size: var(--fs-small); text-align: center; }
   .jc-screen { flex: 1; overflow-y: auto; padding: var(--s-4); }
 }
@@ -46,7 +46,7 @@
 .jc-pill input { width: 18px; height: 18px; accent-color: var(--demo-accent-strong); }
 .jc-row { display: flex; width: 100%; margin-bottom: var(--s-2); border-radius: var(--r-md); }
 .jc-note { margin-top: var(--s-3); }
-.jc-file { cursor: pointer; }
+.jc-file { position: relative; cursor: pointer; }
 .jc-file.is-off, .jc-card button:disabled { opacity: 0.5; }
 .jc-strip { display: flex; flex-wrap: wrap; gap: var(--s-3); }
 .jc-thumb { display: grid; width: 96px; gap: var(--s-1); }

@@ -135,7 +135,7 @@
   r.name = E("input", { type: "text", id: "jc-sig-name", maxlength: "60", autocomplete: "off", onchange: syncSig });
   r.nameBox = E("div", { class: "form-field" }, E("label", { for: "jc-sig-name", text: "Customer's full name" }), r.name);
   r.sigH = E("h4", { tabindex: "-1", text: "Customer signature" });
-  r.miss = E("div", { class: "jc-miss", tabindex: "-1", hidden: true });
+  r.miss = E("div", { class: "jc-miss", tabindex: "-1", role: "alert", hidden: true });
   r.done = E("p", { class: "jc-donemsg", hidden: true });
   r.complete = E("button", { type: "button", class: "btn btn-primary jc-edit", onclick: complete }, "Mark job complete");
   r.el = E("article", { class: "jc-card", "aria-labelledby": "jc-card-h" },
@@ -194,6 +194,7 @@
  }
  function advance(id) {
   up((st) => { const x = job(id, st); if (x.status === "scheduled") x.status = "onway"; else start(x); });
+  D.toast(job(id).status === "onway" ? "Status: on the way." : "Status: in progress.");
   (job(id).status === "progress" ? card.h : card.next).focus();
  }
  function complete() {
@@ -212,6 +213,7 @@
   if (job(card.id).photos.length >= 3) return D.toast("Up to 3 photos per job.", { tone: "error" });
   const id = card.id;
   up((st) => { job(id, st).photos.push({ id: D.uid(), url: url, sample: !url }); });
+  D.toast("Photo added.");
  }
  function onFile(e) {
   const f = e.target.files[0];
@@ -229,6 +231,7 @@
  }
  function removePhoto(pid) {
   up((st) => { const x = job(card.id, st); x.photos = x.photos.filter((p) => p.id !== pid); });
+  D.toast("Photo removed.");
   card.file.focus();
  }
  function sampleCanvas(i) {

@@ -257,26 +257,26 @@ In Phase 3 only: `software/index.html` (the link on the card) and `docs/DEMOS.md
 - [x] Definition-of-done greps and budget (`wc -c` on data.js, rules.js, app.js and app.css)
 
 ### Phase 3: switch on and QA
-- [ ] Definition of done from DEMOS.md: every grep line and the by-hand list
-- [ ] Add `Try the demo ↗` (`data-demo-link="job-cards"`) as the last child of `#job-cards` in `software/index.html`. Update "Linked so far" in DEMOS.md
-- [ ] Indexing:
-  - [ ] not in `sitemap.xml` and not disallowed in `robots.txt`
-  - [ ] noindex meta present (the `/software/demo/*` header in netlify.toml already covers the page)
-- [ ] `/software/#job-cards` lands on the card, and the back link goes there
-- [ ] Desktop at 1024px and 1280px: board and phone side by side, an assigned job shows on the phone at once, report at full width
-- [ ] Phone at 360px and 414px: bar on one row, no sideways scroll, tabs at the bottom, report table as cards
-- [ ] Real phone (Android Chrome, plus an iPhone if available):
+- [x] Definition of done from DEMOS.md: every grep line and the by-hand list
+- [x] Add `Try the demo ↗` (`data-demo-link="job-cards"`) as the last child of `#job-cards` in `software/index.html`. Update "Linked so far" in DEMOS.md
+- [x] Indexing:
+  - [x] not in `sitemap.xml` and not disallowed in `robots.txt`
+  - [x] noindex meta present (the `/software/demo/*` header in netlify.toml already covers the page)
+- [x] `/software/#job-cards` lands on the card, and the back link goes there
+- [x] Desktop at 1024px and 1280px: board and phone side by side, an assigned job shows on the phone at once, report at full width
+- [x] Phone at 360px and 414px: bar on one row, no sideways scroll, tabs at the bottom, report table as cards
+- [ ] Real phone (Android Chrome, plus an iPhone if available): Luan to do, see the test list in Handoff: Phase 3
   - [ ] camera opens from "Take or add photo"
   - [ ] preview shows, and nothing lags on a cheap phone
   - [ ] a finger signature draws without the page scrolling, and is sharp
   - [ ] Clear works
   - [ ] the keyboard doesn't hide Mark job complete
-- [ ] Keyboard only:
-  - [ ] the whole path, including the typed signature
-  - [ ] Esc closes dialogs and focus comes back
+- [x] Keyboard only:
+  - [x] the whole path, including the typed signature
+  - [x] Esc closes dialogs and focus comes back
 - [ ] Screen reader quick pass (NVDA or TalkBack): badges, "Still needed", the missing message, the alert
-- [ ] Reduced motion: no fades. Contrast re-checked by eye
-- [ ] Reset: revokes photos, clears the signature, returns to the seed and the Manager view, shows the toast
+- [x] Reduced motion: no fades. Contrast re-checked by eye
+- [x] Reset: revokes photos, clears the signature, returns to the seed and the Manager view, shows the toast
 
 ## 6. Risks and open questions (answered by Luan)
 1. **Budget:** aim for 30 KB. Going over is approved if needed. It only affects this demo page.
@@ -358,3 +358,46 @@ In Phase 3 only: `software/index.html` (the link on the card) and `docs/DEMOS.md
 3. The whole flow by keyboard only, including the assign dialog, Esc, the "Still needed" jump buttons and focus after Open job.
 4. Contrast of `#3fa9d6` by eye, reduced motion, 360px and 414px by eye.
 5. Then the DEMOS.md "When a demo ships" list (card link, "Linked so far").
+
+## Handoff: Phase 3
+
+### Fixed
+- **Blank phone screen after choosing a photo (desktop).** Cause: the hidden file input was positioned against the phone frame, not its button. When it took focus after the file dialog, Chrome scrolled the frame itself (745px in my repro) and the screen went white. Fix in `app.css`: `.jc-file { position: relative }` so the input stays inside its button, and the frame uses `overflow: clip` so it can never be scrolled by focus. Checked with a 3000x2000 image: the frame stays at scroll 0 and the thumbnail shows.
+- **Announcements for screen readers** (`app.js`): "I'm on my way" and "Start job" now announce "Status: on the way / in progress" through the polite toast. Adding and removing a photo announces "Photo added." and "Photo removed." The "Still needed before this job can be completed" box now has `role="alert"` (focus still moves to it).
+- **Switched on:** "Try the demo ↗" is the last child of the `#job-cards` card in `software/index.html`. "Linked so far" and the budget line in `docs/DEMOS.md` are updated.
+- **Indexing:** the demo is not in `sitemap.xml` and not in `robots.txt`; noindex meta is present and `netlify.toml` already sends `X-Robots-Tag: noindex` for `/software/demo/*`. The demo's back link is `/software/#job-cards`.
+- **Size:** data.js 4 275 + rules.js 3 152 + app.js 21 996 + app.css 5 813 = **35 236 bytes** (inside the approved 40 KB).
+
+### Checked by me (headless Chrome, scripted)
+- Definition-of-done greps: all clean.
+- 360, 414, 1024, 1100 and 1280px: no sideways scroll, demo bar 48px, phone frame stays 375px wide from 1024 to 1280 (it does not squash), report becomes stacked cards below 640px. Every button, link and select is at least 44px tall; the 18px radio inputs sit inside 44px pill labels.
+- Full flow on phone (390px, touch) and desktop (1280px): assign, alert, open job, "I'm on my way", "Start job", checklist, drawn signature, photo, typed signature, Complete, report (3 of 6 done, 4 photos, 3 signatures, 1 problem), Reset. Reset puts back JC-1046 as unassigned, no photos, no open card, Manager view. Nothing is stored; a reload does the same.
+- Keyboard only, desktop: view links, Assign, dialog radios, Cancel/Assign, alert heading, Open job, Next step, every checklist pill, file input, Use sample photo, Clear, Type name instead, Mark job complete, Reset. All have a visible focus. Esc closes the Assign dialog and focus returns to the Assign button (desktop and phone).
+- Signature: a finger-style touch drag on the pad does not scroll the page (`touch-action: none`); the backing canvas is twice the CSS size at 2x screens (sharp); Clear empties it; rotating keeps the card open and redraws the strokes at the new width.
+- Photos: preview shows; the page makes requests only to its own site files (no image upload, nothing else in the resource list); Reset removes them.
+- Contrast: every visible text element passes AA (4.5, or 3 for large text) on the board, the assign dialog, the alert, the open card with a Problem note and the missing-items box, and the report. Badges and the checklist states are included.
+- Reduced motion: with the setting on, all transition and animation durations are effectively zero.
+- Console: no errors or warnings in any run.
+- Copy: en-ZA spelling, "Simulated WhatsApp alert", "Preview only. Nothing was sent.", sample prices "Not an invoice", "Times are simulated". Nothing implies a real client or message.
+
+### Left for Luan
+- The real-phone test list below (camera, gallery, finger signature, rotate). I can only emulate touch.
+- A screen reader pass (NVDA or TalkBack). The live regions are in place but I have not listened to them.
+- I checked contrast by script, not by eye.
+- The toast can sit over "Mark job complete" for 5 seconds on a small phone. Harmless.
+- Narrowing a desktop window below 1024px with a card open moves the card to the Technician tab while the Manager tab stays showing (unchanged from Phase 2; rare).
+- Before merging to `main`: the DEMOS.md note says not to merge before the first real demo is linked. Bookings, dashboards and automations are already linked, so that condition is met.
+
+### Manual test list for your own phone
+Open `/software/demo/job-cards/` (from the Software page card, or paste the address). Do each on Android Chrome, then on iPhone Safari if you can.
+1. **Run the flow:** Tap the bottom tab "Manager", tap "Assign technician" on JC-1046, then Assign. Tap "Open job". Check the toast does not hide the buttons you need.
+2. **Camera:** In the job card tap "Take or add photo" and choose the camera. Take a photo. It should show as a small thumbnail within a second or two and the page should not freeze.
+3. **Gallery:** Tap "Take or add photo" again and pick a picture from your gallery (on iPhone, "Photo Library"). Add a third one, then check the button greys out. Tap "Remove" on one.
+4. **Checklist:** Tap "Done" on each item. On one, tap "Problem" and type a note. Check the keyboard does not cover the note box or hide "Mark job complete" when you scroll down.
+5. **Signature by finger:** Draw on the signature box with your finger. The page must not scroll while you draw, and the line should look crisp. Tap "Clear" and check it empties.
+6. **Rotate:** With a signature drawn, turn the phone sideways and back. The card should stay open and the signature should still show.
+7. **Typed name:** Tap "Type name instead", type a name, then "Mark job complete". You should see "Job complete" and the Manager tab should show it as Done.
+8. **Report and Reset:** Open the Report tab and check it reads well without sideways scrolling. Tap Reset at the top and check everything goes back to the start.
+9. **Reload:** Refresh the page and check nothing from before is still there.
+
+Write down anything that looks wrong with the phone model and browser, and send it to me.
