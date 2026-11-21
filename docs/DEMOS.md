@@ -20,7 +20,7 @@ software/demo/<slug>/data.js      sample data: window.DEMO_SEED = {...}
 software/demo/<slug>/app.js       this demo's logic
 software/demo/<slug>/app.css      accent override and demo-only styles (optional)
 ```
-Budget per demo: `data.js` + `app.js` + `app.css` together at most 30 KB. KB means 1000 bytes. No new fonts or images. Exception: `dashboards` has 36 KB for all its files (gen.js, data.js, app.js, app.css; owner approved), because it writes its own .xlsx file.
+Budget per demo: `data.js` + `app.js` + `app.css` together at most 30 KB. KB means 1000 bytes. No new fonts or images. Exception: `dashboards` has 36 KB for all its files (gen.js, data.js, app.js, app.css; owner approved), because it writes its own .xlsx file. `job-cards` has up to 40 KB for data.js, rules.js, app.js and app.css (owner approved); it is 35 236 bytes.
 A demo may add one pure-logic file (no DOM, so it can be tested in node), for example `bookings/slots.js`, loaded after `demo.js` and before `data.js`. It counts in the same 30 KB. Tests for it are not kept in the repo.
 Slugs: `client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`. `example` is the placeholder and is never linked from the site.
 
@@ -202,7 +202,7 @@ By hand:
 - [ ] Budgets met (above).
 
 ## Linking a finished demo from the Software page
-Each concept card on `/software/` has an id equal to its demo slug (`client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`), so `/software/#<slug>` lands on the card and the demo bar's "Back to Software" link goes there. The `.concept-demo-link` style is in `styles.css`. Linked so far: `bookings`, `automations` and `dashboards`. Add it only when the demo is finished, as the last child of its card:
+Each concept card on `/software/` has an id equal to its demo slug (`client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`), so `/software/#<slug>` lands on the card and the demo bar's "Back to Software" link goes there. The `.concept-demo-link` style is in `styles.css`. Linked so far: `bookings`, `automations`, `dashboards` and `job-cards`. Add it only when the demo is finished, as the last child of its card:
 ```html
 <a class="concept-demo-link" href="/software/demo/<slug>/" data-demo-link="<slug>">Try the demo <span aria-hidden="true">↗</span></a>
 ```
