@@ -213,20 +213,20 @@ Shared files: **none for the build.** Phase 3 only:
 ## 5. Checklists
 
 ### Phase 2: build
-- [ ] Copy `example/` → `client-portal/`; fill in the head, bar and nav (5 items), the 7 views, one h1 and one h2 per view.
-- [ ] `calc.js`, plus a throwaway node test (not kept): exactly one overdue for 400 consecutive "todays"; seed totals as in §1; CSV has a BOM, CRLF, dot decimals, ISO dates and correct quoting.
-- [ ] `data.js` exactly as §1; offsets turned into ISO dates once at start-up.
-- [ ] Login and logout, the `data-mode` switch, the hash guard; Reset lands on login with everything restored.
-- [ ] Overview tiles + "Next things to do"; "Try this" ticking + the header line.
-- [ ] Quotes: Accept and Decline with confirm, the optional reason, toast, activity entry, and the practice row updating.
-- [ ] Invoices table + invoice modal (no Pay now, the no-VAT line); Preview reminder only on the overdue one.
-- [ ] New sample PDF generated (throwaway script); open it and check it by eye (Quillstone line, comma decimals, no month names, SAMPLE mark).
-- [ ] Documents: a single `<a download>`; the others show "Example entry".
-- [ ] Reminders: the draft form, Save toast "Saved for this visit only", the preview built from INV-0447, and the not-sent line when settings would block it.
-- [ ] Practice view: tiles, the Overdue only filter, the table with the demo client's badge, Export CSV with the help line.
-- [ ] `app.css`: accent `#9b87e0`, existing tokens only; 5 bottom tabs fit at 360px (if "Documents" or "Reminders" doesn't fit, tighten the tab font in app.css only).
-- [ ] Run the DEMOS.md definition-of-done greps; record the total size (target about 30 000 bytes, more allowed).
-- [ ] Update `## Handoff: Phase 2` and PLAN.md; commit "Client portal demo: phase 2 build".
+- [x] Copy `example/` → `client-portal/`; fill in the head, bar and nav (5 items), the 7 views, one h1 and one h2 per view.
+- [x] `calc.js`, plus a throwaway node test (not kept): exactly one overdue for 400 consecutive "todays"; seed totals as in §1; CSV has a BOM, CRLF, dot decimals, ISO dates and correct quoting.
+- [x] `data.js` exactly as §1; offsets turned into ISO dates once at start-up.
+- [x] Login and logout, the `data-mode` switch, the hash guard; Reset lands on login with everything restored.
+- [x] Overview tiles + "Next things to do"; "Try this" ticking + the header line.
+- [x] Quotes: Accept and Decline with confirm, the optional reason, toast, activity entry, and the practice row updating.
+- [x] Invoices table + invoice modal (no Pay now, the no-VAT line); Preview reminder only on the overdue one.
+- [ ] New sample PDF generated (throwaway script); open it and check it by eye (Quillstone line, comma decimals, no month names, SAMPLE mark). (Generated and structure-checked in node; not yet opened in a viewer, so do that first in Phase 3.)
+- [x] Documents: a single `<a download>`; the others show "Example entry".
+- [x] Reminders: the draft form, Save toast "Saved for this visit only", the preview built from INV-0447, and the not-sent line when settings would block it.
+- [x] Practice view: tiles, the Overdue only filter, the table with the demo client's badge, Export CSV with the help line.
+- [ ] `app.css`: accent `#9b87e0`, existing tokens only; 5 bottom tabs fit at 360px (if "Documents" or "Reminders" doesn't fit, tighten the tab font in app.css only). (Written, with the tab font tightened below 480px; the fit at 360px is not yet seen in a browser.)
+- [x] Run the DEMOS.md definition-of-done greps; record the total size (target about 30 000 bytes, more allowed).
+- [x] Update `## Handoff: Phase 2` and PLAN.md; commit "Client portal demo: phase 2 build".
 
 ### Phase 3: switch on and QA
 - [ ] Definition of done (greps + the hand list in DEMOS.md), with no console errors.
@@ -275,3 +275,46 @@ Shared files: **none for the build.** Phase 3 only:
 - **The new PDF:** standard Helvetica (no embedded font), the same figures in en-ZA format ("R 61 600,00"), no month names, the SAMPLE mark kept, and the same path and filename.
 - **Test `calc.js` in node:** one overdue across 400 simulated days, the seed totals (client R 3 520,00 / R 1 850,00 / 2; practice R 19 570,00 / R 9 350,00 (4) / 4), and CSV quoting.
 - **Never name accounting software.** No claims about security, encryption or POPIA. No email or password fields.
+
+---
+
+## Handoff: Phase 2
+
+### Built
+- **New files** in `software/demo/client-portal/`: `index.html`, `calc.js`, `data.js`, `app.js`, `app.css`.
+- **Replaced:** `sample-monthly-summary.pdf` (same path). One A4 page, standard Helvetica, 3 404 bytes, "Monthly summary, prepared by Quillstone Bookkeeping", comma decimals, no month names, SAMPLE mark. The generator was a throwaway script and is not kept.
+- **Shared files:** none changed (so nothing to add to DEMOS.md in this phase).
+- **Size:** data.js 3 430 + calc.js 4 768 + app.js 14 636 + app.css 5 819 = **28 653 bytes**, under the 30 000 budget. No exception needed, so Phase 3 only records the size and `calc.js` in DEMOS.md.
+- Accent `#9b87e0`, existing tokens only.
+
+### Checked in node (throwaway test, not kept)
+- Exactly one overdue invoice on each of 400 consecutive days.
+- Client totals R 3 520,00 / R 1 850,00 / 2 and practice totals R 19 570,00 / R 9 350,00 (4) / 4, on all 400 days.
+- CSV: BOM, CRLF, dot decimals, ISO dates, empty Paid date when unpaid, quoting of commas and quotes.
+- Reminder text: dates and amounts come from the data.
+- Definition-of-done greps: no storage or network calls, no external URLs, noindex present once, no inline style or script, no missing asset paths, ids unique, one h1. `node --check` passes on all three JS files.
+
+### NOT checked (the browser could not be driven in this session)
+My attempt to start a local server and headless Chrome was blocked by the permission check, so **nothing has been run in a browser yet**: no console check, no click-through of the 5 steps, no desktop or phone layout check, no CSV opened in a spreadsheet, and the new PDF has not been opened by eye. The code is written to the plan but is untested in a page.
+
+### Decisions I made that the plan did not spell out
+- The reminder preview ticks step 3 from either place (invoice modal or Reminders page), because both use the same code.
+- The CSV object URL is revoked 1 second after the click, not instantly, so slower phone browsers still get the file.
+- Practice-view table: the Overdue cell shows the invoice count in brackets when above 0; zero amounts show as R 0,00.
+- The "Download" column header on Documents, "Details" on Invoices (for the View button).
+- Below 480px the bottom-tab font drops to 0.75rem so five tabs fit.
+
+### Known risks to look at first
+- The five bottom tabs at 360px ("Documents", "Reminders").
+- The 7-column Invoices table at 1024px (it may feel tight with the sidebar).
+- Portal header on phone (grid with Log out top right, switch full width below). It uses `display: contents`.
+- Focus after Accept or Decline (the buttons are re-rendered, so focus should go to the Quotes heading).
+- The PDF layout (right-aligned amounts use hand-measured Helvetica widths).
+
+### Phase 3 should test first
+1. Open the page cold: no console errors; reload lands on login.
+2. The 5 steps on desktop, then at 360px.
+3. Accept a quote, then Practice view: the demo row shows one fewer waiting quote and "Today · Accepted quote …".
+4. Exactly one overdue invoice, with its badge, and "Preview reminder" only on that one.
+5. Download the PDF and open it by eye; export the CSV and open it in Excel or Sheets.
+6. Reset from every view lands on login with reminders ticked as in the seed.
