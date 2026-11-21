@@ -192,7 +192,7 @@ Under it (me): "Want something like this for your own forms? Use the WhatsApp bu
 - [ ] Update the handoff. Commit `demo(automations): link from Software page, QA`.
 
 ## 8. Open questions
-These were raised in Phase 1. Luan approved the plan without answering them, so the defaults below stand until changed.
+Resolved: Luan confirmed all four defaults on 21 Nov 2026 ("use what you think is the best").
 1. Thandi's alert is a WhatsApp preview, to match the card title. It could be an email preview instead, to show both channels.
 2. There is a second "Quote sheet" tab, because a 9-column sheet doesn't fit next to the form. The alternative is to keep everything on one screen.
 3. The step fade-in stays, and Phase 3 adds a line about it to DEMOS.md. The alternative is no fade.
@@ -208,5 +208,5 @@ These were raised in Phase 1. Luan approved the plan without answering them, so 
   - A guest range of 10 to 500.
   - A step fade under `no-preference` (needs a DEMOS.md line in Phase 3).
   - No shared file changes.
-- **Changed by Luan:** nothing. The plan was approved as written, and the open questions in section 8 use their defaults.
+- **Changed by Luan:** nothing. The plan was approved as written, and Luan then confirmed the four defaults in section 8.
 - **Phase 2 starts with:** copying `software/demo/example/` to `software/demo/automations/`, then data.js from section 5, then app.js and app.css, working down the Phase 2 checklist.
