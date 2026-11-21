@@ -7,7 +7,7 @@
 .aut-dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s-2) var(--s-4); margin: 0 0 var(--s-4); }
 .aut-dl dt { color: var(--paper-muted); font-weight: 700; }
 .aut-dl dd { margin: 0; }
-.aut-steps ol { display: grid; gap: var(--s-5); margin: var(--s-4) 0 0; padding-left: var(--s-5); }
+.aut-steps ol { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-5); margin: var(--s-4) 0 0; padding-left: var(--s-5); }
 .aut-steps li::marker { font-weight: 800; }
 .aut-step > * + * { margin-top: var(--s-3); }
 .aut-step__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); }
@@ -28,4 +28,10 @@
 @media (prefers-reduced-motion: no-preference) {
   .aut-step { animation: aut-in 200ms ease-out; }
   @keyframes aut-in { from { opacity: 0; } }
+}
+@media (min-width: 640px) {
+  .aut-step .demo-table th, .aut-step .demo-table td { padding-inline: var(--s-2); }
+}
+@media (min-width: 1200px) and (max-width: 1299px) {
+  .aut-top { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
 }

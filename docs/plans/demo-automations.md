@@ -183,13 +183,13 @@ Under it (me): "Want something like this for your own forms? Use the WhatsApp bu
 - [x] Budget check (≤ 30 000 bytes). Commit `demo(automations): build`.
 
 **Phase 3: QA and ship**
-- [ ] Run the DEMOS.md definition-of-done greps and fix anything they flag.
-- [ ] Manual list: 360, 768 and 1280px, keyboard only, screen reader announcements (NVDA or Narrator), reduced motion, Reset, `R 1 234`-style formatting, the preview label, and no console errors.
-- [ ] Full click path in under 2 minutes in a phone-sized window.
-- [ ] Record the accent contrast in the handoff. Add the step-fade line to DEMOS.md.
-- [ ] Add the "Try the demo" link to the `#automations` card in `software/index.html`. Check that the slug, the card id and the back link match.
-- [ ] Confirm the demo is not in the sitemap and not disallowed in robots.txt.
-- [ ] Update the handoff. Commit `demo(automations): link from Software page, QA`.
+- [x] Run the DEMOS.md definition-of-done greps and fix anything they flag.
+- [x] Manual list: 360, 768 and 1280px, keyboard only, screen reader announcements (NVDA or Narrator), reduced motion, Reset, `R 1 234`-style formatting, the preview label, and no console errors. (done in headless Chrome; real phone and real screen reader are left for Luan, see Handoff: Phase 3)
+- [x] Full click path in under 2 minutes in a phone-sized window.
+- [x] Record the accent contrast in the handoff. Add the step-fade line to DEMOS.md.
+- [x] Add the "Try the demo" link to the `#automations` card in `software/index.html`. Check that the slug, the card id and the back link match.
+- [x] Confirm the demo is not in the sitemap and not disallowed in robots.txt.
+- [x] Update the handoff. Commit `demo(automations): phase 3 switch on and QA`.
 
 ## 8. Open questions
 Resolved: Luan confirmed all four defaults on 21 Nov 2026 ("use what you think is the best").
@@ -221,3 +221,47 @@ Resolved: Luan confirmed all four defaults on 21 Nov 2026 ("use what you think i
   - The notes line in the owner alert is cut at about 48 characters with "…".
   - `body.part` helper was removed; no stray files.
 - **Phase 3 should check first:** the remaining DEMOS.md checklist items by hand (768px, keyboard, Narrator, reduced motion with the real OS setting), the step-fade line for DEMOS.md, then the card link, sitemap and robots checks. Card link and sitemap were deliberately not touched.
+
+## Real phone test (for Luan, about 5 minutes)
+Open the live page on your own phone after the merge deploys: duranexsolutions.com/software/, then tap **Try the demo** on the "Form and WhatsApp automations" card. Do it once in portrait. If you can, repeat step 3 with Settings > Accessibility > Remove animations switched on.
+1. **Look:** the dark bar at the top is one row (Demo, Software, Reset, WhatsApp icon). Nothing scrolls sideways. The Quote form and Quote sheet tabs sit at the bottom.
+2. **Tap Fill with sample details:** all fields fill and a short message appears. The event date should be about 3 weeks ahead.
+3. **Tap Send request:** the form turns into a small "Request sent" box and the screen moves to "What happens next". Step 1 is on screen straight away, then steps 2, 3 and 4 follow about a second apart. Nothing should jump around while they appear. With Remove animations on, all four appear at once.
+4. **While it runs, tap Show all steps:** the rest appear at once and the button goes away.
+5. **Read the messages:** every one says "Preview only. Nothing was sent." The reminder date is 2 days after today. Amounts look like R 15 000.
+6. **Step 3:** shows only the new row with a "New" label, plus "and 4 earlier requests". Tap **Open the full quote sheet**: the new row has a tinted background and the word "New".
+7. **Scroll to By hand or automatic:** four cards, easy to read, no cut-off text.
+8. **Keypads and errors:** the WhatsApp number field opens a number keypad, and so does Number of guests. On a fresh form, tap Send request empty: a red message appears under each empty field and the first one is selected.
+9. **Tap Send another request, then Reset in the bar:** the form is empty and you are back at the top, with nothing left from the last run.
+10. **Bar links:** tap the WhatsApp icon. WhatsApp should open with "Hi Luan, I tried your automations demo." ready to send (don't send it). Come back and tap **Software**: you land on the automations card.
+
+Anything cramped, cut off, too small to tap or slow: send me a screenshot and the phone model.
+
+## Handoff: Phase 3
+- **What changed:**
+  - `software/index.html`: added the "Try the demo ↗" link as the last child of the `#automations` card. Same markup as the bookings link (`concept-demo-link`, `data-demo-link="automations"`, same tab), so it uses the existing `demo_click` handler and its consent check. `script.js` is untouched.
+  - `software/demo/automations/app.css`: (1) `.aut-steps ol` now has `grid-template-columns: minmax(0, 1fr)`. Between 1200px and about 1220px the steps column was pushed about 18px past its card, so the page scrolled sideways. (2) Tighter cell padding in the step 3 table and a 1fr / 2fr column split from 1200px to 1299px, so that table fits without its own scrollbar from 1024px to 1440px.
+  - `software/demo/automations/app.js`: the owner alert now shows the full notes text (the field is capped at 300 characters). It used to cut at 48 characters with "…", which looked arbitrary and a real alert would not do that. The `cut` helper is gone.
+  - `docs/DEMOS.md`: added the step-fade line to the accessibility rules, and the linking section now lists which cards are linked.
+  - Sitemap and robots: not changed, per DEMOS.md. Demo URLs stay out of `sitemap.xml` and are not disallowed in `robots.txt`. The page has noindex, and `netlify.toml` adds `X-Robots-Tag: noindex` for `/software/demo/*`.
+  - Size: data.js 2.2 KB, app.js about 11.2 KB, app.css about 2.0 KB. 15.2 KB of 30 KB in total.
+- **Accent contrast (#e0874f):** navy-900 on accent 6.22, accent-strong on paper 4.95, on card 5.35, on tint 4.91. Measured live on every text colour in the form, errors, steps, badges, highlighted row and sheet (1280 and 360px): lowest 4.81 (skip link, only visible on focus), everything else 4.99 or higher. Ink on the highlighted row is about 13:1.
+- **QA results** (script-driven headless Chrome plus the accessibility tree; 360, 390, 768, 1280 and 1440px unless noted):
+  - Click path in under 2 minutes with the prefill button: **pass**. Three clicks; all four steps done about 4.5 s after Send.
+  - Submit, Show all, Reset; no leftover state: **pass**. Reset after a finished run and Reset while steps were still running both give a blank form, no errors or `aria-invalid`, empty steps panel, 4 sheet rows, no highlight, hash back to the form.
+  - No network requests, no console errors: **pass**. Only the page's own files load, and nothing loads after the first paint through fill, submit, Show all, Send another and Reset. No console errors or warnings.
+  - Keyboard only: **pass**. Order is bar, nav, Fill, fields, budget, notes, Send. Every control shows a focus outline. Enter and Space work. After Send, focus is on the "What happens next" heading, then Tab reaches Show all steps and Open the full quote sheet. After Show all, focus goes to the heading. Send another moves focus to Name. A failed submit focuses the first invalid field.
+  - Screen reader: **pass on the accessibility tree, needs me for a real reader.** Every field has its label as its name, each error is its description with invalid set, headings run h1, h2, h3, and the steps are announced as "Step N of 4: ..." through the status region. I could not run Narrator or TalkBack here.
+  - Reduced motion: **pass**. All four steps and "All 4 steps done." at once, no Show all button, animation none. With no preference set, the fade is on.
+  - WCAG AA contrast: **pass** (numbers above).
+  - Layout: **fixed, then pass.** The 1200 to 1220px overflow is fixed (see above). No sideways scroll at any tested width. 360 and 390px: one column, tabs at the bottom, bar on one row. 768px: single column with two-column fields. Every button, link, input and select is at least 44px tall and wide at all five widths. Needs me for a real phone (checklist above).
+  - Copy: **pass.** en-ZA spelling, first person, no stats or time-saved claims, no real business names.
+  - Rand and dates: **pass.** `R 15 000 to R 30 000` and `12 Dec 2026` style. Reminder date, checked by overriding the browser clock: 30 Nov gives 2 Dec, 27 Feb 2027 gives 1 Mar, 30 Dec gives 1 Jan 2027, 28 Feb 2028 (leap year) gives 1 Mar.
+  - Demo bar: **pass.** Back goes to `/software/#automations` and lands on the card, Reset works, WhatsApp opens in a new tab with "Hi Luan, I tried your automations demo." The card link opens the demo.
+  - DEMOS.md definition-of-done greps and budget: **pass**, no output.
+- **Left for you:**
+  1. Run the Real phone test above on a real phone.
+  2. Listen once with Narrator or TalkBack: send the form and check you hear the four "Step N of 4" lines.
+  3. Optional: register `demo_name` as a GA custom dimension (steps in DEMOS.md).
+  4. Merge to main when you are happy. Nothing is merged or pushed. The bookings demo was already linked, so the "first real demo is linked" condition in DEMOS.md is met.
+- **Not tested:** iOS Safari, Firefox, a real phone, a real screen reader.

@@ -25,7 +25,6 @@
   const yourEvent = (t) => (t === "Other" ? "your event" : "your " + lower(t));
   const anEvent = (t) => (t === "Other" ? "an event" : "a " + lower(t));
   const reminderDate = (d) => addDays(d, 2);
-  const cut = (t) => (t.length > 48 ? t.slice(0, 48).trimEnd() + "…" : t);
 
   /* Sheet tables (full sheet view, and the compact one in step 3) */
   const col = {
@@ -122,7 +121,7 @@
   function makeSteps(r, now) {
     const first = firstName(r.name), when = D.fmt.date(r.date), rem = reminderDate(now), remText = D.fmt.date(rem);
     const budget = r.budget ? "Budget: " + BUDGETS[r.budget] + "\n" : "";
-    const notes = r.notes ? "Notes: " + cut(r.notes) + "\n" : "";
+    const notes = r.notes ? "Notes: " + r.notes + "\n" : "";
     return [
       { say: "WhatsApp confirmation sent to " + first + " (preview).", build: () => stepEl("WhatsApp confirmation sent to " + first,
         D.previewEl({ channel: "whatsapp", to: r.name + ", " + r.phone,

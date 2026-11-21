@@ -120,7 +120,7 @@ Typical `app.js`: build everything in `render(state)` (stats, `Demo.table`, filt
 - Tap targets at least 44px. The demo bar is one row at 360px.
 - Contrast WCAG AA: text 4.5, large text and UI parts 3. Gold and cyan are never body text on paper.
 - Status is never colour alone: badges carry an icon and a word, nav carries a bar and heavier text.
-- Motion only under `prefers-reduced-motion: no-preference`. The toast and dialog fades are the only animation.
+- Motion only under `prefers-reduced-motion: no-preference`. The toast and dialog fades are the only shared animation. The automations demo adds one more: each step fades in over 200 ms (in its `app.css`). Under reduced motion all steps appear at once.
 - Live updates (toast) go through the polite live region. Moving between views moves focus to the view heading.
 - Data tables stay real tables. Every input has a label. One h1 per page.
 - Fast on a cheap Android phone: no heavy loops, no big images, no extra fonts. Render only what the current state needs.
@@ -197,7 +197,7 @@ By hand:
 - [ ] Budgets met (above).
 
 ## Linking a finished demo from the Software page
-Each concept card on `/software/` has an id equal to its demo slug (`client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`), so `/software/#<slug>` lands on the card and the demo bar's "Back to Software" link goes there. The `.concept-demo-link` style is in `styles.css`. No card has the link yet. Add it only when the demo is finished, as the last child of its card:
+Each concept card on `/software/` has an id equal to its demo slug (`client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`), so `/software/#<slug>` lands on the card and the demo bar's "Back to Software" link goes there. The `.concept-demo-link` style is in `styles.css`. Linked so far: `bookings` and `automations`. Add it only when the demo is finished, as the last child of its card:
 ```html
 <a class="concept-demo-link" href="/software/demo/<slug>/" data-demo-link="<slug>">Try the demo <span aria-hidden="true">↗</span></a>
 ```
