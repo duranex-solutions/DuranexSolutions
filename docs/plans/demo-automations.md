@@ -172,15 +172,15 @@ Under it (me): "Want something like this for your own forms? Use the WhatsApp bu
 
 ## 7. Checklists
 **Phase 2: build**
-- [ ] Copy `example/` to `automations/`; update the head, bar, nav, views and back link.
-- [ ] data.js: seed as in section 5.
-- [ ] app.css: accent, 1200px grid, step list, new-row highlight, fade under no-preference only.
-- [ ] app.js: option lists, prefill (today + 21), validation and errors, submit leading to the summary, focus and scroll, step sequence with timer, Show all, reduced motion, live announcements.
-- [ ] Step 3 compact sheet (all rows on desktop, the new row plus a count on phone) and the full Quote sheet view with the highlighted row.
-- [ ] Comparison table.
-- [ ] Send another request, plus Reset clean-up through `Demo.onReset` (timer, summary, errors, step panel back to the empty state).
-- [ ] Reminder date checked across a month end (submitting on 30 Nov gives 2 Dec) with a quick node check of the same function.
-- [ ] Budget check (≤ 30 000 bytes). Commit `demo(automations): build`.
+- [x] Copy `example/` to `automations/`; update the head, bar, nav, views and back link.
+- [x] data.js: seed as in section 5.
+- [x] app.css: accent, 1200px grid, step list, new-row highlight, fade under no-preference only.
+- [x] app.js: option lists, prefill (today + 21), validation and errors, submit leading to the summary, focus and scroll, step sequence with timer, Show all, reduced motion, live announcements.
+- [x] Step 3 compact sheet (all rows on desktop, the new row plus a count on phone) and the full Quote sheet view with the highlighted row.
+- [x] Comparison table.
+- [x] Send another request, plus Reset clean-up through `Demo.onReset` (timer, summary, errors, step panel back to the empty state).
+- [x] Reminder date checked across a month end (submitting on 30 Nov gives 2 Dec) with a quick node check of the same function.
+- [x] Budget check (≤ 30 000 bytes). Commit `demo(automations): build`.
 
 **Phase 3: QA and ship**
 - [ ] Run the DEMOS.md definition-of-done greps and fix anything they flag.
@@ -210,3 +210,14 @@ Resolved: Luan confirmed all four defaults on 21 Nov 2026 ("use what you think i
   - No shared file changes.
 - **Changed by Luan:** nothing. The plan was approved as written, and Luan then confirmed the four defaults in section 8.
 - **Phase 2 starts with:** copying `software/demo/example/` to `software/demo/automations/`, then data.js from section 5, then app.js and app.css, working down the Phase 2 checklist.
+
+## Handoff: Phase 2
+- **Built:** `/software/demo/automations/` as planned. Two views (Quote form, Quote sheet). Form with "Fill with sample details" (event date = today + 21) and submit-only validation (errors linked, `aria-invalid`, focus on the first invalid field, error clears on edit). Submit swaps the form for a "Request sent" summary and moves focus to the "What happens next" heading. Steps 1 to 4 appear 1 s apart with a "Show all steps" button; under reduced motion all four appear at once. Announcements go through the demo-only `role="status"` region. Step 3 shows the compact sheet (all rows on desktop, new row plus "and N earlier requests" on phone). New row has the tint plus a "New" badge, and only the latest is highlighted. Comparison is a `Demo.table`, words only. "Send another request" and Reset both return form, steps and sheet to the start, and cancel the timer. No network, no storage.
+- **Files:** new `software/demo/automations/` (`index.html`, `data.js` 2.2 KB, `app.js` 11.2 KB, `app.css` 1.6 KB; 15.0 KB of 30 KB). Plan file ticked.
+- **Shared-file changes:** none. DEMOS.md not changed in this phase.
+- **Checked (headless Chrome, scripted):** no console errors on load, validation, prefill, submit, Show all, Send another, Reset (also Reset while steps were still running), at 1280px and 360px. No sideways scroll at either width. Reminder date on 30 Nov gives 2 Dec (and 27 Jan gives 1 Mar). Step texts match section 5. Reduced motion: all four steps and "All 4 steps done." at once, no button. The DEMOS.md grep checks for storage, network, external URLs, noindex, inline script/style and `/script.js` came back clean.
+- **Not done / worth a look:**
+  - Not tested by hand: 768px, keyboard-only, a real screen reader, and a real phone. The fade, the smooth scroll on phone, and the look of step 3's 5-column table at 1200 to 1300px (it scrolls sideways inside its box if too tight) need an eye.
+  - The notes line in the owner alert is cut at about 48 characters with "…".
+  - `body.part` helper was removed; no stray files.
+- **Phase 3 should check first:** the remaining DEMOS.md checklist items by hand (768px, keyboard, Narrator, reduced motion with the real OS setting), the step-fade line for DEMOS.md, then the card link, sitemap and robots checks. Card link and sitemap were deliberately not touched.

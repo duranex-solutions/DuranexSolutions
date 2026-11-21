@@ -1,0 +1,31 @@
+/* Accent: terracotta. navy-900 on it 6.22, accent-strong on paper 4.95. Page-only styles for the automations demo. */
+:root { --demo-accent: #e0874f; }
+.aut-top { display: grid; align-items: start; gap: var(--s-5); }
+.aut-top [hidden] { display: none !important; }
+.aut-top .demo-form { max-width: none; }
+.aut-fields { display: grid; gap: var(--s-4); }
+.aut-dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s-2) var(--s-4); margin: 0 0 var(--s-4); }
+.aut-dl dt { color: var(--paper-muted); font-weight: 700; }
+.aut-dl dd { margin: 0; }
+.aut-steps ol { display: grid; gap: var(--s-5); margin: var(--s-4) 0 0; padding-left: var(--s-5); }
+.aut-steps li::marker { font-weight: 800; }
+.aut-step > * + * { margin-top: var(--s-3); }
+.aut-step__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); }
+.aut-small { color: var(--paper-muted); font-size: var(--fs-small); }
+#aut-head:focus { outline: none; }
+#aut-recv { margin-top: var(--s-2); }
+#aut-tools:not(:empty) { margin-top: var(--s-4); }
+.aut-scroll { overflow-x: auto; }
+.aut-compare { display: grid; gap: var(--s-3); }
+.demo-table tr.is-new { background: var(--demo-accent-tint); }
+@media (min-width: 640px) and (max-width: 1199px) {
+  .aut-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .aut-wide { grid-column: 1 / -1; }
+}
+@media (min-width: 1200px) {
+  .aut-top { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .aut-step { animation: aut-in 200ms ease-out; }
+  @keyframes aut-in { from { opacity: 0; } }
+}
