@@ -1,4 +1,4 @@
-/* Dashboards demo: filters, KPIs, chart, products, staff hours, report and payroll CSV. In memory only. */
+/* Dashboards demo: filters, KPIs, chart, products, staff hours, report and payroll sheet. In memory only. */
 (function () {
   "use strict";
   const D = window.Demo, G = window.DashGen, S = window.DEMO_SEED;
@@ -23,7 +23,7 @@
     return e;
   }
 
-  /* Everything the panels need, worked out once per render */
+
   function context(f) {
     const p = G.period(f.range, new Date()), ids = bids(f.branch);
     const cur = p.n ? G.agg(S, p.s, p.e, ids) : null;
@@ -59,7 +59,7 @@
     }));
   }
 
-  /* Chart: one SVG, drawn from the same data as the table */
+
   function nice(max, n) {
     const raw = (max || 1) / n, mag = Math.pow(10, Math.floor(Math.log10(raw)));
     const m = [1, 2, 2.5, 5, 10].filter((x) => x * mag >= raw)[0];
@@ -209,18 +209,18 @@
     window.print();
   }
 
-  /* Payroll CSV */
-  function downloadCsv() {
+  /* Payroll sheet (.xlsx) */
+  function downloadSheet() {
     const c = ctx;
     if (!c.cur) return D.toast("Nothing to export yet. Try Last month.", { tone: "error" });
-    const name = "kopje-coffee-SAMPLE-payroll-" + (c.f.branch === "both" ? "both" : BR[c.f.branch].name.toLowerCase()) + "-" + G.iso(c.p.s) + "-to-" + G.iso(c.p.e) + ".csv";
-    const url = URL.createObjectURL(new Blob([G.payroll(S, c.p, c.f.branch)], { type: "text/csv;charset=utf-8" }));
+    const name = "kopje-coffee-SAMPLE-payroll-" + (c.f.branch === "both" ? "both" : BR[c.f.branch].name.toLowerCase()) + "-" + G.iso(c.p.s) + "-to-" + G.iso(c.p.e) + ".xlsx";
+    const url = URL.createObjectURL(G.payroll(S, c.p, c.f.branch));
     const a = D.el("a", { href: url, download: name });
     document.body.appendChild(a);
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    D.toast("Payroll CSV downloaded (sample data)");
+    D.toast("Payroll sheet downloaded (sample data)");
   }
 
   /* Wiring */
@@ -229,7 +229,7 @@
   $("#dash-filters").addEventListener("submit", (e) => e.preventDefault());
   $("#btn-table").addEventListener("click", () => { showTable = !showTable; render(D.store.get()); });
   $("#btn-report").addEventListener("click", openReport);
-  $("#btn-csv").addEventListener("click", downloadCsv);
+  $("#btn-csv").addEventListener("click", downloadSheet);
   $("#f-month").addEventListener("change", (e) => { repMonth = e.target.value; fillReport(); });
   $("#rep-close").addEventListener("click", () => D.modal.close());
   $("#rep-print").addEventListener("click", printReport);

@@ -1,7 +1,7 @@
-/* Dashboards demo: accent and demo-only layout. Contrast: navy-900 on accent 6.48, accent-strong on paper 4.71. */
+/* Dashboards demo: accent and layout. Contrast: navy-900 on accent 6.48, accent-strong on paper 4.71. */
 :root { --demo-accent: #2fb3a0; }
 
-/* Filter bar, shared by both views */
+
 .dash-filters { display: grid; gap: var(--s-3); margin-top: var(--s-4); padding: var(--s-4); }
 #dash-empty:empty { display: none; }
 .dash-seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -32,13 +32,13 @@
  .dash-exports { grid-column: 1 / -1; justify-content: flex-start; }
 }
 
-/* Try this */
+
 .dash-try ol { display: grid; gap: var(--s-2); padding-left: 1.25rem; list-style: decimal; }
 @media (min-width: 1024px) {
  .dash-try ol { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); }
 }
 
-/* KPI tiles */
+
 .dash-kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
 .dash-kpi { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-1); padding: var(--s-3); }
 .dash-kpi .demo-stat { margin: 0; font-size: 1.25rem; overflow-wrap: anywhere; }
@@ -51,7 +51,7 @@
  .dash-kpi .demo-stat { font-size: 1.5rem; }
 }
 
-/* Chart and top products */
+
 .dash-split { display: grid; gap: var(--s-4); margin-top: var(--s-5); }
 @media (min-width: 1024px) {
  .dash-split { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); align-items: start; }
@@ -81,20 +81,24 @@
 /* Staff hours */
 .dash-total { font-weight: 700; }
 
-/* Monthly report: dialog and printed copy */
+/* Report */
 .dash-dialog { width: min(48rem, calc(100% - 2 * var(--s-4))); }
+.dash-rep, .dash-rep > * { min-width: 0; }
 .dash-pick { max-width: 16rem; margin-bottom: var(--s-4); }
 .dash-rep { display: grid; gap: var(--s-4); }
 .dash-rep h3 { margin-bottom: var(--s-2); font-size: var(--fs-h4); }
 .dash-rep .dash-rep__title { font-size: var(--fs-h3); }
-.dash-rep .demo-table { display: table; border: 1px solid var(--paper-line); font-size: var(--fs-small); }
-.dash-rep .demo-table thead { position: static; display: table-header-group; width: auto; height: auto; margin: 0; overflow: visible; clip-path: none; }
-.dash-rep .demo-table tbody { display: table-row-group; }
-.dash-rep .demo-table tr { display: table-row; margin: 0; padding: 0; border: 0; }
-.dash-rep .demo-table td { display: table-cell; padding: var(--s-2); border-bottom: 1px solid var(--paper-line); }
-.dash-rep .demo-table th { padding: var(--s-2); }
-.dash-rep .demo-table td::before { content: none; }
-.dash-rep .demo-table .is-num { text-align: right; }
+/* Real tables from 640px and in print; phones use the stacked cards (no sideways scroll) */
+@media (min-width: 640px), print {
+ .dash-rep .demo-table { display: table; border: 1px solid var(--paper-line); font-size: var(--fs-small); }
+ .dash-rep .demo-table thead { position: static; display: table-header-group; width: auto; height: auto; margin: 0; overflow: visible; clip-path: none; }
+ .dash-rep .demo-table tbody { display: table-row-group; }
+ .dash-rep .demo-table tr { display: table-row; margin: 0; padding: 0; border: 0; }
+ .dash-rep .demo-table td { display: table-cell; padding: var(--s-2); border-bottom: 1px solid var(--paper-line); }
+ .dash-rep .demo-table th { padding: var(--s-2); }
+ .dash-rep .demo-table td::before { content: none; }
+ .dash-rep .demo-table .is-num { text-align: right; }
+}
 .dash-print { display: none; }
 @media print {
  @page { size: A4; margin: 15mm; }

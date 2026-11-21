@@ -20,7 +20,7 @@ software/demo/<slug>/data.js      sample data: window.DEMO_SEED = {...}
 software/demo/<slug>/app.js       this demo's logic
 software/demo/<slug>/app.css      accent override and demo-only styles (optional)
 ```
-Budget per demo: `data.js` + `app.js` + `app.css` together at most 30 KB. KB means 1000 bytes. No new fonts or images.
+Budget per demo: `data.js` + `app.js` + `app.css` together at most 30 KB. KB means 1000 bytes. No new fonts or images. Exception: `dashboards` has 36 KB for all its files (gen.js, data.js, app.js, app.css; owner approved), because it writes its own .xlsx file.
 A demo may add one pure-logic file (no DOM, so it can be tested in node), for example `bookings/slots.js`, loaded after `demo.js` and before `data.js`. It counts in the same 30 KB. Tests for it are not kept in the repo.
 Slugs: `client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`. `example` is the placeholder and is never linked from the site.
 
@@ -158,6 +158,11 @@ Fixed pairs (same for every demo):
 An override must pass: navy-900 on the accent at least 4.5, and the accent-strong mix on paper at least 4.5 (and ideally on the tint). Mid-to-light colours pass; very dark or very saturated ones may not. Compute it before you commit to a colour.
 These were computed by script, not in a browser. Re-check by eye in Live Server.
 
+## Printing and file downloads (from the dashboards demo)
+- **Print to PDF:** copy the content into an empty `<div class="dash-print" aria-hidden="true">` at the end of the body, then call `window.print()`; empty it on `afterprint`. In `@media print` hide `.skip-link, .demo-bar, .demo-app, .demo-toast, dialog`, show the print block, and set `@page { size: A4; margin: 15mm }`. Do not print the `<dialog>` itself.
+- **Tables inside a dialog or print block:** let phones use the shared stacked cards. Only force real tables with `@media (min-width: 640px), print`, or the dialog scrolls sideways on phones.
+- **Spreadsheet export:** write a real `.xlsx` (hand-built stored zip, see `dashboards/gen.js`), not a CSV. Reason: a CSV cannot set column widths, so Excel shows dates as "#####" and cuts text, and decimal-comma regional settings can misread numbers. In the .xlsx dates are real dates, numbers are numbers, columns are sized, and the header is bold and frozen. The filename carries SAMPLE, for example `kopje-coffee-SAMPLE-payroll-both-2026-11-14-to-2026-11-20.xlsx`. Gross pay only, no PAYE or UIF. Build the file in memory with a Blob and a temporary link; never fetch.
+
 ## Adding a new demo
 1. Copy `software/demo/example/` to `software/demo/<slug>/`.
 2. In `index.html`: title, description, og tags and `og:url`, business name, nav items and views, WhatsApp text, back link `/software/#<slug>`.
@@ -197,7 +202,7 @@ By hand:
 - [ ] Budgets met (above).
 
 ## Linking a finished demo from the Software page
-Each concept card on `/software/` has an id equal to its demo slug (`client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`), so `/software/#<slug>` lands on the card and the demo bar's "Back to Software" link goes there. The `.concept-demo-link` style is in `styles.css`. Linked so far: `bookings` and `automations`. Add it only when the demo is finished, as the last child of its card:
+Each concept card on `/software/` has an id equal to its demo slug (`client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`), so `/software/#<slug>` lands on the card and the demo bar's "Back to Software" link goes there. The `.concept-demo-link` style is in `styles.css`. Linked so far: `bookings`, `automations` and `dashboards`. Add it only when the demo is finished, as the last child of its card:
 ```html
 <a class="concept-demo-link" href="/software/demo/<slug>/" data-demo-link="<slug>">Try the demo <span aria-hidden="true">↗</span></a>
 ```

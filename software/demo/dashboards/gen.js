@@ -125,19 +125,58 @@
     return out;
   }
 
-  /* CSV text: quote fields that hold a comma, quote or line break */
-  const cell = (v) => { const t = String(v); return /[",\r\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
-  const csv = (rows) => "\uFEFF" + rows.map((r) => r.map(cell).join(",")).join("\r\n") + "\r\n";
+  /* Payroll sheet: a hand-written .xlsx (stored zip, no library) so widths, dates and numbers are right in Excel */
+  const crcT = []; for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; crcT[n] = c >>> 0; }
+  const crc = (b) => { let c = -1; for (let i = 0; i < b.length; i++) c = crcT[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ -1) >>> 0; };
+  const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const X = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n', M = "http://schemas.openxmlformats.org/";
+  const serial = (d) => Math.round(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5) + 25569;
+  const u16 = (n) => [n & 255, (n >> 8) & 255], u32 = (n) => [n & 255, (n >>> 8) & 255, (n >>> 16) & 255, (n >>> 24) & 255];
+  function zip(files) {
+    const enc = new TextEncoder(), parts = [], cd = [];
+    let off = 0;
+    files.forEach(([name, text]) => {
+      const nb = enc.encode(name), d = enc.encode(text), c = crc(d);
+      const h = [].concat(u32(0x04034b50), u16(20), u16(0x800), u16(0), u16(0), u16(0x21), u32(c), u32(d.length), u32(d.length), u16(nb.length), u16(0));
+      parts.push(new Uint8Array(h), nb, d);
+      cd.push(new Uint8Array([].concat(u32(0x02014b50), u16(20), u16(20), u16(0x800), u16(0), u16(0), u16(0x21), u32(c), u32(d.length), u32(d.length), u16(nb.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(off))), nb);
+      off += h.length + nb.length + d.length;
+    });
+    let size = 0; cd.forEach((x) => { size += x.length; });
+    return new Blob(parts.concat(cd, [new Uint8Array([].concat(u32(0x06054b50), u16(0), u16(0), u16(files.length), u16(files.length), u32(size), u32(off), u16(0)))]), { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+  }
+
+  function sheet(rows, widths) {
+    const st = { d: 2, h: 3, m: 4, n: 0 };
+    const cell = (v, k, r, i) => {
+      const ref = String.fromCharCode(65 + i) + r;
+      if (k === "s") return '<c r="' + ref + '" t="inlineStr"' + (r === 1 ? ' s="1"' : "") + "><is><t>" + esc(v) + "</t></is></c>";
+      return '<c r="' + ref + '" s="' + st[k] + '"><v>' + (k === "d" ? serial(v) : v) + "</v></c>";
+    };
+    const body = rows.map((r, j) => '<row r="' + (j + 1) + '">' + r.map((c, i) => cell(c[0], c[1], j + 1, i)).join("") + "</row>").join("");
+    return X + '<worksheet xmlns="' + M + 'spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>' +
+      widths.map((w, i) => '<col min="' + (i + 1) + '" max="' + (i + 1) + '" width="' + w + '" customWidth="1"/>').join("") + "</cols><sheetData>" + body + "</sheetData></worksheet>";
+  }
   function payroll(S, p, branch) {
     const bids = branch === "both" ? S.branches.map((b) => b.id) : [branch], a = agg(S, p.s, p.e, bids);
-    const rows = [["Period start", "Period end", "Employee ID", "Name", "Role", "Branch", "Shifts", "Hours", "Hourly rate (ZAR)", "Gross pay (ZAR)"]];
+    const rows = [["Period start", "Period end", "Employee ID", "Name", "Role", "Branch", "Shifts", "Hours", "Hourly rate (ZAR)", "Gross pay (ZAR)"].map((h) => [h, "s"])];
     S.staff.forEach((s) => {
       if (bids.indexOf(s.branch) < 0) return;
       const t = a.staff[s.id], br = S.branches.filter((b) => b.id === s.branch)[0].name;
-      rows.push([iso(p.s), iso(p.e), s.id, s.name, s.role, br, t.shifts, t.hours, s.rate.toFixed(2), t.pay.toFixed(2)]);
+      rows.push([[p.s, "d"], [p.e, "d"], [s.id, "s"], [s.name, "s"], [s.role, "s"], [br, "s"], [t.shifts, "n"], [t.hours, "h"], [s.rate, "m"], [t.pay, "m"]]);
     });
-    return csv(rows);
+    const rel = (id, type, t) => '<Relationship Id="' + id + '" Type="' + M + "officeDocument/2006/relationships/" + type + '" Target="' + t + '"/>';
+    const ct = (part, type) => '<Override PartName="' + part + '" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.' + type + '+xml"/>';
+    const xf = (fmt, font) => '<xf numFmtId="' + fmt + '" fontId="' + font + '" fillId="0" borderId="0" xfId="0"/>';
+    return zip([
+      ["[Content_Types].xml", X + '<Types xmlns="' + M + 'package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>' + ct("/xl/workbook.xml", "sheet.main") + ct("/xl/worksheets/sheet1.xml", "worksheet") + ct("/xl/styles.xml", "styles") + "</Types>"],
+      ["_rels/.rels", X + '<Relationships xmlns="' + M + 'package/2006/relationships">' + rel("rId1", "officeDocument", "xl/workbook.xml") + "</Relationships>"],
+      ["xl/workbook.xml", X + '<workbook xmlns="' + M + 'spreadsheetml/2006/main" xmlns:r="' + M + 'officeDocument/2006/relationships"><sheets><sheet name="Payroll (sample)" sheetId="1" r:id="rId1"/></sheets></workbook>'],
+      ["xl/_rels/workbook.xml.rels", X + '<Relationships xmlns="' + M + 'package/2006/relationships">' + rel("rId1", "worksheet", "worksheets/sheet1.xml") + rel("rId2", "styles", "styles.xml") + "</Relationships>"],
+      ["xl/styles.xml", X + '<styleSheet xmlns="' + M + 'spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="yyyy\-mm\-dd"/><numFmt numFmtId="165" formatCode="0.0"/></numFmts><fonts count="2"><font><sz val="11"/></font><font><b/><sz val="11"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="5">' + xf(0, 0) + xf(0, 1) + xf(164, 0) + xf(165, 0) + xf(2, 0) + "</cellXfs></styleSheet>"],
+      ["xl/worksheets/sheet1.xml", sheet(rows, [14, 14, 14, 22, 20, 12, 9, 9, 19, 17])]
+    ]);
   }
 
-  root.DashGen = { iso, addDays, day0, diff, span, period, monthPeriod, buckets, agg, csv, payroll, MONTH, MON, WD };
+  root.DashGen = { iso, addDays, day0, diff, span, period, monthPeriod, buckets, agg, payroll, MONTH, MON, WD };
 })(typeof window !== "undefined" ? window : globalThis);
