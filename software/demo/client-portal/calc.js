@@ -82,6 +82,57 @@
     return "﻿" + [head].concat(rows).map((r) => r.map((x) => cell(String(x))).join(",")).join("\r\n") + "\r\n";
   }
 
-  root.Calc = { iso, addDays, between, materialize, amount, status, clientTotals, practiceTotals, rel, dueText, reminderText, csv, plural };
+  /* Excel copy of the same rows: a hand-built .xlsx (stored zip) so South African Excel shows real dates, numbers and sized columns */
+  const crcT = []; for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; crcT[n] = c >>> 0; }
+  const crc = (b) => { let c = -1; for (let i = 0; i < b.length; i++) c = crcT[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ -1) >>> 0; };
+  const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const X = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n', M = "http://schemas.openxmlformats.org/";
+  const serial = (v) => Math.round(Date.UTC(+v.slice(0, 4), +v.slice(5, 7) - 1, +v.slice(8, 10)) / 864e5) + 25569;
+  const u16 = (n) => [n & 255, (n >> 8) & 255], u32 = (n) => [n & 255, (n >>> 8) & 255, (n >>> 16) & 255, (n >>> 24) & 255];
+  function zip(files) {
+    const enc = new TextEncoder(), parts = [], cd = [];
+    let off = 0;
+    files.forEach(([name, text]) => {
+      const nb = enc.encode(name), d = enc.encode(text), c = crc(d);
+      const h = [].concat(u32(0x04034b50), u16(20), u16(0x800), u16(0), u16(0), u16(0x21), u32(c), u32(d.length), u32(d.length), u16(nb.length), u16(0));
+      parts.push(new Uint8Array(h), nb, d);
+      cd.push(new Uint8Array([].concat(u32(0x02014b50), u16(20), u16(20), u16(0x800), u16(0), u16(0), u16(0x21), u32(c), u32(d.length), u32(d.length), u16(nb.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(off))), nb);
+      off += h.length + nb.length + d.length;
+    });
+    let size = 0; cd.forEach((x) => { size += x.length; });
+    return new Blob(parts.concat(cd, [new Uint8Array([].concat(u32(0x06054b50), u16(0), u16(0), u16(files.length), u16(files.length), u32(size), u32(off), u16(0)))]), { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+  }
+  function xlsx(s, today) {
+    const head = ["Date", "Invoice number", "Client", "Description", "Amount", "Status", "Due date", "Paid date"];
+    const kinds = ["d", "s", "s", "s", "n", "s", "d", "d"], st = { s: 0, h: 1, d: 2, n: 3 };
+    const rows = s.invoices.slice().sort((a, b) => (a.number < b.number ? -1 : 1)).map((v) => [
+      v.issued, v.number, s.client.name, v.lines.map((l) => l.desc).join("; "), amount(v),
+      { paid: "Paid", due: "Due", overdue: "Overdue" }[status(v, today)], v.due, v.paid || "",
+    ]);
+    const cell = (v, k, r, i, h) => {
+      const ref = String.fromCharCode(65 + i) + r;
+      if (v === "") return "";
+      if (h || k === "s") return '<c r="' + ref + '" t="inlineStr"' + (h ? ' s="1"' : "") + "><is><t>" + esc(v) + "</t></is></c>";
+      return '<c r="' + ref + '" s="' + st[k] + '"><v>' + (k === "d" ? serial(v) : v) + "</v></c>";
+    };
+    const row = (r, j, h) => '<row r="' + (j + 1) + '">' + r.map((v, i) => cell(v, kinds[i], j + 1, i, h)).join("") + "</row>";
+    const body = row(head, 0, true) + rows.map((r, j) => row(r, j + 1)).join("");
+    const widths = [12, 16, 28, 38, 12, 10, 12, 12];
+    const sheet = X + '<worksheet xmlns="' + M + 'spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>' +
+      widths.map((w, i) => '<col min="' + (i + 1) + '" max="' + (i + 1) + '" width="' + w + '" customWidth="1"/>').join("") + "</cols><sheetData>" + body + "</sheetData></worksheet>";
+    const rel = (id, type, t) => '<Relationship Id="' + id + '" Type="' + M + "officeDocument/2006/relationships/" + type + '" Target="' + t + '"/>';
+    const ct = (part, type) => '<Override PartName="' + part + '" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.' + type + '+xml"/>';
+    const xf = (fmt, font) => '<xf numFmtId="' + fmt + '" fontId="' + font + '" fillId="0" borderId="0" xfId="0"/>';
+    return zip([
+      ["[Content_Types].xml", X + '<Types xmlns="' + M + 'package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>' + ct("/xl/workbook.xml", "sheet.main") + ct("/xl/worksheets/sheet1.xml", "worksheet") + ct("/xl/styles.xml", "styles") + "</Types>"],
+      ["_rels/.rels", X + '<Relationships xmlns="' + M + 'package/2006/relationships">' + rel("rId1", "officeDocument", "xl/workbook.xml") + "</Relationships>"],
+      ["xl/workbook.xml", X + '<workbook xmlns="' + M + 'spreadsheetml/2006/main" xmlns:r="' + M + 'officeDocument/2006/relationships"><sheets><sheet name="Invoices (sample)" sheetId="1" r:id="rId1"/></sheets></workbook>'],
+      ["xl/_rels/workbook.xml.rels", X + '<Relationships xmlns="' + M + 'package/2006/relationships">' + rel("rId1", "worksheet", "worksheets/sheet1.xml") + rel("rId2", "styles", "styles.xml") + "</Relationships>"],
+      ["xl/styles.xml", X + '<styleSheet xmlns="' + M + 'spreadsheetml/2006/main"><numFmts count="1"><numFmt numFmtId="164" formatCode="yyyy\\-mm\\-dd"/></numFmts><fonts count="2"><font><sz val="11"/></font><font><b/><sz val="11"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="4">' + xf(0, 0) + xf(0, 1) + xf(164, 0) + xf(4, 0) + "</cellXfs></styleSheet>"],
+      ["xl/worksheets/sheet1.xml", sheet],
+    ]);
+  }
+
+  root.Calc = { iso, addDays, between, materialize, amount, status, clientTotals, practiceTotals, rel, dueText, reminderText, csv, xlsx, plural };
   if (typeof module !== "undefined") module.exports = root.Calc;
 })(typeof window !== "undefined" ? window : globalThis);

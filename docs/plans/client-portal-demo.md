@@ -345,11 +345,11 @@ My attempt to start a local server and headless Chrome was blocked by the permis
 - Downloads: the PDF opened in Chrome's viewer (one page, sums add up, SAMPLE mark, no month names). The CSV has the BOM, 8 columns, CRLF, ISO dates, dot decimals; five rows totalling R 7 220,00, of which unpaid R 3 520,00 matches the Overview.
 - Console: no errors or warnings on any run. Network: only the site's own files.
 - Copy: no accounting software names, no security or POPIA claims, no real-payment wording, no password fields.
-- Size: data.js 3 430 + calc.js 4 768 + app.js 14 768 + app.css 6 380 = 29 346 bytes, under 30 000.
+- Size: data.js 3 430 + calc.js 10 326 + app.js 15 010 + app.css 6 380 = 35 146 bytes (the .xlsx builder added about 5.8 KB; over 30 000 as approved, recorded in DEMOS.md).
 
 ### Left
 - **Real phone checks** (list below). Headless Chrome is not Android Chrome or iPhone Safari, so downloads and rotation are untested on a real device.
-- **CSV opened in a spreadsheet app** (Excel or Sheets). Only the file contents were inspected.
+- ~~CSV opened in a spreadsheet app~~ Done in real Excel on an en-ZA PC, and it failed: one column, amounts as text (sum 0), dates `########`. Fixed by adding a second button, **Download for Excel (.xlsx)**, next to the CSV button (see below). The .xlsx was opened in Excel: real dates, amounts like `1 850,00`, sum R 7 220,00, bold header, readable column widths. The CSV is unchanged and stays for importing into accounting software.
 - Merge to `main` waits for Luan's go-ahead.
 
 ### Manual test list for a real phone
@@ -358,9 +358,13 @@ Start on the Software page, tap the card's "Try the demo ↗", and do this on An
 2. **Quotes:** tap Decline on one quote, type a reason, confirm. Tap Accept on the other, confirm. A message appears and is readable (not a thin tall box). Each quote shows its badge.
 3. **Invoices:** open INV-0447 (it says Overdue). Tap Preview reminder. You see a "WhatsApp message" and an "Email" section. Scroll inside it, then tap Close.
 4. **Documents:** tap "Download PDF (3 KB)". Open the file. Check it is one page, says SAMPLE, FICTIONAL, and amounts look like R 61 600,00. Note where the phone saved it.
-5. **Practice view:** tap Practice view. The Larkspur row says "Demo client". Tick Overdue only, then untick it. Tap "Export for accounting software". Note where the CSV is saved, then open it in Sheets or Excel: columns separated, dates like 2026-11-21, amounts as numbers.
+5. **Practice view:** tap Practice view. The Larkspur row says "Demo client". Tick Overdue only, then untick it. Tap "Download for Excel (.xlsx)" and open it in Excel or Sheets: columns separated, dates like 2026-11-21, amounts as numbers, readable widths. Then tap "Export for accounting software (CSV)" and note where the CSV is saved (it is for importing, so it may open as plain text or one column on a phone; that is expected).
 6. **Rotate** the phone sideways with the reminder preview open, and again on Practice view, then back. Nothing is cut off, the dialog buttons stay reachable and nothing resets.
 7. **Reset and reload:** tap Reset in the bar from any screen: you land on the login screen. Log in, accept a quote, then pull to refresh: back to the login screen with everything as new.
 8. **Back link:** tap "Software" in the bar: you land on the Client portals card.
 
 Screenshot anything that looks wrong and note which phone and browser it was.
+
+### Added after the Excel test: two export buttons
+- Practice view now has **Export for accounting software (CSV)** (primary) and **Download for Excel (.xlsx)** (secondary), with the line "The CSV is a generic file that most accounting packages can import. The Excel file is for reading and sorting. Nothing is connected." Either one ticks step 5 and shows a toast. Filenames: `quillstone-SAMPLE-invoices-YYYY-MM-DD.csv` and `.xlsx`.
+- Checked in Chrome at 360 and 1280: both buttons full width of their box (48px tall), no sideways scroll, both files download, no console errors.

@@ -169,16 +169,18 @@
     const me = { id: s.client.id, name: s.client.name, demo: true, outstanding: c.outstanding, overdue: c.overdue, overdueCount: c.overdueCount, quotesWaiting: c.quotesWaiting, last: c.last.date, lastText: c.last.text };
     return [me].concat(s.others).filter((r) => !s.ui.overdueOnly || r.overdue > 0);
   }
-  function exportCsv() {
-    const s = D.store.get(), url = URL.createObjectURL(new Blob([C.csv(s, TODAY)], { type: "text/csv;charset=utf-8" }));
-    const a = D.el("a", { href: url, download: "quillstone-SAMPLE-invoices-" + TODAY + ".csv", hidden: true });
+  function download(blob, ext, msg) {
+    const s = D.store.get(), url = URL.createObjectURL(blob);
+    const a = D.el("a", { href: url, download: "quillstone-SAMPLE-invoices-" + TODAY + "." + ext, hidden: true });
     document.body.appendChild(a);
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    D.toast("CSV downloaded: " + s.invoices.length + " sample invoices");
+    D.toast(msg + ": " + s.invoices.length + " sample invoices");
     tick("csv");
   }
+  const exportCsv = () => download(new Blob([C.csv(D.store.get(), TODAY)], { type: "text/csv;charset=utf-8" }), "csv", "CSV downloaded");
+  const exportXlsx = () => download(C.xlsx(D.store.get(), TODAY), "xlsx", "Excel file downloaded");
 
   function render(s) {
     syncMode();
@@ -254,6 +256,7 @@
   $("#sw-practice").addEventListener("click", () => D.go("practice"));
   $("#pr-filter").addEventListener("change", (e) => set((s) => { s.ui.overdueOnly = e.target.checked; }));
   $("#pr-export").addEventListener("click", exportCsv);
+  $("#pr-xlsx").addEventListener("click", exportXlsx);
   D.onReset((s) => { history.replaceState(null, "", "#view-login"); fillForm(s.reminders); syncMode(); });
 
   D.init({ seed, render, views: VIEWS });
