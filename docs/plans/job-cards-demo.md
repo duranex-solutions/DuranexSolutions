@@ -366,7 +366,7 @@ In Phase 3 only: `software/index.html` (the link on the card) and `docs/DEMOS.md
 - **Announcements for screen readers** (`app.js`): "I'm on my way" and "Start job" now announce "Status: on the way / in progress" through the polite toast. Adding and removing a photo announces "Photo added." and "Photo removed." The "Still needed before this job can be completed" box now has `role="alert"` (focus still moves to it).
 - **Switched on:** "Try the demo ↗" is the last child of the `#job-cards` card in `software/index.html`. "Linked so far" and the budget line in `docs/DEMOS.md` are updated.
 - **Indexing:** the demo is not in `sitemap.xml` and not in `robots.txt`; noindex meta is present and `netlify.toml` already sends `X-Robots-Tag: noindex` for `/software/demo/*`. The demo's back link is `/software/#job-cards`.
-- **Size:** data.js 4 275 + rules.js 3 152 + app.js 21 996 + app.css 5 813 = **35 236 bytes** (inside the approved 40 KB).
+- **Size:** data.js 4 275 + rules.js 3 152 + app.js 21 991 + app.css 5 818 = **35 236 bytes** (inside the approved 40 KB).
 
 ### Checked by me (headless Chrome, scripted)
 - Definition-of-done greps: all clean.
