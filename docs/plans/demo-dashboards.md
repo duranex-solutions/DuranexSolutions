@@ -359,9 +359,18 @@ Resolved with Luan on 21 Nov 2026: the CSV must open correctly, the budget is ra
 - Contrast (sRGB formula), on the card unless noted: Parkhurst bar 5.08 (needs 3), Melville hatch and outline 14.48, axis text 5.40, KPI text 14.48, badges ok 5.10 / warn 5.71 / neutral 5.40, top-product fill on its track 3.48, selected branch border on tint 4.67, unselected radio border 3.76, print text on white 15.11.
 - Tap targets by CSS: branch radios 48px, select 48px, buttons 44px. No chart animation, so reduced motion is respected.
 
-### Not done (the sandbox refused to start a local server and headless browser this session)
-- No live pass at 1280, 360 or 414px, no keyboard-only run, no click-through of every filter combination, no console or network check, no print preview. Phase 2 passed 1280 and 360, but the report layout change and the xlsx button are untested in a browser.
-- Next: run these in Edge, or Luan runs the phone list below.
+### Browser QA (second run, Edge headless, scripted)
+- **Widths 1280, 768, 414, 360:** no sideways scroll on the page, the Staff hours view or the report window. No tap target under 44px. The report is real tables at 768 and up and stacked cards at 414 and 360.
+- **All 12 range x branch combinations:** 4 tiles, 5 top products, bars drawn, 10 or 5 staff rows, legend right, no NaN or undefined, 12 different revenue figures.
+- **Table toggle, Reset, reload:** toggle opens a 5-row table. Reset gives Last 7 days, Both, chart shown, Dashboard view, no dialog, toast. Reload gives the same, and localStorage, sessionStorage and cookies are empty.
+- **Keyboard:** Tab reaches skip link, bar, both nav links, range, branch group (one stop, arrows move inside it), report, payroll, table toggle. Every stop has a visible outline (2px, branch radios 3px). Esc closes the report and focus returns to the Monthly report button.
+- **Payroll sheet:** the click makes a blob link named `kopje-coffee-SAMPLE-payroll-both-2026-11-14-to-2026-11-20.xlsx`. The toast text was empty in this scripted check (the click was stubbed); Phase 2 saw it, and the phone list covers it.
+- **Print:** only the report prints (bar, app, dialog and buttons hidden), A4, 2 pages, sections not split, Staff summary starts page 2.
+- **Reduced motion:** 0 running animations. **Copy:** no flagged words. **Network:** only the site's own files, no requests outside them. **Console:** no errors or warnings.
+- Screenshots were checked by eye at 1280 and 360.
+
+### Still for a real device
+- Phone print sheet and PDF, opening the .xlsx on a phone, iPhone Safari. Use the list below.
 
 ### Real phone test list
 1. Open the Software page and tap "Try the demo" on "Dashboards and automatic reports". The demo opens.
