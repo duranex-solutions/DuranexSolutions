@@ -21,6 +21,7 @@ software/demo/<slug>/app.js       this demo's logic
 software/demo/<slug>/app.css      accent override and demo-only styles (optional)
 ```
 Budget per demo: `data.js` + `app.js` + `app.css` together at most 30 KB. KB means 1000 bytes. No new fonts or images. Exception: `dashboards` has 36 KB for all its files (gen.js, data.js, app.js, app.css; owner approved), because it writes its own .xlsx file. `job-cards` has up to 40 KB for data.js, rules.js, app.js and app.css (owner approved); it is 35 236 bytes.
+`client-portal` stays inside the 30 KB: `data.js`, `calc.js`, `app.js` and `app.css` are 29 346 bytes (`calc.js` is its pure-logic file).
 A demo may add one pure-logic file (no DOM, so it can be tested in node), for example `bookings/slots.js`, loaded after `demo.js` and before `data.js`. It counts in the same 30 KB. Tests for it are not kept in the repo.
 Slugs: `client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`. `example` is the placeholder and is never linked from the site.
 
@@ -162,6 +163,9 @@ These were computed by script, not in a browser. Re-check by eye in Live Server.
 - **Print to PDF:** copy the content into an empty `<div class="dash-print" aria-hidden="true">` at the end of the body, then call `window.print()`; empty it on `afterprint`. In `@media print` hide `.skip-link, .demo-bar, .demo-app, .demo-toast, dialog`, show the print block, and set `@page { size: A4; margin: 15mm }`. Do not print the `<dialog>` itself.
 - **Tables inside a dialog or print block:** let phones use the shared stacked cards. Only force real tables with `@media (min-width: 640px), print`, or the dialog scrolls sideways on phones.
 - **Spreadsheet export:** write a real `.xlsx` (hand-built stored zip, see `dashboards/gen.js`), not a CSV. Reason: a CSV cannot set column widths, so Excel shows dates as "#####" and cuts text, and decimal-comma regional settings can misread numbers. In the .xlsx dates are real dates, numbers are numbers, columns are sized, and the header is bold and frozen. The filename carries SAMPLE, for example `kopje-coffee-SAMPLE-payroll-both-2026-11-14-to-2026-11-20.xlsx`. Gross pay only, no PAYE or UIF. Build the file in memory with a Blob and a temporary link; never fetch.
+- **CSV is right when the file is meant for importing into other software** (the client-portal demo's "Export for accounting software"). Accounting packages import a CSV, not a formatted .xlsx. Write a UTF-8 BOM, CRLF line endings, RFC 4180 quoting, ISO dates (`YYYY-MM-DD`), dot decimals with no currency symbol, and a filename that carries SAMPLE. Use .xlsx when people will read the file.
+- **Tall dialogs:** a native dialog taller than the screen scrolls to the focused button, which hides its title. In the demo's `app.css`, make `.demo-dialog__head` sticky at the top and `.demo-dialog__foot` sticky at the bottom (client-portal does this).
+- **Long toasts:** `.demo-toast` is centred with `left: 50%`, so a long message gets squeezed to half the screen. Add `width: max-content` in the demo's `app.css` if its toasts are longer than a few words (client-portal does this).
 
 ## Adding a new demo
 1. Copy `software/demo/example/` to `software/demo/<slug>/`.
@@ -202,7 +206,7 @@ By hand:
 - [ ] Budgets met (above).
 
 ## Linking a finished demo from the Software page
-Each concept card on `/software/` has an id equal to its demo slug (`client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`), so `/software/#<slug>` lands on the card and the demo bar's "Back to Software" link goes there. The `.concept-demo-link` style is in `styles.css`. Linked so far: `bookings`, `automations`, `dashboards` and `job-cards`. Add it only when the demo is finished, as the last child of its card:
+Each concept card on `/software/` has an id equal to its demo slug (`client-portal`, `job-cards`, `bookings`, `dashboards`, `automations`), so `/software/#<slug>` lands on the card and the demo bar's "Back to Software" link goes there. The `.concept-demo-link` style is in `styles.css`. Linked so far: all five, `bookings`, `automations`, `dashboards`, `job-cards` and `client-portal`. Add it only when the demo is finished, as the last child of its card:
 ```html
 <a class="concept-demo-link" href="/software/demo/<slug>/" data-demo-link="<slug>">Try the demo <span aria-hidden="true">↗</span></a>
 ```

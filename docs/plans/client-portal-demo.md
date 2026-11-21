@@ -220,25 +220,25 @@ Shared files: **none for the build.** Phase 3 only:
 - [x] Overview tiles + "Next things to do"; "Try this" ticking + the header line.
 - [x] Quotes: Accept and Decline with confirm, the optional reason, toast, activity entry, and the practice row updating.
 - [x] Invoices table + invoice modal (no Pay now, the no-VAT line); Preview reminder only on the overdue one.
-- [ ] New sample PDF generated (throwaway script); open it and check it by eye (Quillstone line, comma decimals, no month names, SAMPLE mark). (Generated and structure-checked in node; not yet opened in a viewer, so do that first in Phase 3.)
+- [x] New sample PDF generated (throwaway script); open it and check it by eye (Quillstone line, comma decimals, no month names, SAMPLE mark). (Opened in Chrome's viewer in Phase 3: layout and sums correct.)
 - [x] Documents: a single `<a download>`; the others show "Example entry".
 - [x] Reminders: the draft form, Save toast "Saved for this visit only", the preview built from INV-0447, and the not-sent line when settings would block it.
 - [x] Practice view: tiles, the Overdue only filter, the table with the demo client's badge, Export CSV with the help line.
-- [ ] `app.css`: accent `#9b87e0`, existing tokens only; 5 bottom tabs fit at 360px (if "Documents" or "Reminders" doesn't fit, tighten the tab font in app.css only). (Written, with the tab font tightened below 480px; the fit at 360px is not yet seen in a browser.)
+- [x] `app.css`: accent `#9b87e0`, existing tokens only; 5 bottom tabs fit at 360px. (Seen in Chrome in Phase 3: "Documents" wrapped when active, fixed with nowrap and weight 700.)
 - [x] Run the DEMOS.md definition-of-done greps; record the total size (target about 30 000 bytes, more allowed).
 - [x] Update `## Handoff: Phase 2` and PLAN.md; commit "Client portal demo: phase 2 build".
 
 ### Phase 3: switch on and QA
-- [ ] Definition of done (greps + the hand list in DEMOS.md), with no console errors.
-- [ ] Add `<a class="concept-demo-link" href="/software/demo/client-portal/" data-demo-link="client-portal">Try the demo <span aria-hidden="true">↗</span></a>` as the last child of `#client-portal` in `software/index.html`. The slug must equal the folder name and the card id. In the same card, change "exported to Sage or Xero" to "exported for your accounting software", and grep the site for any other "Sage" or "Xero".
-- [ ] Confirm `/software/#client-portal` lands on the card and the back link goes there.
-- [ ] Indexing per DEMOS.md: `noindex, follow` meta present, the netlify `X-Robots-Tag` covers `/software/demo/*`, **not** in `sitemap.xml`, not disallowed in `robots.txt`, no canonical.
-- [ ] Desktop at 1280, 1024 and 768; phone at 360 and 414: no sideways scroll, the bar on one row, tabs at the bottom in client mode only, tables stacking.
-- [ ] Keyboard only: login, the switch, Accept and Decline dialogs (Esc, focus return), invoice → Preview reminder, the form, Export.
-- [ ] Reduced motion: no fades. Contrast of `#9b87e0` re-checked by eye.
-- [ ] **Real phone:** the PDF downloads and opens; the CSV downloads and opens in a spreadsheet app with the columns separated, dates as YYYY-MM-DD and amounts as numbers.
-- [ ] Desktop: the CSV opens cleanly (the BOM keeps the encoding right).
-- [ ] Update DEMOS.md (linked list, CSV note), `## Handoff: Phase 3` and PLAN.md; commit. I'll ask you before merging to `main`.
+- [x] Definition of done (greps + the hand list in DEMOS.md), with no console errors.
+- [x] Add `<a class="concept-demo-link" href="/software/demo/client-portal/" data-demo-link="client-portal">Try the demo <span aria-hidden="true">↗</span></a>` as the last child of `#client-portal` in `software/index.html`. The slug must equal the folder name and the card id. In the same card, change "exported to Sage or Xero" to "exported for your accounting software", and grep the site for any other "Sage" or "Xero".
+- [x] Confirm `/software/#client-portal` lands on the card and the back link goes there.
+- [x] Indexing per DEMOS.md: `noindex, follow` meta present, the netlify `X-Robots-Tag` covers `/software/demo/*`, **not** in `sitemap.xml`, not disallowed in `robots.txt`, no canonical.
+- [x] Desktop at 1280, 1024 and 768; phone at 360 and 414: no sideways scroll, the bar on one row, tabs at the bottom in client mode only, tables stacking.
+- [x] Keyboard only: login, the switch, Accept and Decline dialogs (Esc, focus return), invoice → Preview reminder, the form, Export.
+- [x] Reduced motion: no fades. Contrast of `#9b87e0` re-checked by eye.
+- [ ] **Real phone (Luan to do, list below):** the PDF downloads and opens; the CSV downloads and opens in a spreadsheet app with the columns separated, dates as YYYY-MM-DD and amounts as numbers.
+- [ ] Desktop: the CSV opens cleanly. (File inspected: BOM, 8 columns, ISO dates, dot decimals, five rows totalling R 7 220,00. Not opened in Excel on this machine; Luan to double-click it once.)
+- [x] Update DEMOS.md (linked list, CSV note), `## Handoff: Phase 3` and PLAN.md; commit. I'll ask you before merging to `main`.
 
 ## 6. Risks and open questions (answered by Luan)
 1. **The Software card says "exported to Sage or Xero",** which names accounting software. **Decided:** in Phase 3 I'll change it to "…and records exported for your accounting software".
@@ -318,3 +318,49 @@ My attempt to start a local server and headless Chrome was blocked by the permis
 4. Exactly one overdue invoice, with its badge, and "Preview reminder" only on that one.
 5. Download the PDF and open it by eye; export the CSV and open it in Excel or Sheets.
 6. Reset from every view lands on login with reminders ticked as in the seed.
+
+---
+
+## Handoff: Phase 3
+
+### Fixed from Luan's testing
+- **Reminder preview:** each preview now has a heading, "WhatsApp message" and "Email", above the kit's "Preview only. Nothing was sent." box. Done in app.js and app.css; the shared kit is untouched.
+- **Documents tab:** left as is. Only the monthly summary downloads; the other three say "Example entry". Why: a download that opens a made-up file is one more thing to keep true, and the demo already proves the download works. Easy to change later if wanted.
+
+### Switched on
+- The "Try the demo ↗" link is the last child of `#client-portal` in `software/index.html` (slug, folder and card id all `client-portal`). Clicking it goes to the demo, and the demo's back link returns to the card.
+- "exported to Sage or Xero" is now "exported for your accounting software". Other mentions of Sage and Xero stay: the scoping list on /software/ (about line 129) and Terms 1.4 name them as third-party systems that make a build "larger". They are not in the demo. Say if you want them reworded too.
+- Not in sitemap.xml, not disallowed in robots.txt, `noindex, follow` meta present once, no canonical, netlify `X-Robots-Tag` covers `/software/demo/*`.
+
+### QA found and fixed
+1. **Toast squeezed to half the screen on phones.** Long messages made a tall narrow box over the content. `width: max-content` in app.css; now 328px wide at 360px.
+2. **"Documents" tab wrapped to two lines** at 360px when active. `white-space: nowrap` and active weight 700 below 480px.
+3. **Tall dialog hid its own title** (the reminder preview, now longer with headings, scrolled to the focused Close button). Dialog head and foot are sticky in app.css.
+
+### Checked in Chrome (headless, with the site's real CSP, local server)
+- Widths 360, 414, 768, 1024, 1280: no sideways scroll, no tap target under 44px, bar one row, tabs at the bottom only in client mode, tables stack below 640px. Screenshots read by eye.
+- The five steps end to end at 360, 414 and 1280. Decline does not tick step 2. Log out and back in keeps the data. Reset mid-flow lands on login with reminders ticked as seeded. Reload clears everything. The hash guard works while logged out.
+- Keyboard only (1280 and 360): skip link, bar, login, nav, Accept and Decline (confirm, Esc, focus returns to the button), invoice dialog, Preview reminder, reminder checkboxes with Space, Save, view switch, Overdue only, Export and Reset all reachable with a visible outline. Nothing behind an open dialog is reachable. When an action re-renders the button, focus goes to the view heading.
+- Toasts go through one polite live region. Every badge has an icon and a word. Reduced motion on: dialog and toast animations are 0s. New contrast pairs: white on accent-strong 5.90, ink on the switch tint 14.76; the rest as in DEMOS.md.
+- Downloads: the PDF opened in Chrome's viewer (one page, sums add up, SAMPLE mark, no month names). The CSV has the BOM, 8 columns, CRLF, ISO dates, dot decimals; five rows totalling R 7 220,00, of which unpaid R 3 520,00 matches the Overview.
+- Console: no errors or warnings on any run. Network: only the site's own files.
+- Copy: no accounting software names, no security or POPIA claims, no real-payment wording, no password fields.
+- Size: data.js 3 430 + calc.js 4 768 + app.js 14 768 + app.css 6 380 = 29 346 bytes, under 30 000.
+
+### Left
+- **Real phone checks** (list below). Headless Chrome is not Android Chrome or iPhone Safari, so downloads and rotation are untested on a real device.
+- **CSV opened in a spreadsheet app** (Excel or Sheets). Only the file contents were inspected.
+- Merge to `main` waits for Luan's go-ahead.
+
+### Manual test list for a real phone
+Start on the Software page, tap the card's "Try the demo ↗", and do this on Android Chrome, then on iPhone Safari if you can.
+1. **Landing:** the bar is one row, no sideways scrolling, no tabs yet. Tap "Log in as demo client". Five tabs show at the bottom and every name is readable in full ("Documents", "Reminders").
+2. **Quotes:** tap Decline on one quote, type a reason, confirm. Tap Accept on the other, confirm. A message appears and is readable (not a thin tall box). Each quote shows its badge.
+3. **Invoices:** open INV-0447 (it says Overdue). Tap Preview reminder. You see a "WhatsApp message" and an "Email" section. Scroll inside it, then tap Close.
+4. **Documents:** tap "Download PDF (3 KB)". Open the file. Check it is one page, says SAMPLE, FICTIONAL, and amounts look like R 61 600,00. Note where the phone saved it.
+5. **Practice view:** tap Practice view. The Larkspur row says "Demo client". Tick Overdue only, then untick it. Tap "Export for accounting software". Note where the CSV is saved, then open it in Sheets or Excel: columns separated, dates like 2026-11-21, amounts as numbers.
+6. **Rotate** the phone sideways with the reminder preview open, and again on Practice view, then back. Nothing is cut off, the dialog buttons stay reachable and nothing resets.
+7. **Reset and reload:** tap Reset in the bar from any screen: you land on the login screen. Log in, accept a quote, then pull to refresh: back to the login screen with everything as new.
+8. **Back link:** tap "Software" in the bar: you land on the Client portals card.
+
+Screenshot anything that looks wrong and note which phone and browser it was.

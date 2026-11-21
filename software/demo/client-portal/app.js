@@ -150,8 +150,8 @@
       title: "Simulated reminder",
       body: D.el("div", { class: "cp-block" },
         (!d.on || !d.overdue) && D.el("p", { class: "cp-warn", text: "With your current settings this message would not be sent." }),
-        d.whatsapp && D.previewEl({ channel: "whatsapp", to: s.client.phone, body: t.whatsapp }),
-        d.email && D.previewEl({ channel: "email", to: s.client.email, subject: t.subject, body: t.email })),
+        d.whatsapp && D.el("section", { class: "cp-ch" }, D.el("h3", { text: "WhatsApp message" }), D.previewEl({ channel: "whatsapp", to: s.client.phone, body: t.whatsapp })),
+        d.email && D.el("section", { class: "cp-ch" }, D.el("h3", { text: "Email" }), D.previewEl({ channel: "email", to: s.client.email, subject: t.subject, body: t.email }))),
     });
     setTimeout(() => tick("reminder"), 0);
   }

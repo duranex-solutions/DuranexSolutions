@@ -72,6 +72,11 @@
 .cp-lines dt { color: var(--paper-ink); }
 .cp-lines .cp-total, .cp-lines dt:last-of-type { font-weight: 800; }
 .cp-warn { padding: var(--s-3); border: 1px solid var(--error); border-radius: var(--r-sm); color: var(--error); font-weight: 700; }
+/* Tall dialogs: keep the title and buttons in view while the middle scrolls */
+.demo-dialog__head { position: sticky; top: 0; z-index: 1; background: var(--paper-card); }
+.demo-dialog__foot { position: sticky; bottom: 0; background: var(--paper-card); }
+.cp-ch { display: grid; gap: var(--s-2); }
+.cp-ch h3 { margin: 0; font-size: 1rem; }
 /* Reminders */
 .cp-form { max-width: 36rem; }
 .cp-fs { display: grid; min-width: 0; margin: 0; padding: 0; border: 0; }
@@ -86,4 +91,6 @@
 @media (min-width: 640px) { .cp-export { width: auto; } }
 .cp-cn { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
 /* Five bottom tabs at 360px */
-@media (max-width: 479px) { .demo-tabs a { padding: 0 2px; font-size: 0.75rem; } }
+@media (max-width: 479px) { .demo-tabs a { padding: 0; font-size: 0.75rem; white-space: nowrap; } .demo-tabs a[aria-current="page"] { font-weight: 700; } }
+/* Long toast messages: a fixed box centred with left 50% shrinks to half the screen, so size it by its text */
+.demo-toast { width: max-content; }
