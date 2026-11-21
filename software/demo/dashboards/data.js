@@ -1,0 +1,35 @@
+/* Sample data for the dashboards demo. Kopje Coffee is made up. Sales are worked out from the date in gen.js, not stored. */
+window.DEMO_SEED = {
+  business: "Kopje Coffee",
+  branches: [
+    { id: "pk", name: "Parkhurst", base: 110 },
+    { id: "mv", name: "Melville", base: 92 },
+  ],
+  products: [
+    { id: "fw", name: "Flat white", price: 38, weight: 0.17 },
+    { id: "cp", name: "Cappuccino", price: 36, weight: 0.13 },
+    { id: "am", name: "Americano", price: 30, weight: 0.08 },
+    { id: "cl", name: "Café latte", price: 40, weight: 0.12 },
+    { id: "rc", name: "Red cappuccino (rooibos)", price: 38, weight: 0.08 },
+    { id: "il", name: "Iced latte", price: 45, weight: 0.07 },
+    { id: "cr", name: "Croissant", price: 32, weight: 0.12 },
+    { id: "ck", name: "Carrot cake slice", price: 55, weight: 0.07 },
+    { id: "tc", name: "Toasted chicken mayo", price: 75, weight: 0.09 },
+    { id: "bb", name: "Breakfast bagel", price: 85, weight: 0.07 },
+  ],
+  staff: [
+    { id: "KC-001", name: "Nomsa Khumalo", role: "Manager", branch: "pk", rate: 85, shift: 8, days: [1, 2, 3, 4, 5] },
+    { id: "KC-002", name: "Pieter van Wyk", role: "Assistant manager", branch: "pk", rate: 60, shift: 8, days: [0, 3, 4, 5, 6] },
+    { id: "KC-003", name: "Ayanda Zulu", role: "Barista", branch: "pk", rate: 45, shift: 8, days: [0, 1, 2, 5, 6] },
+    { id: "KC-004", name: "Kayla Petersen", role: "Barista", branch: "pk", rate: 42, shift: 7, days: [2, 3, 4, 5, 6] },
+    { id: "KC-005", name: "Sibusiso Mthembu", role: "Kitchen", branch: "pk", rate: 38, shift: 7, days: [0, 1, 2, 3, 4] },
+    { id: "KC-006", name: "Tshepo Mokoena", role: "Manager", branch: "mv", rate: 85, shift: 8, days: [0, 1, 2, 3, 4] },
+    { id: "KC-007", name: "Chantelle Adams", role: "Assistant manager", branch: "mv", rate: 60, shift: 7, days: [2, 3, 4, 5, 6] },
+    { id: "KC-008", name: "Bongani Ndlovu", role: "Barista", branch: "mv", rate: 45, shift: 7, days: [0, 1, 4, 5, 6] },
+    { id: "KC-009", name: "Priya Naidoo", role: "Barista", branch: "mv", rate: 42, shift: 6, days: [0, 1, 2, 3, 6] },
+    { id: "KC-010", name: "Johan Venter", role: "Kitchen", branch: "mv", rate: 38, shift: 6, days: [0, 2, 3, 4, 5] },
+  ],
+  dow: [1.1, 0.85, 0.9, 0.95, 1, 1.15, 1.25],
+  basket: 1.6,
+  filters: { range: "7d", branch: "both" },
+};

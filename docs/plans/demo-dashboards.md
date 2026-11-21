@@ -225,29 +225,29 @@ Reason: printing a top-layer `<dialog>` with `max-height` and `overflow:auto` ca
 ## 5. Checklists
 
 ### Phase 2: build
-- [ ] Copy `example/` to `dashboards/`. Update the head, bar, nav, the 2 views, the back link and the WhatsApp text. Add the filter bar, report dialog and print container.
-- [ ] `gen.js`: PRNG, days, cache, ranges and previous periods, buckets, aggregates, CSV builder.
-- [ ] Node checks for `gen.js`:
+- [x] Copy `example/` to `dashboards/`. Update the head, bar, nav, the 2 views, the back link and the WhatsApp text. Add the filter bar, report dialog and print container.
+- [x] `gen.js`: PRNG, days, cache, ranges and previous periods, buckets, aggregates, CSV builder.
+- [x] Node checks for `gen.js`:
   - the same date gives the same numbers twice,
   - the window covers every preset's previous period for every "today" in 2026–2028, including the 1st, the 31st and a leap-year February,
   - the buckets add up to the period totals.
-- [ ] `data.js`: the seed. Tune the volumes so labour cost is about 15–20% and the numbers look plausible.
-- [ ] `app.css`: accent, layouts at 360, 640 and 1024px, segmented radios, inline bars, report, print CSS.
-- [ ] `app.js`, KPIs and chart:
+- [x] `data.js`: the seed. Tune the volumes so labour cost is about 15–20% and the numbers look plausible.
+- [x] `app.css`: accent, layouts at 360, 640 and 1024px, segmented radios, inline bars, report, print CSS.
+- [x] `app.js`, KPIs and chart:
   - the filters update everything,
   - KPI tiles show the arrow, the words and the Better/Worse badge,
   - the SVG chart has `role="img"`, `<title>`, `<desc>`, a legend, and grouped, hatched bars,
   - "View as table",
   - the mobile label mode switches on a matchMedia change.
-- [ ] `app.js`, the rest:
+- [x] `app.js`, the rest:
   - top products,
   - staff table and totals,
   - the empty state for "This month" on the 1st, with a "Show last month" action.
-- [ ] Report dialog: month select, contents as in section 1, Save as PDF prints, Close.
-- [ ] CSV: BOM, columns, dot decimals, ISO dates, quoting, CRLF, filename, toast.
-- [ ] Reset restores the filters, closes the dialog and goes to Dashboard.
-- [ ] No inline styles in the HTML or SVG markup. Setting `el.style.width` from JS for the bars is fine.
-- [ ] Budget ≤ 36 000 bytes (raised for this demo). DEMOS.md greps come back clean. Commit `demo(dashboards): phase 2 build`.
+- [x] Report dialog: month select, contents as in section 1, Save as PDF prints, Close.
+- [x] CSV: BOM, columns, dot decimals, ISO dates, quoting, CRLF, filename, toast.
+- [x] Reset restores the filters, closes the dialog and goes to Dashboard.
+- [x] No inline styles in the HTML or SVG markup. Setting `el.style.width` from JS for the bars is fine.
+- [x] Budget ≤ 36 000 bytes (raised for this demo). DEMOS.md greps come back clean. Commit `demo(dashboards): phase 2 build`.
 
 ### Phase 3: QA and ship
 - [ ] Run the DEMOS.md definition-of-done greps and the manual list:
@@ -309,3 +309,37 @@ Resolved with Luan on 21 Nov 2026: the CSV must open correctly, the budget is ra
 
 ### Phase 2 starts with
 `gen.js` and its node checks, then `data.js`, then `index.html` from the example, then `app.js` and `app.css`, working down the Phase 2 checklist.
+
+## Handoff: Phase 2
+
+### Files
+- Created in `software/demo/dashboards/`: `index.html`, `gen.js`, `data.js`, `app.js`, `app.css`. No shared files changed (nothing new for DEMOS.md in Phase 2).
+- Budget: gen 6 804 + data 2 311 + app.js 15 755 + app.css 6 450 = **31 320 bytes** (limit 36 000). DEMOS.md greps are clean. The only URL in the JS is the SVG namespace string (`http://www.w3.org/2000/svg`), which is not a link or a request.
+- The plan file is `docs/plans/demo-dashboards.md` (the brief said `dashboard-demo.md`).
+
+### Checked in Phase 2 (Edge headless, 1280 and 360 wide)
+- No console errors, no sideways scroll at 360 (Dashboard and Staff hours).
+- All 12 range x branch combinations update KPIs, chart (bars and table), top products, staff table, totals and the "Showing ..." line. Revenue tile differs in all 12.
+- Node checks (`gen.js`): same date gives the same numbers; for every "today" from 1 Jan 2026 to 31 Dec 2028 every preset's previous period sits inside the 92-day window (max 91 days back needed); chart blocks add up to the period totals; empty on the 1st of a month; leap February OK.
+- Rand shows `R 106 021,00`, dates `21 Nov 2026`. No dot-decimal rand on screen.
+- CSV: first bytes EF BB BF (BOM), CRLF, filename `kopje-coffee-SAMPLE-payroll-parkhurst-2026-11-14-to-2026-11-20.csv`, quoting tested on `a,b` and `he said "hi"`, toast shown. Report dialog, month select, Save as PDF (calls print with the report copied into `.dash-print`), Close returning focus to the button, Reset (filters, table toggle, dialog) all work.
+- 1 Dec (date faked): "This month" shows the empty state with "Show last month", staff view shows it too, report offers November and October only.
+
+### Differences from the plan (small)
+- Labour cost is 17% overall (Parkhurst about 15%, Melville about 19%). Tuned: Parkhurst base 110, Melville 92 (plan said "about 80").
+- Added a per-week busy/quiet factor (0.93 to 1.07) in `gen.js`, so the vs-previous comparisons show a mix of Better, Worse and About the same instead of "about the same" everywhere.
+- The report can look back further than the 92-day window (September vs August), because sales are worked out from the date, so the window is not a limit.
+- No chart animation at all, so reduced motion is satisfied by default.
+- KPI tile label is "Labour cost" (value shows %).
+
+### Not done / known issues
+- Not tested in a real print preview (Phase 3), nor Excel or Sheets opening.
+- The CSV has no "Café" text (payroll has no products), so the "é" check in Phase 3 only applies if Excel shows names badly; staff names are plain ASCII.
+- Contrast of the chart bars, hatch and badges not measured yet.
+- 768 px and keyboard-only passes not done.
+
+### Phase 3 should test first
+1. Save as PDF in desktop Chrome/Edge: only the report prints, A4, tables not cut.
+2. CSV double-click in Excel with SA regional settings (decimal comma risk, section 6).
+3. 768 px layout (filter bar wraps into 2 rows) and keyboard-only on the radios and report dialog.
+4. Reduced motion and contrast numbers; then add the Software-card link and DEMOS.md lines.
