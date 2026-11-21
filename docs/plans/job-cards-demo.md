@@ -234,27 +234,27 @@ In Phase 3 only: `software/index.html` (the link on the card) and `docs/DEMOS.md
 ## 5. Checklists
 
 ### Phase 2: build
-- [ ] `rules.js`, with node checks of every formula on the seed: required, can complete, value, time on site, totals
-- [ ] `data.js` with local dates. Check the seed totals: 2 done, R 2 150,00 done, R 7 000,00 for all
-- [ ] `index.html` from the example: head order, noindex, no canonical, one h1, three views and nav
-- [ ] Manager board: jobs list, technician cards, "Try this" card (ticks itself off), report button
-- [ ] Assign dialog, then the alert (inline in the frame on desktop, a modal on phone), then Open job with the right focus
-- [ ] Technician job list and select. Job card built once and patched, focus never lost
-- [ ] Checklist radios and problem notes. Notes saved on `change`, not on every keystroke. "Still needed" line
-- [ ] Photos:
-  - [ ] file input and object URL preview, at most 3
-  - [ ] Remove revokes the URL
-  - [ ] sample photo drawn on a canvas
-  - [ ] Reset revokes every URL
-- [ ] Signature:
-  - [ ] Pointer Events with pointer capture, and coalesced events where the browser has them
-  - [ ] sharp on high-DPI screens, redrawn from the strokes on resize
-  - [ ] Clear, and Type name instead
-- [ ] Complete: the missing list with jump buttons, then done with times, a toast and the board updated
-- [ ] Report: tiles, table, problems, per technician, value with "Sample prices. Not an invoice.", "Times are simulated", and the "would be sent to you automatically" line
-- [ ] Desktop grid, sticky phone frame, technician node moved on the 1024px matchMedia change
-- [ ] Accent in app.css, reduced-motion guard, 44px tap targets
-- [ ] Definition-of-done greps and budget (`wc -c` on data.js, rules.js, app.js and app.css)
+- [x] `rules.js`, with node checks of every formula on the seed: required, can complete, value, time on site, totals
+- [x] `data.js` with local dates. Check the seed totals: 2 done, R 2 150,00 done, R 7 000,00 for all
+- [x] `index.html` from the example: head order, noindex, no canonical, one h1, three views and nav
+- [x] Manager board: jobs list, technician cards, "Try this" card (ticks itself off), report button
+- [x] Assign dialog, then the alert (inline in the frame on desktop, a modal on phone), then Open job with the right focus
+- [x] Technician job list and select. Job card built once and patched, focus never lost
+- [x] Checklist radios and problem notes. Notes saved on `change`, not on every keystroke. "Still needed" line
+- [x] Photos:
+  - [x] file input and preview, at most 3 (resized data URL, not an object URL: see Handoff)
+  - [x] Remove drops the photo (nothing to revoke: see Handoff)
+  - [x] sample photo drawn on a canvas
+  - [x] Reset drops every photo (nothing to revoke)
+- [x] Signature:
+  - [x] Pointer Events with pointer capture, and coalesced events where the browser has them
+  - [x] sharp on high-DPI screens, redrawn from the strokes on resize
+  - [x] Clear, and Type name instead
+- [x] Complete: the missing list with jump buttons, then done with times, a toast and the board updated
+- [x] Report: tiles, table, problems, per technician, value with "Sample prices. Not an invoice.", "Times are simulated", and the "would be sent to you automatically" line
+- [x] Desktop grid, sticky phone frame, technician node moved on the 1024px matchMedia change
+- [x] Accent in app.css, reduced-motion guard, 44px tap targets
+- [x] Definition-of-done greps and budget (`wc -c` on data.js, rules.js, app.js and app.css)
 
 ### Phase 3: switch on and QA
 - [ ] Definition of done from DEMOS.md: every grep line and the by-hand list
@@ -324,3 +324,37 @@ In Phase 3 only: `software/index.html` (the link on the card) and `docs/DEMOS.md
 2. `data.js`
 3. `index.html` from the example
 4. `app.js` and `app.css`, working down the Phase 2 checklist
+
+## Handoff: Phase 2
+
+### Files created (no shared files changed)
+`software/demo/job-cards/`: `index.html`, `rules.js`, `data.js`, `app.js`, `app.css`. Only `docs/DEMOS.md` changed besides this file (one budget line).
+- **Size:** data.js 4 275 + rules.js 3 152 + app.js 21 832 + app.css 5 800 = **35 059 bytes**. Over the 30 KB aim, inside the 40 KB Luan approved.
+- **Checks run by me** (headless Chrome, desktop 1280 and phone 390 at 2x, plus 360, 768, 1024, 1440 for layout):
+  - Console: no errors or warnings from the app.
+  - Full flow on both layouts: assign, alert, open job, missing list, "I'm on my way" then "Start job", checks, problem note, photos, drawn and typed signature, complete, board update, report, Reset. On desktop the alert is inline in the phone frame; on phone it is a modal and Open job lands on the card heading.
+  - Report totals: seed 2 of 6 done, R 2 150,00 done, R 7 000,00 for all six (node check). After my test run (JC-1046 done, one photo, one problem) it showed 3 of 6, 4 photos, 3 signatures, 2 problems, R 3 450,00 and R 3 550,00, which match the data.
+  - Reset puts everything back (JC-1046 unassigned, card closed, Manager view). A reload also returns the start state. No localStorage, sessionStorage or cookies used.
+  - Rotate with a drawn signature: the card stays open and the drawing is redrawn from the strokes at the new size.
+  - No sideways scroll at 360, 768, 1024, 1440; demo bar is 48px (one row).
+  - Definition-of-done greps: all clean (no storage or network calls, no outside URLs, noindex present, no inline style or script, no canonical, no missing asset paths).
+
+### Changed from the plan
+- **Photos use a resized copy, not an object URL.** The site's Content-Security-Policy (`img-src 'self' data:` in netlify.toml) does not allow `blob:` images, so an object URL preview would work locally but be blocked on the live site. Instead, `createImageBitmap` shrinks the picture to at most 640px and keeps it as a small JPEG data URL in memory (the Phase 1 "shrink once" fallback, applied from the start). Nothing is uploaded or stored; there are no object URLs, so nothing needs revoking on Remove or Reset. The alternative is adding `blob:` to `img-src`, which loosens the site-wide header, so I did not do it. Say so if you prefer that.
+- **Try this** step 2 is "Open the job on the phone from the WhatsApp alert" (ticks when JC-1046 is opened). The plan's state shape was kept: `ui.tips.opened` and `ui.tips.report`.
+- The h1 and kicker sit above both desktop columns, not inside the left column.
+- Sample photos are drawn on a canvas each time they are shown, so they are not a blob URL either.
+
+### Unfinished or known issues
+- Nothing from the Phase 2 checklist is unfinished.
+- Not tested by me (needs real devices or a person): camera from "Take or add photo", a finger signature and page scroll, keyboard-only path, Esc and focus return, screen reader, reduced motion, contrast by eye. The pasted image I used for the file test was a tiny PNG; a full-size phone photo should be checked for lag.
+- The toast (bottom of screen on phones) can sit over "Mark job complete" for 5 seconds after completion; harmless but worth a look on a real phone.
+- On desktop, if the window is narrowed below 1024px while a job card is open, the card moves to the Technician tab and the view stays on Manager (the card is still open there).
+- The "Try the demo" link on the Software card and the "Linked so far" line are not done: they are Phase 3 jobs as planned.
+
+### Phase 3 should test first
+1. The photo path on a real Android phone (camera, preview, lag), then an iPhone.
+2. A finger-drawn signature: no page scroll, sharp, Clear works, typed name path.
+3. The whole flow by keyboard only, including the assign dialog, Esc, the "Still needed" jump buttons and focus after Open job.
+4. Contrast of `#3fa9d6` by eye, reduced motion, 360px and 414px by eye.
+5. Then the DEMOS.md "When a demo ships" list (card link, "Linked so far").
