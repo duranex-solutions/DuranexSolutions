@@ -265,3 +265,4 @@ Anything cramped, cut off, too small to tap or slow: send me a screenshot and th
   3. Optional: register `demo_name` as a GA custom dimension (steps in DEMOS.md).
   4. Merge to main when you are happy. Nothing is merged or pushed. The bookings demo was already linked, so the "first real demo is linked" condition in DEMOS.md is met.
 - **Not tested:** iOS Safari, Firefox, a real phone, a real screen reader.
+- **Follow-up (Luan, iPad Mini and iPad Pro 13"):** the 9-column Quote sheet scrolled sideways from 640px to about 1180px (the table needs about 843px, the content box is 700 to 830px). Fixed in `app.css` with tighter cell padding and smaller text in the sheet view only for 640 to 1179px. Checked with the new row present at 744, 768, 820, 1024, 1133 and 1180px: no sideways scroll, page or table. Wide cells wrap onto two lines at those sizes.

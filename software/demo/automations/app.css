@@ -35,3 +35,7 @@
 @media (min-width: 1200px) and (max-width: 1299px) {
   .aut-top { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
 }
+@media (min-width: 640px) and (max-width: 1179px) {
+  #aut-sheet .demo-table th, #aut-sheet .demo-table td { padding: var(--s-3) 0.3rem; font-size: var(--fs-small); }
+  #aut-sheet .demo-badge { font-size: 0.75rem; }
+}
