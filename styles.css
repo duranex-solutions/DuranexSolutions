@@ -582,6 +582,17 @@ p {
   transform: translateY(-2px);
 }
 
+.btn-outline {
+  border-color: var(--link);
+  background: transparent;
+  color: var(--link);
+}
+
+.btn-outline:hover,
+.concept-card:hover .btn-outline {
+  background: color-mix(in srgb, var(--link) 12%, transparent);
+}
+
 .link-arrow {
   display: inline-flex;
   align-items: center;
@@ -1104,13 +1115,11 @@ p {
 
 /* Icons that sit directly on a card (no icon box) */
 .included-item > .icon,
-.concept-card > .icon,
 .why-item > .icon {
   color: var(--link);
 }
 
 .included-item > .icon + h3,
-.concept-card > .icon + h3,
 .why-item > .icon + h3 {
   margin-top: var(--s-4);
 }
@@ -1134,21 +1143,47 @@ p {
   scroll-margin-top: calc(var(--header-h) + 16px);
 }
 
-.concept-demo-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-2);
-  min-height: 44px;
-  margin-top: var(--s-2);
-  color: var(--link);
-  font-weight: 500;
-  background: linear-gradient(currentcolor, currentcolor) 0 calc(100% - 8px) / 0 1px no-repeat;
-  transition: background-size var(--t-med) var(--ease);
+/* Software cards: screenshot on top, outline button pinned to the bottom, whole card clickable */
+.concept-card {
+  display: flex;
+  flex-direction: column;
 }
 
-.concept-demo-link:hover,
+.concept-shot {
+  display: block;
+  width: calc(100% + 2 * var(--s-6));
+  height: auto;
+  aspect-ratio: 8 / 5;
+  margin: calc(-1 * var(--s-6)) calc(-1 * var(--s-6)) var(--s-5);
+  border-bottom: 1px solid var(--line);
+  border-radius: calc(var(--r-md) - 1px) calc(var(--r-md) - 1px) 0 0;
+  object-fit: cover;
+}
+
+.concept-card p {
+  margin-bottom: var(--s-5);
+}
+
+.concept-demo-link {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+/* Stretched link: the one real link in the card covers the whole card */
+.concept-demo-link::after {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-md);
+  content: "";
+}
+
+.concept-card:has(.concept-demo-link:focus-visible) {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
+}
+
 .concept-demo-link:focus-visible {
-  background-size: 100% 1px;
+  outline: none;
 }
 
 @media (min-width: 768px) {
@@ -2477,12 +2512,12 @@ legend span,
     opacity: 1;
   }
 
-  :is(.included-item, .concept-card, .why-item) > .icon,
+  :is(.included-item, .why-item) > .icon,
   .service-card-icon {
     transition: transform var(--t-slow) var(--ease);
   }
 
-  :is(.included-item, .concept-card, .why-item):hover > .icon,
+  :is(.included-item, .why-item):hover > .icon,
   .service-card:hover .service-card-icon {
     transform: translateY(-2px) rotate(-6deg) scale(1.08);
   }
