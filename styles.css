@@ -1157,6 +1157,7 @@ p {
   margin: calc(-1 * var(--s-6)) calc(-1 * var(--s-6)) var(--s-5);
   border-bottom: 1px solid var(--line);
   border-radius: calc(var(--r-md) - 1px) calc(var(--r-md) - 1px) 0 0;
+  max-width: none;
   object-fit: cover;
 }
 
