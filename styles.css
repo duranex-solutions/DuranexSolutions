@@ -1161,6 +1161,21 @@ p {
   object-fit: cover;
 }
 
+/* "Your idea" card has no demo, so a navy panel with a gold icon fills the screenshot slot */
+.concept-shot-idea {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(60% 80% at 50% 40%, rgb(211 185 120 / 18%), transparent 70%),
+    var(--navy);
+  color: var(--gold-300);
+}
+
+.concept-shot-idea svg {
+  width: 30%;
+  height: auto;
+}
+
 .concept-card p {
   margin-bottom: var(--s-5);
 }
