@@ -550,7 +550,7 @@ legend { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter
 /* footer */
 .foot { background: var(--carbon); color: #fff; padding: 2rem 1rem 1.5rem; margin-top: 2rem; }
 .foot-mark { font-family: var(--wide); font-stretch: 150%; font-weight: 850; text-transform: uppercase; font-size: 1.25rem; }
-.foot-mark span { font-stretch: 60%; font-weight: 300; color: var(--red); margin-left: 0.3rem; }
+.foot-mark span { font-stretch: 60%; font-weight: 300; color: #ff5a6e; margin-left: 0.3rem; }
 .concept-note { font-size: 0.8125rem; color: var(--chrome); margin: 1rem 0 0; padding-top: 0.9rem; border-top: 1px solid var(--gunmetal); }
 .concept-note a { color: #fff; }
 .concept-note a:hover { color: var(--chrome-soft); }

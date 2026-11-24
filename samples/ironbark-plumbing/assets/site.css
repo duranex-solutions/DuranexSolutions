@@ -38,7 +38,7 @@
   --ink: #1c1f22;
   --ink-soft: #4a4f55;
   --orange: #f26a1b;
-  --orange-ink: #b9480a; /* darker orange for small text on paper (contrast) */
+  --orange-ink: #a63f06; /* darker orange for small text on paper (contrast) */
   --blue: #2b5d8a;
   --concrete: #d9d6cf;
   --rule: #c9c4b8;
@@ -212,7 +212,7 @@ p { margin: 0 0 1em; }
   border: 4px solid var(--orange);
   outline: 2px solid var(--orange);
   outline-offset: 3px;
-  color: var(--orange);
+  color: var(--orange-ink);
   font-size: clamp(1.3rem, 7.6vw, 4.9rem);
   font-weight: 900;
   font-stretch: 110%;

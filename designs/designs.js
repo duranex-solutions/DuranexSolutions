@@ -57,6 +57,7 @@
     } else {
       const name = DESIGNS[slug];
       frame.title = `${name} concept design`;
+      $("#viewer-h1").textContent = `${name} concept design`;
       frame.src = `/samples/${slug}/`;
       stage.hidden = false;
       document.title = `${name} concept design | Duranex Software Solutions`;

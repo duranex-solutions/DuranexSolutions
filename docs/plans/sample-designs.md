@@ -210,12 +210,7 @@ It's linked from:
 - [x] **Phase 7** – Torque Bay Detailing (home + /packages/)
 - [x] **Phase 8** – Ridgeline Armed Response (home + /services/ + /coverage/)
 - [x] **Phase 9** – Screenshots (full-length WebP), gallery `/designs/` cards, viewer, credits page
-- [~] **Phase 10** – Links (Websites, Work, footer on every main page) ✔ done 2026-11-24; still to do: sitemap check, `sample_view` event, full QA. QA covers:
-  - 360/768/1280 and keyboard.
-  - Reduced motion and no-JS.
-  - Lighthouse.
-  - `curl -I` header checks on a deploy preview.
-  - A grep for forbidden content (testimonials, ratings, real phone numbers in samples, inline styles).
+- [x] **Phase 10** – Links (Websites, Work, footer on every main page), `sample_view` event, full automated QA (2026-11-24). Left for Luan: phone test, `git push`, `curl -I` header checks on the deploy preview (see the phase 10, part 2 handoff).
 
 Each sample phase covers: brief → build → its own definition-of-done checks (docs/SAMPLES.md) → credits entry → commit. One sample per phase keeps every commit reviewable.
 
@@ -355,6 +350,27 @@ Each sample phase covers: brief → build → its own definition-of-done checks 
 - **/websites/:** "Want to see what a custom build can look like? See the sample designs →" between the plan cards and the plan notes (`.plan-samples`).
 - Checked with Playwright at 375 and 1280 on `/designs/`, `/work/`, `/websites/`, Torque Bay home and /packages/: no horizontal scroll, no console errors, no failed requests, no broken images. Header has no Designs link; footer has it; current link is Work on /designs/ and /work/.
 - Next: the rest of phase 10 (sitemap check, `sample_view` event in `script.js`, full QA list above). Still open from phase 2: `docs/SAMPLES.md`.
+
+
+**Phase 10, part 2 (2026-11-24), QA pass:**
+- **How:** local Playwright + axe-core (installed outside the project, nothing added to the repo) against a local static server. 27 pages: gallery, credits, viewer for each of the 6 slugs plus a bad slug, all 16 sample pages, `/work/`, `/websites/`.
+- **axe (WCAG 2 A/AA + best-practice) at 375 and 1280, reduced motion:** 0 violations after the fixes below.
+- **Horizontal overflow at 360, 768, 1024, 1440:** none on any of the 27 pages.
+- **Console errors, failed requests, 4xx:** none. Every internal link and `#anchor` on those pages resolves. Images: all load. The only ones not loaded on first paint are Ironbark's three ledger photos inside closed `<details>` (lazy by design; they load when a row is opened).
+- **Robots:** all 16 sample pages `noindex`; viewer and credits `noindex, follow`; `/designs/` is `index, follow`. `netlify.toml` has `X-Robots-Tag: noindex` for `/samples/*`, `/designs/view/*`, `/designs/credits/*` and `/software/demo/*`, and none for `/designs/`.
+- **404s:** `netlify.toml` sends `/CLAUDE.md`, `/AUDIT.md`, `/PLAN.md`, `/docs/*` and `/scripts/*` to the 404 page. Added the bare `/docs` and `/scripts` too (the `/*` rules might not match them). Can't be proven locally: check on the deploy preview.
+- **Honesty grep (samples + gallery + viewer):** no testimonials, reviews, star ratings, awards, "years in business" or client counts. The "%"s are CSS/SVG sizes and "100% rye". The only "clients" is "monthly clients" in a Lindela fee note. Every phone is 000 000 0000 and every email hello@example.co.za; the only real number is Luan's WhatsApp on the gallery, credits and viewer. No inline styles or scripts in samples, no external hosts, all form handlers show "This is a demo – nothing is sent". Every sample page has the "Concept design by Duranex" note, and every sample CSS has a `prefers-reduced-motion` block.
+- **Fixed:**
+  - Viewer had no `<h1>` (all 6 designs): added a visually hidden one that `designs.js` fills in with the design name.
+  - Link names that didn't contain their visible text (Fynbos, Torque Bay, Lindela, Ridgeline logos): aria-labels now start with the visible wording; a missing space between two spans in the Ridgeline and Torque Bay logos added.
+  - Contrast: Ironbark `--orange-ink` darkened (`#b9480a` to `#a63f06`) and the page-title stamp text now uses it (border stays bright orange); Lindela big numerals `#b08d57` to `#9c7a43`; Fynbos large look numbers on the three light looks (1, 3, 4) use `--rose-ink` from 1000px; Torque Bay footer mark red to `#ff5a6e`.
+  - `sample_view`: no new code needed. The existing `[data-track]` click handler in `script.js` already sends it (consent-gated, and only once gtag has loaded); tested with a stub gtag: `sample_view` with the viewer URL. Comment in `script.js` updated.
+- **Sitemap:** `/designs/` only, as planned; samples, viewer and credits are not in it.
+- **Not done / for Luan:**
+  - Phone test and `git push`. After the deploy preview is up: `curl -I` on `/samples/ironbark-plumbing/`, `/designs/view/`, `/designs/credits/` (expect `x-robots-tag: noindex`), `/designs/` (expect none), and on the viewer that the iframe loads (SAMEORIGIN / `frame-ancestors 'self'`). Also open `/docs`, `/docs/plans/sample-designs.md`, `/CLAUDE.md` and `/scripts/screenshots.mjs` (expect the 404 page).
+  - Lighthouse was not run (no Chrome DevTools in this setup); axe covers accessibility only.
+  - `docs/SAMPLES.md` (page template and definition of done) was never written (open since phase 2). The rules live in CLAUDE.md and this plan.
+  - Fynbos and Lindela were only axe-checked with reduced motion on; with motion on, mid-animation frames can show false low-contrast results.
 
 ## 8. Questions for Luan (answered 2026-11-24)
 

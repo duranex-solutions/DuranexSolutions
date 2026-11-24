@@ -159,7 +159,7 @@ h1 {
   font-weight: 200;
   font-size: 3.6rem;
   line-height: 1;
-  color: var(--brass);
+  color: #9c7a43; /* darker brass: 3:1 on paper for large numerals */
   margin: 0 0 0.75rem;
   font-variant-numeric: lining-nums tabular-nums;
 }

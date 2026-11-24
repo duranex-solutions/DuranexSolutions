@@ -456,6 +456,7 @@ b { font-weight: 600; }
   .look--right .look-text { grid-column: 2; padding: 0 2vw 0 0; }
   .look-no { top: 4%; left: 5vw; font-size: clamp(4rem, 7vw, 7rem); color: var(--rose); z-index: 3; }
   .look--right .look-no { left: auto; right: 5vw; }
+  #look-1 .look-no, #look-3 .look-no, #look-4 .look-no { color: var(--rose-ink); }
   .look-word { font-size: clamp(4.5rem, 10.5vw, 12rem); }
   .look--cover .look-word { font-size: clamp(4.5rem, 9.5vw, 10.5rem); }
   .look--cover .look-word i { color: var(--rose-ink); }

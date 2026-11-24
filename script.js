@@ -334,7 +334,7 @@
     }
   }
 
-  /* Analytics: GA4 loads only after the visitor accepts the notice. Events: form_submit, whatsapp_click, call_click, email_click, demo_click */
+  /* Analytics: GA4 loads only after the visitor accepts the notice. Events: form_submit, whatsapp_click, call_click, email_click, demo_click, sample_view (the gallery's View design links, via data-track) */
   const GA_ID = "G-NFSFGBQR6D";
   const CONSENT_KEY = "dx-analytics";
   const readConsent = () => {
