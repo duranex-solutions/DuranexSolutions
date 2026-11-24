@@ -451,6 +451,13 @@ p { margin: 0 0 1em; }
   transition: background-color 0.2s;
 }
 .btn:hover { background: var(--rye); text-decoration: none; }
+.stop-actions .btn--butter, .btn--butter { background: var(--butter); color: var(--rye); text-decoration: none; }
+.stop-actions .btn--butter:hover { background: var(--flour); color: var(--rye); }
+.stop-actions .btn--line, .btn--line { background: transparent; color: var(--flour); text-decoration: none; box-shadow: inset 0 0 0 2px rgba(251, 246, 238, 0.6); }
+.btn--line:hover { background: rgba(251, 246, 238, 0.12); color: var(--flour); }
+.stop-facts { font-weight: 700; color: var(--butter); font-size: 0.95rem; margin-top: 0.9rem; }
+.stop-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.1rem; }
+.stop--flip .stop-actions { justify-content: flex-end; }
 
 /* ---------- Inner pages ---------- */
 .inner { max-width: var(--wrap); margin: 0 auto; padding: 2.5rem var(--pad) 4rem; }

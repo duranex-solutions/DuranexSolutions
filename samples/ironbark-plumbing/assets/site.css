@@ -555,6 +555,24 @@ p { margin: 0 0 1em; }
 @media (max-width: 899.98px) {
   .stamps-inner { display: contents; }
 }
+/* Phones and tablets: get the name, what we do and the buttons onto the first screen */
+@media (max-width: 899.98px) {
+  .stamps { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .stamp-field { padding: 0.55rem 0.7rem 0.65rem; border-bottom: 0; }
+  .stamp-field:nth-child(2n) { border-right: 1px solid var(--rule); }
+  .stamp-field:nth-child(4) { border-right: 0; }
+  .field-label { margin-bottom: 0.3rem; }
+  .stamp { font-size: 0.75rem; }
+  .stamp small { font-size: 0.6rem; }
+  .stamp-note { display: none; }
+  .jc-head { padding-top: 1rem; }
+}
+@media (max-width: 639.98px) {
+  .stamps { grid-template-columns: 1fr 1fr; }
+  .stamp-field:nth-child(-n + 2) { border-bottom: 1px solid var(--rule); }
+  .stamp-field:nth-child(2) { border-right: 0; }
+  .jc-meta { display: none; }
+}
 
 /* ===== Motion off ==================================================== */
 @media (prefers-reduced-motion: reduce) {
