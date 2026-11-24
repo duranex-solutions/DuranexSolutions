@@ -1,4 +1,4 @@
-/* Sample designs: gallery filters + preview scroll, and the viewer page. No dependencies. */
+/* Sample designs: gallery preview scroll, and the viewer page. No dependencies. */
 (() => {
   "use strict";
 
@@ -12,8 +12,8 @@
     "ridgeline-security": "Ridgeline Armed Response",
   };
 
-  // [PLACEHOLDER] WhatsApp number: replace 27XXXXXXXXX with the real number (digits only, no + or spaces).
-  const WHATSAPP_NUMBER = "27XXXXXXXXX";
+  // WhatsApp number for the viewer bar (digits only, no + or spaces).
+  const WHATSAPP_NUMBER = "27836095579";
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -21,33 +21,11 @@
   /* ---------- Gallery ---------- */
   const grid = $("#design-grid");
   if (grid) {
-    const filters = $(".design-filters");
-    const count = $("#design-count");
-    const cards = $$(".design-card", grid);
-
-    if (filters && count) {
-      filters.hidden = false;
-      count.hidden = false;
-      filters.addEventListener("click", (e) => {
-        const btn = e.target.closest("button[data-filter]");
-        if (!btn) return;
-        const wanted = btn.dataset.filter;
-        $$("button", filters).forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
-        let shown = 0;
-        cards.forEach((card) => {
-          const match = wanted === "all" || card.dataset.category === wanted;
-          card.hidden = !match;
-          if (match) shown += 1;
-        });
-        count.textContent = `Showing ${shown} of ${cards.length}`;
-      });
-    }
-
     // Touch: a small Preview button starts the slow scroll, so a tap never follows the link by accident.
     const touch = window.matchMedia("(hover: none)").matches;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (touch && !reduced) {
-      $$(".design-frame", grid).forEach((frame) => {
+      $$(".design-frame:not(.design-frame--still)", grid).forEach((frame) => {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "design-preview-btn";

@@ -7,8 +7,9 @@
 // If Playwright asks for a browser first: npx -y playwright install chromium
 //
 // What it does: serves the folder on a local port, opens each /samples/<slug>/ at 1280 wide with
-// reduced motion and animations off, scrolls once so lazy images load, takes a full-page PNG, then
-// resizes it to 640 wide (capped at 5000px tall, cropped from the top) and saves WebP at quality 0.75
+// reduced motion and animations off, scrolls once so lazy images load, takes a full-page PNG
+// (Torque Bay: one 1280×800 screen instead, see VIEWPORT_ONLY), then resizes it to 640 wide
+// (capped at 5000px tall, cropped from the top) and saves WebP at quality 0.75
 // to assets/images/designs/<slug>-full.webp. The WebP encoding happens in Chromium's canvas,
 // so nothing else needs installing.
 
@@ -26,6 +27,9 @@ const VIEWPORT_HEIGHT = 800;
 const OUT_WIDTH = 640;
 const MAX_HEIGHT = 5000;
 const QUALITY = 0.75;
+// Sticky split layouts: a full-page shot only shows the sticky half at the top and a blank column below,
+// so these are captured as one 1280×800 screen instead (640×400 after resizing).
+const VIEWPORT_ONLY = new Set(["torque-bay"]);
 
 // npx puts its temporary node_modules/.bin on PATH; find playwright from there.
 function loadPlaywright() {
@@ -90,7 +94,7 @@ async function shoot(browser, base, slug) {
   await page.evaluate(() => Promise.all([...document.images].filter((i) => i.loading !== "lazy" || i.complete).map((i) => i.decode().catch(() => {}))));
   await page.evaluate(() => document.fonts.ready);
 
-  const png = await page.screenshot({ fullPage: true, animations: "disabled", caret: "hide", type: "png" });
+  const png = await page.screenshot({ fullPage: !VIEWPORT_ONLY.has(slug), animations: "disabled", caret: "hide", type: "png" });
 
   // Resize + encode in the browser: 640 wide, crop to 5000px tall, WebP.
   const result = await page.evaluate(async ({ b64, width, maxH, quality }) => {

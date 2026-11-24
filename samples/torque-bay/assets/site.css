@@ -508,6 +508,7 @@ legend { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter
 .pack {
   position: relative; background: #fff; border: 1px solid var(--chrome-soft); border-top: 3px solid var(--carbon);
   padding: 1rem 1rem 0.5rem; transition: border-color 0.2s;
+  container-type: inline-size;
 }
 .pack:hover, .pack:focus-visible { border-top-color: var(--red); }
 .pack:focus-visible { outline-offset: 2px; }
@@ -517,6 +518,8 @@ legend { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter
 }
 .pack:hover .pack-no, .pack:focus-visible .pack-no { color: var(--red); }
 .pack h3 { font-family: var(--wide); font-stretch: 125%; font-weight: 780; text-transform: uppercase; font-size: 1.125rem; margin-bottom: 0.5rem; padding-right: 3rem; }
+/* Narrow cards (two across in the 1000-1279px split): a less wide heading so "Maintenance" doesn't run into the stage number */
+@container (max-width: 17.5rem) { .pack h3 { font-stretch: 100%; font-size: 1rem; } }
 .pack-price { margin-bottom: 0.1rem; font-size: 0.875rem; color: var(--steel); }
 .pack-price .p { font-family: var(--wide); font-stretch: 130%; font-weight: 800; font-size: 1.5rem; color: var(--carbon); margin-left: 0.2rem; }
 .pack-time { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--steel); }
@@ -646,6 +649,19 @@ legend { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter
   .title-small { font-size: clamp(2.2rem, 4vw, 3.6rem); }
   .title--inner { font-size: clamp(2rem, 3.4vw, 3rem); }
   .foot { padding-left: clamp(2rem, 4vw, 3.5rem); padding-right: clamp(2rem, 4vw, 3.5rem); }
+}
+
+/* 1000-1279px: the left column is only ~500-640px wide, so tighten the bar and let it wrap rather than spill over the centre line */
+@media (min-width: 1000px) {
+  .bar { flex-wrap: wrap; row-gap: 0.5rem; }
+  .tb-cell { min-width: 0; overflow-wrap: anywhere; }
+}
+@media (min-width: 1000px) and (max-width: 1279px) {
+  .bar { padding: 1rem 1.25rem; }
+  .nav { gap: 0.25rem; }
+  .nav a { padding: 0.45rem 0.5rem; letter-spacing: 0.04em; }
+  .nav a:first-child { display: none; }
+  .tb-cell { padding: 0.7rem 0.75rem; }
 }
 
 @media (min-width: 1000px) and (max-height: 700px) {

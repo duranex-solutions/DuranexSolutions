@@ -1,51 +1,5 @@
 /* Sample designs gallery + viewer. Loaded after /styles.css, uses its tokens. */
 
-/* Filters */
-.design-filters {
-  display: flex;
-  gap: var(--s-2);
-  margin-inline: calc(var(--gutter) * -1);
-  padding: 2px var(--gutter) var(--s-2);
-  overflow-x: auto;
-  scrollbar-width: thin;
-}
-
-.design-filters[hidden],
-.design-count[hidden] {
-  display: none;
-}
-
-.design-filters button {
-  min-height: 44px;
-  flex: none;
-  padding: 0 var(--s-5);
-  border: 1px solid var(--line-dark);
-  border-radius: var(--r-pill);
-  background: transparent;
-  color: var(--ink);
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
-}
-
-.design-filters button:hover {
-  border-color: var(--gold-300);
-}
-
-.design-filters button[aria-pressed="true"] {
-  border-color: var(--gold-300);
-  background: var(--gold-300);
-  color: var(--navy-900);
-}
-
-.design-count {
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: var(--fs-small);
-}
-
 /* Grid + cards */
 .design-grid {
   display: grid;
@@ -66,13 +20,9 @@
   box-shadow: var(--sh-1);
 }
 
-.design-card[hidden] {
-  display: none;
-}
-
 .design-frame {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
   background: var(--navy-900);
 }
@@ -90,7 +40,8 @@
 .design-frame--suurdeeg-bakehouse { --scroll-time: 12s; background: #3b2a20; }
 .design-frame--lindela-ledger { --scroll-time: 6s; background: #f7f5f0; }
 .design-frame--fynbos-fringe { --scroll-time: 11s; background: #fff8f3; }
-.design-frame--torque-bay { --scroll-time: 9s; background: #f5f5f2; }
+/* Torque Bay is one 16:10 screen (sticky split layout), so it fills the frame and doesn't scroll */
+.design-frame--torque-bay { --scroll-time: 0s; background: #f5f5f2; }
 .design-frame--ridgeline-security { --scroll-time: 4s; background: #0b0f14; }
 
 .design-body {
@@ -223,10 +174,6 @@
 @media (min-width: 768px) {
   .design-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .design-frame {
-    aspect-ratio: 16 / 10;
   }
 }
 

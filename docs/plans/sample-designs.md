@@ -6,7 +6,7 @@ Six concept websites for fictional South African businesses, a gallery to browse
 
 **Structure.** Static site, `publish = "."`. Pages are folders with an index.html: `/`, `/websites/`, `/software/`, `/work/`, `/about/`, `/contact/`, `/terms/`, `/privacy/`, `/404.html`. Six software demos live in `/software/demo/<slug>/` on their own kit (`demo.css`, `demo.js`, rules in docs/DEMOS.md). Assets: `/assets/fonts` (10 woff2 + OFL texts), `/assets/images`, `/assets/logos`.
 
-**Nav.** The header is copied into every page by hand: logo, Websites, Software, Work, About, plus a "Get a free quote" button. Below the desktop breakpoint it becomes a Menu toggle, with a `<noscript>` style fallback. The footer nav repeats those links plus Contact. There's also a floating Call/WhatsApp pill. A "Designs" link may be added if it fits (test in §4).
+**Nav.** The header is copied into every page by hand: logo, Websites, Software, Work, About, plus a "Get a free quote" button. Below the desktop breakpoint it becomes a Menu toggle, with a `<noscript>` style fallback. The footer nav repeats those links plus Contact. There's also a floating Call/WhatsApp pill. The gallery is linked from the footer, not the header (§4).
 
 **Shared CSS/JS.** `styles.css` (about 2,670 lines) holds all main-site styles. `script.js` (about 420 lines) runs the menu, the year, the consent banner, GA4 (loaded only after consent) and `data-track` events (form_submit, whatsapp_click, call_click, email_click, demo_click). Demo pages load neither file. Samples follow that pattern: they load no `/styles.css`, no `/script.js` and no GA.
 
@@ -142,23 +142,19 @@ Checks:
 
 **Where it lives.** The gallery is at `/designs/`.
 
-**Top nav (Luan: "top nav if it's not too heavy").** In phase 10, add "Designs" as a 5th text link between Work and About on every main page. Keep it only if:
-- at 1024px and 1280px the header stays on one row with the logo, the 5 links and the quote button, and the spacing doesn't shrink below the current gap;
-- the mobile menu stays one screen tall at 360×640.
+**Not in the top nav (Luan, 2026-11-24: "nav stays simple").** The header keeps Websites, Software, Work, About + quote button. On `/designs/` the header marks **Work** as current, and the BreadcrumbList JSON-LD is Home › Work › Sample designs (no page on the site has a visible breadcrumb).
 
-If either check fails, drop the top-nav link and rely on the links below. Record the result in the handoff.
-
-It's also linked from:
-- `/websites/`: a "See sample designs" button under Plans.
-- `/work/`: a section "Concept designs" next to the two live sites, clearly labelled as concepts.
-- The footer nav: "Sample designs".
+It's linked from:
+- `/websites/`: a "See the sample designs →" text link between the plan cards and the plan notes.
+- `/work/`: a "Sample designs" section after the two live sites and before the CTA, clearly labelled as concept designs, not client work, with 3 thumbnails and a "See all sample designs" button.
+- The footer nav: "Designs" (after Work) on every main page.
 - The sitemap.
 
 **Gallery page** (main-site header, footer and styles, plus `designs.css`; loads `/script.js` like any main page):
 - **Header copy:** "Sample designs. Six concept sites for made-up businesses, each built from scratch to show what a custom-coded site can look like. They're not templates and not for sale; yours would be designed around your business."
-- **Filter buttons:** All, Trades, Food, Professional, Beauty, Auto, Security. They are `<button aria-pressed>` and scroll sideways on mobile. Filtering sets `hidden` on cards, and an `aria-live` line reads "Showing 1 of 6". Without JS the buttons are hidden and all cards show.
+- **No filters:** with six cards a filter bar and "Showing x of 6" added clutter, so they were removed (Luan, 2026-11-24).
 - **Cards:** industry tag, fictional name + town, one-line concept, signature named, a "View design ↗" button (stretched link to `/designs/view/?s=<slug>`), and a small "Open on its own" link to `/samples/<slug>/`.
-- **Screenshot:** sits in a fixed frame (4:5 on mobile, 16:10 from 768px). An `<img>` holds the WebP (no JPG fallback: every browser we target reads WebP), with width/height, `loading="lazy"`, and alt text ("Full-page preview of the Ironbark Plumbing concept design").
+- **Screenshot:** sits in a fixed 16:10 frame at all widths (so phone cards aren't too tall). An `<img>` holds the WebP (no JPG fallback: every browser we target reads WebP), with width/height, `loading="lazy"`, and alt text ("Full-page preview of the Ironbark Plumbing concept design").
 - **Slow scroll:** on hover or `:focus-within`, `object-position` moves from top to bottom over about 10s (linear) and comes back quickly on leave. On touch (`hover: none`) a small "▶ Preview" button on the frame toggles `.is-scrolling`, so a tap doesn't follow the link by accident. Under reduced motion there's no scrolling: the button is hidden and the top of the page shows.
 - **Analytics:** `data-track="sample_view"` on the View links. `script.js` gains one handler, the same consent-gated pattern as `demo_click`.
 
@@ -214,7 +210,7 @@ It's also linked from:
 - [x] **Phase 7** – Torque Bay Detailing (home + /packages/)
 - [x] **Phase 8** – Ridgeline Armed Response (home + /services/ + /coverage/)
 - [x] **Phase 9** – Screenshots (full-length WebP), gallery `/designs/` cards, viewer, credits page
-- [ ] **Phase 10** – Links (Websites, Work, footer on every main page), sitemap, `sample_view` event, full QA. QA covers:
+- [~] **Phase 10** – Links (Websites, Work, footer on every main page) ✔ done 2026-11-24; still to do: sitemap check, `sample_view` event, full QA. QA covers:
   - 360/768/1280 and keyboard.
   - Reduced motion and no-JS.
   - Lighthouse.
@@ -341,13 +337,24 @@ Each sample phase covers: brief → build → its own definition-of-done checks 
 **Phase 9 (2026-11-24), screenshots + gallery cards:**
 - New `scripts/screenshots.mjs` (local only, not part of the site; `netlify.toml` now sends `/scripts/*` to the 404 page). Run from the project folder: `npx -y -p playwright node scripts/screenshots.mjs` (all six) or add slugs to redo one, e.g. `... screenshots.mjs torque-bay`. It serves the folder on a local port, opens each sample home at 1280×800 with reduced motion, animations and transitions off, scrolls once so lazy images load, takes a full-page PNG, then resizes it in Chromium's canvas to 640 wide (cropped from the top if taller than 5000px) and saves WebP q0.75 to `/assets/images/designs/<slug>-full.webp`. No extra packages; it prints the size and any 4xx or JS errors.
 - Results: Ironbark 640×1541 (56 KB), Suurdeeg 640×3014 (141 KB), Lindela 640×1575 (47 KB), Fynbos 640×2729 (88 KB), Torque Bay 640×2336 (69 KB), Ridgeline 640×656 (35 KB). None needed the 5000px crop. No errors or 404s.
-- Because the shots use reduced motion, Fynbos shows its vertical stack of the 7 looks (not the sideways strip) – it reads well as a full-page preview. Torque Bay's sticky car sits at the top with white space below it, which is how the page really lays out. Suurdeeg's bake clock shows the time the script ran.
+- Because the shots use reduced motion, Fynbos shows its vertical stack of the 7 looks (not the sideways strip) – it reads well as a full-page preview. Torque Bay's sticky car sits at the top with white space below it, which is how the page really lays out (replaced by a single-screen shot in phase 10, part 1). Suurdeeg's bake clock shows the time the script ran.
 - **Changed from the plan:** 640 wide (not 800) and WebP only (no JPG fallback), as Luan asked for this phase. §1 and the card spec are updated.
 - Gallery cards: the "Preview coming soon" placeholders are replaced by the screenshots (`<img>` with width/height, lazy, alt "Full-page preview of the <Name> concept design"). Each card's one-liner is now a two-sentence description from its brief (layout + mood). The slow scroll uses a per-card `--scroll-time` (4–12 s by page height) so all cards move at about the same speed; the placeholder gradients became a plain loading colour per sample. Unused `.design-frame-note` styles removed.
 - Checked with Playwright: all 6 images load (640 natural width), no console errors or 404s, no horizontal scroll at 1280 or on a Pixel 7. Desktop hover moves the image and it returns on leave. Touch shows 6 "▶ Preview" buttons; a tap scrolls the image, flips to "■ Stop" and doesn't follow the link. Reduced motion: no movement on hover and no Preview buttons.
 - Viewer and credits page: no change needed this phase (the viewer was built in phase 2, and each sample added its own credits section in phases 3–8).
 - Re-run the script whenever a sample's home page changes.
 - Next: phase 10 (links, sitemap, `sample_view` event, full QA). Still open from phase 2: `docs/SAMPLES.md`; the WhatsApp [PLACEHOLDER] number in `designs.js`.
+
+**Phase 10, part 1 (2026-11-24), gallery tidy-up, Torque Bay fixes, links:**
+- Kept Luan's working-tree changes after review: `/designs/` filter bar and count removed (HTML, JS, CSS; the leftover `data-category` attributes on cards are harmless), `.design-frame` 16:10 at all widths, `WHATSAPP_NUMBER` = 27836095579 (the [PLACEHOLDER] is resolved). Torque Bay `site.css`: from 1000px the bar wraps instead of spilling and title-block cells can wrap; at 1000–1279px the bar is tighter and the "Spec sheet" nav link hides (the logo already links home).
+- Torque Bay checked with Playwright at 1000/1100/1200/1279/1280/1440 on home and /packages/: the bar, logo, nav, Quote button and every title-block cell stay left of the centre divider, nothing overflows its box, logo and nav don't touch, and there's no horizontal scroll. **Found and fixed:** on /packages/ at 1000–1279 the "Maintenance" heading on the two-across stage cards ran into the big stage number. Each `.pack` is now a size container, and under 17.5rem the heading drops to normal width and 1rem. Re-checked 320–1440: no heading touches its number or spills.
+- **Torque Bay preview:** `scripts/screenshots.mjs` has a `VIEWPORT_ONLY` set (just `torque-bay`), captured as one 1280×800 screen → 640×400 WebP (18 KB). It fills the 16:10 frame exactly, so the card has `--scroll-time: 0s` and a `design-frame--still` class. `designs.js` skips the touch Preview button for still frames (5 buttons now, not 6). Alt is "First-screen preview of …".
+- **Nav:** "Designs" removed from the header nav on all 11 main pages (home, websites, software, work, about, contact, privacy, terms, 404, designs, designs/credits). `/designs/` marks Work as `aria-current`; breadcrumb JSON-LD is Home › Work › Sample designs. `/software/demo/*` and `/designs/view/` have no main nav or footer, so they're unchanged.
+- **Footer:** "Designs" added after Work in the footer nav on the same 11 pages.
+- **/work/:** a new "Sample designs" section (kicker "Concept designs") after Charmz Cakes and before the CTA: one line saying these are concept designs for made-up businesses, not client work. Then 3 lazy thumbnails reusing the gallery WebPs (Ironbark, Fynbos, Ridgeline; 3:4 crops on phones, 16:10 from 768px, `tabindex="-1"` + `aria-hidden` so keyboard and screen-reader users get one link), and a "See all sample designs →" button. Styles are in `styles.css` (`.concepts-*`).
+- **/websites/:** "Want to see what a custom build can look like? See the sample designs →" between the plan cards and the plan notes (`.plan-samples`).
+- Checked with Playwright at 375 and 1280 on `/designs/`, `/work/`, `/websites/`, Torque Bay home and /packages/: no horizontal scroll, no console errors, no failed requests, no broken images. Header has no Designs link; footer has it; current link is Work on /designs/ and /work/.
+- Next: the rest of phase 10 (sitemap check, `sample_view` event in `script.js`, full QA list above). Still open from phase 2: `docs/SAMPLES.md`.
 
 ## 8. Questions for Luan (answered 2026-11-24)
 
