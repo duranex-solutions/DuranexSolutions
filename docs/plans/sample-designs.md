@@ -196,10 +196,10 @@ It's linked from:
 ## 6. Phase checklist
 
 - [x] **Phase 1** – Audit + this plan
-- [~] **Phase 2** – Groundwork (partly done: gallery shell, viewer, nav link, netlify.toml, sitemap; see handoff for what is still open)
+- [x] **Phase 2** – Groundwork (gallery shell, viewer, nav link, netlify.toml, sitemap; `docs/SAMPLES.md` written in phase 10)
   - netlify.toml changes (§5).
   - `docs/SAMPLES.md` (page template, rules, definition of done).
-  - Business-name checks.
+  - Business-name checks (web searches done per sample; Google Maps/CIPC by hand still Luan's, see phase 10 part 3).
   - Folder skeleton.
   - Font download + subsetting method.
   - Image download/optimise method and the credits format.
@@ -371,6 +371,16 @@ Each sample phase covers: brief → build → its own definition-of-done checks 
   - Lighthouse was not run (no Chrome DevTools in this setup); axe covers accessibility only.
   - `docs/SAMPLES.md` (page template and definition of done) was never written (open since phase 2). The rules live in CLAUDE.md and this plan.
   - Fynbos and Lindela were only axe-checked with reduced motion on; with motion on, mid-animation frames can show false low-contrast results.
+
+
+**Phase 10, part 3 (2026-11-24), `docs/SAMPLES.md`, remaining checks, /work/ thumbnail:**
+- **Written:** `docs/SAMPLES.md` (page template, honesty rules, images, fonts, motion/accessibility, gallery steps, and a 12-point definition of done). CLAUDE.md already points to the plan; the plan points to SAMPLES.md.
+- **/work/:** the third thumbnail is now Suurdeeg Bakehouse (was Ridgeline). Checked at 375 and 1280.
+- **Lighthouse (local server with gzip, mobile + desktop, home pages + gallery, viewer, credits, /work/):** accessibility 100 and best-practices 100 on all but Fynbos (96, see below); performance 75–100 (gallery mobile 75 and Suurdeeg desktop 81 were the lowest; machine-dependent, TBT swings between runs); SEO 100 on /designs/ and /work/, 63–66 on noindex pages (only the intended "blocked from indexing" audit).
+- **Fynbos contrast flag in Lighthouse:** the "Request a booking" button in the last look reads 2.04:1 only while that look is off-screen in the sideways strip (its text fades in with opacity). It passes axe when scrolled to. Not a real issue.
+- **Keyboard (375 and 1280, all 19 pages):** skip links present, every Tab stop scrolls into view and shows focus (Ironbark form fields use a border + tint change, Torque Bay custom radios show focus on their labels), no traps. **Reduced motion:** no infinite animations or smooth scroll anywhere. **No JS:** headings and text visible on every page; only the viewer needs JS (it has a `<noscript>` list).
+- **Production headers (netlify.toml rules applied by a local test server):** the viewer loads all six samples in its iframe, the phone toggle gives 390px, and all 20 pages have no CSP errors or 404s. Header rules gave `noindex` on samples, viewer and credits only, and 404 for `/docs`, `/docs/*`, `/CLAUDE.md`, `/AUDIT.md`, `/PLAN.md`, `/scripts`, `/scripts/*`. This tests our config, not Netlify itself, so the `curl -I` check on the deploy preview is still worth doing (listed in `docs/SAMPLES.md` item 11).
+- **Still open for Luan:** phone test; Google Maps / CIPC name checks by hand; `git push` after review.
 
 ## 8. Questions for Luan (answered 2026-11-24)
 
