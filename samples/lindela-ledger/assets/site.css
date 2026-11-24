@@ -1,0 +1,456 @@
+/* Lindela Ledger & Tax – concept design by Duranex.
+   Broadsheet layout: 12-column Swiss grid, margin numerals, sidenotes.
+   Own file; nothing shared with the main site or other samples. */
+
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/samples/lindela-ledger/assets/fonts/newsreader-var-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Newsreader";
+  font-style: italic;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/samples/lindela-ledger/assets/fonts/newsreader-italic-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Public Sans";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/samples/lindela-ledger/assets/fonts/public-sans-var-latin.woff2") format("woff2");
+}
+
+:root {
+  --paper: #f7f5f0;
+  --slip: #fdfcf8;
+  --green: #1f3d2b;
+  --graphite: #2e2e2e;
+  --soft: #5a5a56;
+  --brass: #b08d57;
+  --brass-ink: #765a2c; /* brass dark enough for small text */
+  --red-ink: #a4343a;   /* footnote markers only */
+  --rule: #d8d2c4;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans: "Public Sans", "Segoe UI", Arial, sans-serif;
+  --wrap: 1240px;
+  --gut: 1.25rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--graphite);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  font-feature-settings: "kern", "liga";
+}
+
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; color: var(--green); margin: 0; font-optical-sizing: auto; }
+p { margin: 0 0 1rem; }
+a { color: var(--green); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+a:hover { text-decoration-color: var(--brass); }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+img { max-width: 100%; height: auto; display: block; }
+b, strong { font-weight: 650; }
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute; left: 1rem; top: -4rem; z-index: 20;
+  background: var(--green); color: var(--paper); padding: 0.6rem 1rem; text-decoration: none;
+}
+.skip-link:focus { top: 1rem; }
+
+/* ---------- Nameplate ---------- */
+.nameplate {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 1rem var(--gut) 0;
+}
+.np-line {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.15rem 1.5rem;
+  border-top: 1px solid var(--graphite);
+  padding-top: 0.45rem;
+}
+.np-meta {
+  margin: 0;
+  font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--soft);
+}
+.np-meta--mid, .np-meta--end { display: none; }
+.np-name {
+  display: block;
+  margin: 0.6rem 0 0.7rem;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(2.3rem, 10.5vw, 6.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  color: var(--green);
+  text-decoration: none;
+}
+.np-name .amp { font-style: italic; color: var(--brass); font-weight: 300; }
+.np-nav {
+  display: flex; flex-wrap: wrap; gap: 0.1rem 1.4rem;
+  border-top: 3px double var(--graphite);
+  border-bottom: 1px solid var(--graphite);
+  padding: 0.55rem 0;
+}
+.np-nav a {
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--graphite); text-decoration: none; padding: 0.2rem 0;
+}
+.np-nav a:hover { color: var(--green); text-decoration: underline; }
+.np-nav a[aria-current="page"] { color: var(--green); text-decoration: underline; text-decoration-color: var(--brass); text-decoration-thickness: 2px; }
+
+/* ---------- Grid + lead ---------- */
+main { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gut); }
+.lead { padding: 2.75rem 0 2.5rem; }
+.kicker {
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--brass-ink); margin-bottom: 1rem;
+}
+h1 {
+  font-size: clamp(2.3rem, 7vw, 4.9rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  max-width: 15ch;
+  margin-bottom: 1.4rem;
+}
+.lead--inner h1 { font-size: clamp(2.1rem, 6vw, 4.2rem); }
+.standfirst {
+  font-family: var(--serif);
+  font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+  line-height: 1.45;
+  max-width: 36em;
+  color: var(--graphite);
+}
+
+/* ---------- Chapters ---------- */
+.chapter {
+  border-top: 1px solid var(--graphite);
+  padding: 1.25rem 0 2.75rem;
+}
+.numeral {
+  font-family: var(--serif);
+  font-weight: 200;
+  font-size: 3.6rem;
+  line-height: 1;
+  color: var(--brass);
+  margin: 0 0 0.75rem;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.chapter h2 {
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.4rem;
+}
+.text { max-width: 36em; }
+.text > :last-child { margin-bottom: 0; }
+
+.dropcap::first-letter {
+  float: left;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 4.3em;
+  line-height: 0.8;
+  margin: 0.08em 0.1em 0 0;
+  color: var(--green);
+}
+
+/* Footnote markers (red ink) + sidenotes */
+.fn {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 0.72em;
+  vertical-align: super;
+  line-height: 0;
+  color: var(--red-ink);
+  text-decoration: none;
+  padding: 0 0.12em;
+}
+.fn:hover { text-decoration: underline; }
+.note {
+  margin: 1.25rem 0 0;
+  padding: 0.1rem 0 0.1rem 0.9rem;
+  border-left: 2px solid var(--brass);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--soft);
+}
+.note:target { background: #efe8d8; }
+.note-mark {
+  font-family: var(--serif);
+  font-weight: 600;
+  color: var(--red-ink);
+  margin-right: 0.2em;
+}
+.note--plain { color: var(--graphite); }
+.note--plain p { margin-bottom: 0.7rem; }
+.note-head { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brass-ink); }
+.note--figure { border-left: 0; padding: 0; max-width: 340px; }
+.note--figure img { border: 1px solid var(--graphite); }
+.note--figure figcaption { font-size: 0.75rem; margin-top: 0.4rem; color: var(--soft); }
+
+.more {
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-bottom: 1px solid var(--brass);
+  padding-bottom: 0.05rem;
+}
+.more::after { content: " →"; }
+.more:hover { border-bottom-color: var(--green); }
+
+/* Ledger: the three services on the front page */
+.ledger { margin: 1.75rem 0 1.75rem; border-bottom: 1px solid var(--rule); }
+.ledger-row { border-top: 1px solid var(--rule); padding: 1rem 0; }
+.ledger dt { font-family: var(--serif); font-size: 1.45rem; color: var(--green); }
+.ledger dd { margin: 0; }
+.ledger-what { color: var(--graphite); margin: 0.3rem 0 0.4rem !important; }
+.ledger-fee, .fee { font-size: 0.85rem; color: var(--soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ledger-fee b, .fee b { font-family: var(--serif); font-size: 1.3rem; font-weight: 500; color: var(--graphite); }
+
+/* Steps */
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+.steps li {
+  counter-increment: step;
+  position: relative;
+  padding: 0 0 1.1rem 2.4rem;
+}
+.steps li::before {
+  content: counter(step, lower-roman) ".";
+  position: absolute; left: 0; top: -0.1rem;
+  font-family: var(--serif); font-style: italic; font-size: 1.2rem; color: var(--brass-ink);
+}
+.steps b { color: var(--green); }
+
+/* Tables */
+.dates, .fees { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.dates th, .dates td, .fees th, .fees td { text-align: left; vertical-align: top; padding: 0.75rem 0.75rem 0.75rem 0; border-top: 1px solid var(--rule); }
+.dates thead th, .fees thead th {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brass-ink);
+  border-top: 0; border-bottom: 1px solid var(--graphite); padding-bottom: 0.4rem;
+}
+.dates tbody th { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 1.05rem; color: var(--green); white-space: nowrap; width: 9.5rem; }
+.dates tbody tr:last-child > *, .fees tbody tr:last-child > * { border-bottom: 1px solid var(--rule); }
+
+.fees { margin-top: 1.5rem; }
+.fees tbody th { font-family: var(--serif); font-weight: 500; font-size: 1.1rem; color: var(--green); }
+.fees td.fee { text-align: right; padding-right: 0; }
+.fees td.fee span { display: block; font-size: 0.75rem; }
+.fees thead th:last-child { text-align: right; padding-right: 0; }
+/* Phones: stack each fee row */
+@media (max-width: 639px) {
+  .fees thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .fees, .fees tbody, .fees tr, .fees th, .fees td { display: block; width: 100%; }
+  .fees tr { border-top: 1px solid var(--rule); padding: 0.85rem 0; }
+  .fees tbody th, .fees td { border: 0 !important; padding: 0; }
+  .fees td { margin-top: 0.25rem; }
+  .fees td.fee { text-align: left; margin-top: 0.4rem; }
+  .fees td.fee span { display: inline; margin-left: 0.3rem; }
+  .fees tbody tr:last-child { border-bottom: 1px solid var(--rule); }
+}
+
+/* Q&A */
+.qa { margin: 0; }
+.qa dt { font-family: var(--serif); font-size: 1.25rem; font-weight: 500; color: var(--green); line-height: 1.3; }
+.qa dd { margin: 0.35rem 0 1.5rem; }
+.qa dd:last-child { margin-bottom: 0; }
+
+.plain { padding-left: 1.1rem; margin: 0 0 1.25rem; }
+.plain li { margin-bottom: 0.6rem; }
+.plain li::marker { color: var(--brass); }
+
+/* ---------- Checklist builder ---------- */
+.builder { margin-top: 1.75rem; }
+.builder fieldset { border: 0; margin: 0 0 1.5rem; padding: 0; min-width: 0; }
+.builder legend {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--brass-ink); padding: 0; margin-bottom: 0.4rem;
+}
+.builder legend small { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--soft); font-size: 0.8rem; margin-left: 0.3rem; }
+/* Without JS the pickers do nothing, so they're hidden and the full list shows */
+.builder:not(.is-live) .situations, .builder:not(.is-live) .extras, .builder:not(.is-live) .cl-foot { display: none; }
+.js .cl-nojs { display: none; }
+
+.sit {
+  display: flex; gap: 0.7rem; align-items: flex-start;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--rule);
+  cursor: pointer;
+}
+.sit:last-of-type { border-bottom: 1px solid var(--rule); }
+.sit input { margin: 0.3rem 0 0; accent-color: var(--green); width: 1.05rem; height: 1.05rem; flex: none; }
+.sit b { font-family: var(--serif); font-weight: 500; font-size: 1.15rem; color: var(--green); display: block; line-height: 1.25; }
+.sit small { display: block; font-size: 0.82rem; color: var(--soft); }
+.sit:has(input:checked) { box-shadow: inset 3px 0 0 var(--green); padding-left: 0.7rem; }
+
+.ex { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.35rem 0; font-size: 0.92rem; cursor: pointer; }
+.ex input { margin: 0.25rem 0 0; accent-color: var(--green); flex: none; }
+.ex[hidden] { display: none; }
+
+.cl-out {
+  background: var(--slip);
+  border: 1px solid var(--graphite);
+  border-top: 4px double var(--graphite);
+  padding: 1.1rem 1.1rem 1.25rem;
+}
+.cl-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--red-ink); margin-bottom: 0.3rem;
+}
+.cl-label .fn { font-size: 0.85em; }
+.cl-title { font-size: 1.55rem; margin-bottom: 0.6rem; }
+.cl-print-for { display: none; }
+.cl-group h4 {
+  font-family: var(--sans); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--brass-ink); margin: 1.1rem 0 0.2rem;
+}
+.cl-group[hidden], .cl-list li[hidden] { display: none; }
+.cl-list { list-style: none; margin: 0; padding: 0; }
+.cl-list li { border-bottom: 1px dotted #bdb5a3; }
+.cl-list label { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.6rem 0; cursor: pointer; }
+.cl-list input { margin: 0.28rem 0 0; width: 1.05rem; height: 1.05rem; accent-color: var(--green); flex: none; }
+.cl-list small { display: block; font-size: 0.8rem; color: var(--soft); margin-top: 0.1rem; }
+.cl-list input:checked + span { color: var(--soft); text-decoration: line-through; text-decoration-color: var(--brass); }
+.cl-list input:checked + span small { text-decoration: none; }
+.cl-count { font-family: var(--serif); font-style: italic; font-size: 1.05rem; margin: 1rem 0 0.75rem; color: var(--green); }
+.cl-count:empty { display: none; }
+.cl-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.cl-after { font-size: 0.85rem; color: var(--soft); margin: 1rem 0 0; }
+.cl-foot { margin: 0.75rem 0 0; }
+
+/* ---------- Buttons + form ---------- */
+.btn {
+  display: inline-block;
+  font: inherit; font-size: 0.82rem; font-weight: 650; letter-spacing: 0.07em; text-transform: uppercase;
+  background: var(--green); color: var(--paper);
+  border: 1px solid var(--green); border-radius: 0;
+  padding: 0.75rem 1.3rem;
+  cursor: pointer; text-decoration: none;
+}
+.btn:hover { background: #163021; }
+.btn[hidden] { display: none; }
+.btn--quiet { background: transparent; color: var(--green); }
+.btn--quiet:hover { background: #ece7da; }
+
+.form { display: grid; gap: 1.1rem; margin-top: 1.5rem; }
+.field { display: grid; gap: 0.25rem; min-width: 0; }
+.field label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brass-ink); }
+.opt { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--soft); }
+.field input, .field select, .field textarea {
+  font: inherit; color: var(--graphite);
+  background: transparent;
+  border: 0; border-bottom: 1px solid var(--graphite); border-radius: 0;
+  padding: 0.45rem 0;
+  width: 100%;
+}
+.field textarea { border: 1px solid var(--graphite); padding: 0.55rem 0.65rem; resize: vertical; }
+.field select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--green) 50%), linear-gradient(135deg, var(--green) 50%, transparent 50%); background-position: right 0.4rem center, right 0.1rem center; background-size: 0.3rem 0.3rem; background-repeat: no-repeat; padding-right: 1.2rem; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 1px 0 var(--green); }
+.form-end { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; }
+.form-status { margin: 0; font-family: var(--serif); font-style: italic; color: var(--red-ink); }
+
+/* ---------- Colophon ---------- */
+.colophon {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 1rem var(--gut) 2.5rem;
+  font-size: 0.82rem; color: var(--soft);
+}
+.colophon::before { content: ""; display: block; border-top: 3px double var(--graphite); margin-bottom: 1rem; }
+.colophon p { margin: 0 0 0.35rem; }
+.colophon-name { font-family: var(--serif); font-size: 1.3rem; color: var(--green); }
+.concept-note { margin-top: 0.9rem !important; }
+
+/* ---------- Wider screens ---------- */
+@media (min-width: 640px) {
+  :root { --gut: 2rem; }
+  .np-meta--mid { display: block; }
+  .form { grid-template-columns: 1fr 1fr; }
+  .field--wide, .form-end { grid-column: 1 / -1; }
+  .ledger-row { display: grid; grid-template-columns: 9rem minmax(0, 1fr) auto; gap: 1.5rem; align-items: baseline; }
+  .ledger-what { margin: 0 !important; }
+  .extras { columns: 2; column-gap: 1.5rem; }
+  .extras legend { column-span: all; }
+  .ex { break-inside: avoid; }
+}
+
+@media (min-width: 900px) {
+  .np-meta--end { display: block; }
+  .grid, .chapter { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 1.5rem; }
+  .lead > * { grid-column: 3 / 11; }
+  .lead { padding: 4rem 0 3.5rem; }
+  .chapter { padding: 1.5rem 0 4rem; }
+  .numeral {
+    grid-column: 1 / 3;
+    font-size: clamp(4.5rem, 7vw, 6.5rem);
+    margin: -0.35rem 0 0;
+    align-self: start;
+  }
+  .chapter-body { grid-column: 3 / 13; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); column-gap: 1.5rem; align-content: start; }
+  .chapter-body > * { grid-column: 1 / -1; }
+  .chapter-body > h2 { grid-column: 1 / 8; }
+  .row { display: grid; grid-template-columns: subgrid; }
+  .row > .text { grid-column: 1 / 7; max-width: none; }
+  .row > .note { grid-column: 8 / 11; margin: 0.3rem 0 0; padding: 0.5rem 0 0; border-left: 0; border-top: 1px solid var(--brass); align-self: start; }
+  .row > .note--figure { border-top: 0; padding: 0; margin-top: 0.4rem; }
+  .ledger, .fees { grid-column: 1 / 11; }
+  .ledger-row { grid-template-columns: 11rem minmax(0, 1fr) 11rem; }
+  .ledger-fee { text-align: right; }
+  .fees tbody th { width: 30%; }
+  .fees td.fee { width: 9rem; }
+
+  /* Builder: picker on the left, the slip on the right */
+  .builder { display: grid; grid-template-columns: subgrid; grid-template-rows: auto 1fr; align-items: start; }
+  .builder > fieldset, .builder.is-live > .situations { grid-column: 1 / 5; }
+  .builder > .extras { grid-column: 1 / 5; columns: 1; }
+  .builder > .cl-out { grid-column: 5 / 11; grid-row: 1 / span 2; padding: 1.5rem 1.75rem 1.75rem; }
+  .builder:not(.is-live) > .cl-out { grid-column: 1 / 8; grid-row: auto; }
+}
+
+@media (min-width: 1100px) {
+  .np-name { margin-top: 0.8rem; }
+  .row > .text { grid-column: 1 / 7; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* ---------- Print: only the checklist slip ---------- */
+@media print {
+  @page { margin: 16mm; }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .skip-link, .np-line, .np-nav, .lead, .numeral, .chapter h2, .row, .situations, .extras,
+  .cl-actions, .cl-foot, .cl-count, .chapter:not(.chapter--tool), .colophon { display: none !important; }
+  .nameplate, main { max-width: none; padding: 0; }
+  .np-name { font-size: 24pt; margin: 0 0 8pt; color: #000; }
+  .chapter { border: 0; padding: 0; display: block; }
+  .chapter-body, .builder { display: block; }
+  .cl-out { border: 0; border-top: 2pt solid #000; padding: 8pt 0 0; background: none; }
+  .cl-print-for { display: block; font-size: 10pt; margin: 0 0 4pt; }
+  .cl-label, .cl-label .fn { color: #000; }
+  .cl-label .fn { display: none; }
+  .cl-group { break-inside: avoid; }
+  .cl-list li { border-bottom: 0.5pt solid #999; }
+  .cl-list input:checked + span { color: #000; }
+  .cl-after::after { content: " Lindela Ledger & Tax is a fictional business (concept design by Duranex)."; }
+}
