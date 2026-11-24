@@ -200,7 +200,7 @@ It's also linked from:
 ## 6. Phase checklist
 
 - [x] **Phase 1** – Audit + this plan
-- [ ] **Phase 2** – Groundwork
+- [~] **Phase 2** – Groundwork (partly done: gallery shell, viewer, nav link, netlify.toml, sitemap; see handoff for what is still open)
   - netlify.toml changes (§5).
   - `docs/SAMPLES.md` (page template, rules, definition of done).
   - Business-name checks.
@@ -231,6 +231,17 @@ Each sample phase covers: brief → build → its own definition-of-done checks 
 - Key finding: the sitewide `X-Frame-Options: DENY` and `frame-ancestors 'none'` must become SAMEORIGIN / 'self' before the viewer can work (§5.1).
 - All 7 questions answered (§8).
 - Next: Phase 2.
+
+**Phase 2 (2026-11-24), scope set by Luan: gallery + viewer + nav + netlify.toml:**
+- Done: `/designs/` gallery (filters, 6 placeholder cards, aria-live count, no-JS fallback, touch "Preview" button), `/designs/view/?s=<slug>` viewer (48px sticky bar, back link, WhatsApp link, phone/desktop toggle, slug whitelist, unknown/empty/`__proto__` slugs show "Design not found", noscript list of 6 links), `designs/designs.css`, `designs/designs.js`.
+- Nav: "Designs" link added between Work and About in the header of all 9 main pages. Footer links still phase 10.
+- netlify.toml: sitewide `X-Frame-Options: SAMEORIGIN`, CSP `frame-ancestors 'self'`, noindex headers for `/samples/*`, `/designs/view/*`, `/designs/credits/*`. Sitemap: `/designs/` added. Gallery stays indexable.
+- Checked locally with Playwright: 6 cards, filter + count, 360/1024/1280 no horizontal scroll, header on one row at 1024 and 1280, mobile menu bottom at 454px of 640 (fits), viewer toggle phone 390px / desktop full width and hidden under 768px. No console errors except 404s from the viewer iframe, because the `/samples/<slug>/` pages don't exist yet.
+- **[PLACEHOLDER] WhatsApp number:** the viewer uses `27XXXXXXXXX` (one constant, `WHATSAPP_NUMBER` in designs.js) as Luan asked. Replace it before launch; the site's real number is 27836095579.
+- Not done yet (still in phase 2 list): `docs/SAMPLES.md`, business-name checks, folder skeleton, font/image methods, credits page. `curl -I` header check needs a Netlify deploy preview (headers don't apply locally).
+- Cards show CSS placeholder previews ("Preview coming soon"); real screenshots arrive in phase 9. The scroll-on-hover CSS for the `<img>` is already in place.
+- Header test (§4): 5 links + button fit on one row at 1024 and 1280, menu fits 360×640, so the nav link stays. Gap not measured against the old spacing; eyeball it on the preview.
+- Next: finish the groundwork items above, then phase 3.
 
 ## 8. Questions for Luan (answered 2026-11-24)
 

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en-ZA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Design viewer | Duranex Software Solutions</title>
+    <meta name="description" content="View a Duranex concept design full-size." />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="author" content="Duranex Software Solutions" />
+    <meta name="theme-color" content="#0f1d34" />
+    <link rel="icon" href="/assets/logos/favicon.ico" sizes="any" />
+    <link rel="icon" href="/assets/logos/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/assets/logos/apple-touch-icon.png" />
+    <link rel="preload" href="/assets/fonts/xn7gYHE41ni1AdIRggexSg.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/designs/designs.css" />
+    <script src="/designs/designs.js" defer></script>
+  </head>
+  <body class="viewer-body" data-page="design-viewer">
+    <header class="viewer-bar">
+      <a class="viewer-back" href="/designs/"><span aria-hidden="true">←</span> All designs</a>
+      <p class="viewer-msg"><span class="viewer-msg-long">Concept design by Duranex – want one like this?</span><span class="viewer-msg-short">Want one like this?</span></p>
+      <div class="viewer-tools">
+        <a class="viewer-wa" id="viewer-wa" href="/contact/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Luan about this design (opens in a new tab)">WhatsApp</a>
+        <div class="viewer-toggle" id="viewer-toggle" role="group" aria-label="Preview size" hidden>
+          <button type="button" data-mode="phone" aria-pressed="false">Phone</button>
+          <button type="button" data-mode="desktop" aria-pressed="true">Desktop</button>
+        </div>
+      </div>
+    </header>
+    <main id="main" class="viewer-main">
+      <div class="viewer-stage is-desktop" id="viewer-stage" hidden>
+        <iframe id="viewer-frame" class="viewer-frame" title="Concept design" src="about:blank"></iframe>
+      </div>
+      <section class="viewer-missing" id="viewer-missing" hidden>
+        <h1>Design not found</h1>
+        <p>That design doesn't exist. Pick one from the gallery.</p>
+        <a class="btn btn-primary" href="/designs/">Back to all designs</a>
+      </section>
+      <noscript>
+        <section class="viewer-missing viewer-noscript">
+          <h1>Pick a design</h1>
+          <p>The viewer needs JavaScript. You can open each design on its own:</p>
+          <ul>
+            <li><a href="/samples/ironbark-plumbing/">Ironbark Plumbing &amp; Geysers</a></li>
+            <li><a href="/samples/suurdeeg-bakehouse/">Suurdeeg Bakehouse</a></li>
+            <li><a href="/samples/lindela-ledger/">Lindela Ledger &amp; Tax</a></li>
+            <li><a href="/samples/fern-fringe/">Fern &amp; Fringe Hair Studio</a></li>
+            <li><a href="/samples/torque-bay/">Torque Bay Detailing</a></li>
+            <li><a href="/samples/ridgeline-security/">Ridgeline Armed Response</a></li>
+          </ul>
+        </section>
+      </noscript>
+    </main>
+  </body>
+</html>
