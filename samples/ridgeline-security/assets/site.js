@@ -37,8 +37,6 @@
       chip.className = "map-chip " + (zone ? "is-in" : "is-out");
       chip.hidden = false;
     }
-    const box = result && result.closest(".panel");
-    if (announce && box && box.scrollHeight > box.clientHeight) box.scrollTop = box.scrollHeight;
     if (live && announce) live.textContent = `${name}: ${status}${zone ? `, zone ${zone}` : ""}.`;
     if (coverLink) coverLink.href = "/samples/ridgeline-security/coverage/?suburb=" + slug;
     if (document.body.classList.contains("page-coverage") && announce) {
