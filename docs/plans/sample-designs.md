@@ -207,7 +207,7 @@ It's also linked from:
   - Folder skeleton.
   - Font download + subsetting method.
   - Image download/optimise method and the credits format.
-- [ ] **Phase 3** – Ironbark Plumbing (home + /geysers/)
+- [x] **Phase 3** – Ironbark Plumbing (home + /geysers/), plus a first version of `/designs/credits/`
 - [ ] **Phase 4** – Suurdeeg Bakehouse (home + /menu/ + /pre-order/)
 - [ ] **Phase 5** – Lindela Ledger & Tax (home + /services/ + /checklist/)
 - [ ] **Phase 6** – Fern & Fringe (home + /services/ + /book/)
@@ -242,6 +242,20 @@ Each sample phase covers: brief → build → its own definition-of-done checks 
 - Cards show CSS placeholder previews ("Preview coming soon"); real screenshots arrive in phase 9. The scroll-on-hover CSS for the `<img>` is already in place.
 - Header test (§4): 5 links + button fit on one row at 1024 and 1280, menu fits 360×640, so the nav link stays. Gap not measured against the old spacing; eyeball it on the preview.
 - Next: finish the groundwork items above, then phase 3.
+
+**Phase 3 (2026-11-24), Ironbark Plumbing & Geysers:**
+- Built `/samples/ironbark-plumbing/` (home) and `/geysers/`, with their own `assets/site.css`, `assets/site.js`, `assets/icon.svg`, fonts and images. Nothing shared with the main site.
+- Layout per brief: a job card with a punched-hole edge and a sticky stamp column (Area, Hours, Callout, Call now). On mobile it becomes a 2×2 stamp grid above the card. The first screen is the job-card header with the name stamped across it, and there's no photo. The services ledger has 8 numbered rows using `<details>` (open inline, works without JS). Then come 02 "What's wrong?", 03 How a job runs, and 04 Book a plumber (demo form).
+- Signature: the triage is 3 radio rows (where / what / how bad). It gives an urgency stamp, a "do this now" step, the likely cause and a pre-filled message to the demo number. The buttons are Send (shows the demo notice), Copy and "Put in booking form". No network calls.
+- /geysers/: a numbered SVG cutaway of a geyser (6 parts), price-from tables for repairs and replacement, warning signs, and "geyser burst? do this first".
+- Fonts: Archivo variable (wdth 62–125, wght 100–900) + IBM Plex Mono 400/500/600, latin woff2 from Google Fonts, plus OFL texts. Palette as briefed. A darker orange (#b9480a) is used for small text so it has enough contrast on the paper.
+- Images: 4 Unsplash photos (copper pipes, sink drain, wrenches, copper pipe end), 560–720px WebP, 3–25 KB each, with width/height set, all lazy and below the fold, in the "stapled" frames with a CSS paper clip. No faces. The wrench photo has tiny old embossing that can't be read at display size. There's no geyser photo (the stock ones had brand labels), so the geyser is SVG.
+- Credits: `/designs/credits/index.html` created early (main-site shell, `noindex, follow`, no canonical), with the Ironbark section (`#ironbark-plumbing`). Phase 9 adds the other samples to it.
+- Name check: a web search for "Ironbark Plumbing" South Africa found no SA business (only an Australian suburb). Name kept. Google Maps/CIPC not checked by hand.
+- Prices (fictional, from R…): callout R550, after hours R950, taps R450, leaks R650, drains R750, geyser repair R850, CoC R1 650, rough-ins R4 500, geysers R8 450 / R9 450 / R10 950 (100/150/200 L), heat pump R24 500.
+- Checked with Playwright behind a copy of the production CSP: 320/360/768/1000/1280 have no horizontal scroll (all ledger rows open). No console errors, CSP violations or 404s. Fonts load. The triage and form show the demo text. Under reduced motion the animation is `none`. Without JS the ledger still opens. No inline styles or scripts.
+- Compared against other samples: none are built yet, so there was nothing to compare. The main-site look (navy/gold, Manrope) isn't reused.
+- Next: phase 4 (Suurdeeg). Still open from phase 2: `docs/SAMPLES.md`.
 
 ## 8. Questions for Luan (answered 2026-11-24)
 
