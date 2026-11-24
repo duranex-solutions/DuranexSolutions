@@ -74,7 +74,7 @@ Every sample page has:
 - **Signature: "What's wrong?" triage.** Three taps (where: kitchen/bathroom/geyser; what: leak/no hot water/blocked; how bad: dripping/flooding) give the likely cause and a "do this now" step (for example, close the stopcock). They also build a pre-filled message to the fake number.
 - **Inner page:** `/geysers/` (geyser repair and replacement, with a price-from table).
 
-### 2.2 Food – Suurdeeg Bakehouse, Parys (`suurdeeg-bakehouse`)
+### 2.2 Food – Suurdeeg Bakehouse, Philippolis (`suurdeeg-bakehouse`) (was Parys, moved in phase 4)
 - **Mood:** warm, early-morning, flour on the counter.
 - **Layout ("the baker's day"):** the home page is a vertical timeline with the hours as its spine, from 04:30 (ovens on) to 14:00 (sold out). Each hour is a stop showing what comes out of the oven then, with the photo and text swapping sides. The page footer is the "closed, see you tomorrow" stop.
 - **Fonts:** Fraunces (soft, wonky optical serif) + Karla.
@@ -208,7 +208,7 @@ It's also linked from:
   - Font download + subsetting method.
   - Image download/optimise method and the credits format.
 - [x] **Phase 3** – Ironbark Plumbing (home + /geysers/), plus a first version of `/designs/credits/`
-- [ ] **Phase 4** – Suurdeeg Bakehouse (home + /menu/ + /pre-order/)
+- [x] **Phase 4** – Suurdeeg Bakehouse (home + /menu/ + /pre-order/)
 - [ ] **Phase 5** – Lindela Ledger & Tax (home + /services/ + /checklist/)
 - [ ] **Phase 6** – Fern & Fringe (home + /services/ + /book/)
 - [ ] **Phase 7** – Torque Bay Detailing (home + /packages/)
@@ -256,6 +256,20 @@ Each sample phase covers: brief → build → its own definition-of-done checks 
 - Checked with Playwright behind a copy of the production CSP: 320/360/768/1000/1280 have no horizontal scroll (all ledger rows open). No console errors, CSP violations or 404s. Fonts load. The triage and form show the demo text. Under reduced motion the animation is `none`. Without JS the ledger still opens. No inline styles or scripts.
 - Compared against other samples: none are built yet, so there was nothing to compare. The main-site look (navy/gold, Manrope) isn't reused.
 - Next: phase 4 (Suurdeeg). Still open from phase 2: `docs/SAMPLES.md`.
+
+**Phase 4 (2026-11-24), Suurdeeg Bakehouse:**
+- **Town changed: Parys → Philippolis.** A web search for "Suurdeeg" found no SA business, but Parys already has a real, family-run "Artisan Sourdough Bakery & Café" (Suurdeeg is Afrikaans for sourdough), which counts as a close match in the same industry. The name stays; the town moved to Philippolis, where a search found no sourdough bakery. The gallery card in `/designs/` now says Philippolis. Google Maps/CIPC not checked by hand.
+- Built `/samples/suurdeeg-bakehouse/` (home), `/menu/` and `/pre-order/`, with their own `assets/site.css`, `assets/site.js`, `assets/icon.svg`, fonts and images. Nothing shared with the main site or with Ironbark.
+- Layout per brief: the home page is the baker's day on an hour spine. Phones have the spine on the left; from 900px it sits in the centre and the photo and text swap sides at each stop. The first screen is the 04:30 "Ovens on" stop, which holds the h1. The page starts dark (rye) before sunrise, passes a 06:00 "first light" band and turns flour-pale. The stops are 04:30, 05:30, 06:30, 07:00 (doors open, text only), 07:30, 09:00, 10:30, 12:00 and 13:00 (tomorrow's dough). The footer is the dark 14:00 "Closed. See you tomorrow." stop, with the address, hours and the concept note.
+- Signature: a sticky bake clock with an SVG dial whose hands show SAST (always UTC+2, no DST maths). It highlights the current stop (`aria-current="time"`, butter-filled badge, "Out of the oven now" tag), marks the next bake with a dashed badge and counts down to it ("Cinnamon buns in 20 min"). It also has a "Jump to now" link. Before 04:30 it shows today's first bake. After 14:00 it shows tomorrow's first bake, or Tuesday's when tomorrow is Monday (closed). On Mondays it says closed and shows Tuesday's first bake. It refreshes every 20 s and only announces through `aria-live` when the stop changes. A "Try another time" slider pretends it's a Saturday, so people viewing at night can see it work. Under reduced motion it shows the same with no pulse and no smooth scroll. Without JS it shows static hours.
+- /menu/: a chalkboard in a crust-wood frame (Bread, Pastries, Coffee & tea), with dotted leaders, chalk SVG doodles and the hour each item comes out. There's also an honest allergy note.
+- /pre-order/: a Saturday pre-order demo form with quantity fields, a live "Your bag" total, collection slots and details. The next Saturday and the Thursday 17:00 cutoff are worked out in SAST. Submitting shows "This is a demo – nothing is sent" (with an "add an item first" message if the bag is empty).
+- **Prices deviate from the R50 rule (Luan to confirm):** bakery items rounded to R50 would look fake (a R50 croissant), so they're rounded to R5 and shown as plain menu prices, not "from R…". Loaves R85–R105, croissant R32, cinnamon bun R38, flat white R38, whole melktert R260.
+- Fonts: Fraunces roman variable (opsz, wght 300–800, SOFT, WONK; 121 KB), Fraunces italic (opsz, wght 400–600; 82 KB) and Karla variable (300–700; 32 KB), all latin woff2 from Google Fonts, plus OFL texts. Headings use SOFT 100 and WONK 1. Small sage text uses a darker sage (#566b52) for contrast.
+- Images: 9 Unsplash photos (flour dusting, scored loaf, rye, croissants, cinnamon buns, sliced loaf, flatbreads, shaping dough, dough resting), 560–800px WebP, 14–93 KB, with width/height set. The first one has `fetchpriority="high"`; the rest are lazy (the pre-order photo is above the fold, so it isn't lazy). No faces (hands and arms only) and no logos. All were checked as "Free to use under the Unsplash License". I skipped one kneading photo that sat under Unsplash's unexplained `/flagged/` path. Credits are added to `/designs/credits/#suurdeeg-bakehouse`.
+- Checked with Playwright behind the production CSP: 320/360/768/1280 have no horizontal scroll on all 3 pages. No console errors, CSP violations or 404s. All 3 font files load, and all 8 home images load with the right proportions. The clock was tested at 8 fixed SAST times (Sat 03:10/05:00/08:40/12:30/15:00, Sun 15:00, Mon 10:00, Tue 06:45), plus a 20-minute tick (09:00 changeover announced), the preview slider and "back to real time". The Saturday/cutoff dates were checked for Wed, Thu after 17:00, Fri, Sat and Sun. Basket maths and clamping work. No inline styles or scripts.
+- Compared with Ironbark: the structure differs (centred alternating timeline vs sticky stamp sidebar + ledger), and so do the first screen (dark photo + serif name vs paper job card), the image treatment (torn paper vs stapled photos), fonts, palette and signature (live clock vs triage). The only shared idea is a price row with the price on the right, which is normal for any menu. No change needed.
+- Next: phase 5 (Lindela). Still open from phase 2: `docs/SAMPLES.md`.
 
 ## 8. Questions for Luan (answered 2026-11-24)
 

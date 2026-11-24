@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en-ZA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Saturday pre-order | Suurdeeg Bakehouse (concept design)</title>
+    <meta name="description" content="Pre-order sourdough and pastries for Saturday collection at a fictional Philippolis bakery. Demo form: nothing is sent. Concept design by Duranex." />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#3b2a20" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Suurdeeg Bakehouse Saturday pre-order – concept design by Duranex" />
+    <meta property="og:description" content="A Saturday bread pre-order form with a live basket total. Concept design, not a real business." />
+    <meta property="og:url" content="https://duranexsolutions.com/samples/suurdeeg-bakehouse/pre-order/" />
+    <meta property="og:image" content="https://duranexsolutions.com/samples/suurdeeg-bakehouse/assets/img/dough-rest.webp" />
+    <meta property="og:locale" content="en_ZA" />
+    <link rel="icon" href="/samples/suurdeeg-bakehouse/assets/icon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/samples/suurdeeg-bakehouse/assets/fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/samples/suurdeeg-bakehouse/assets/fonts/karla-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/samples/suurdeeg-bakehouse/assets/site.css" />
+    <script src="/samples/suurdeeg-bakehouse/assets/site.js" defer></script>
+  </head>
+  <body class="page-order">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="masthead">
+      <a class="wordmark" href="/samples/suurdeeg-bakehouse/" aria-label="Suurdeeg Bakehouse, home">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="22" rx="17" ry="12" fill="#8a4b22" /><path d="M10 19c4-3 7-3 10 0M18 16c4-3 7-3 10 0M24 21c3-2 6-2 8 0" fill="none" stroke="#f2c46d" stroke-width="2.2" stroke-linecap="round" /></svg>
+        <span>Suurdeeg <em>Bakehouse</em></span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="/samples/suurdeeg-bakehouse/">The day</a>
+        <a href="/samples/suurdeeg-bakehouse/menu/">Menu</a>
+        <a href="/samples/suurdeeg-bakehouse/pre-order/" aria-current="page">Saturday pre-order</a>
+      </nav>
+    </header>
+
+    <main id="main" class="inner">
+      <div class="order-head">
+        <div class="inner-head">
+          <p class="stop-kicker">Collect <span id="sat-date">this Saturday</span>, 07:00–11:00</p>
+          <h1>Saturday pre-order</h1>
+          <p class="lede">Saturdays sell out by about 10:00. Tell us what you want by <strong id="cutoff">Thursday 17:00</strong> and we’ll bake it, bag it and write your name on it. You pay when you collect: card, cash or SnapScan.</p>
+        </div>
+        <figure class="stop-photo torn-b order-photo">
+          <div class="torn"><img src="/samples/suurdeeg-bakehouse/assets/img/dough-rest.webp" alt="A round of dough resting on a floured bench, flour drifting in the light" width="800" height="534" decoding="async" /></div>
+          <figcaption>Stock photo · Friday night’s dough</figcaption>
+        </figure>
+      </div>
+
+      <form class="order" id="order" data-demo action="#order">
+        <div class="order-main">
+          <fieldset class="order-group">
+            <legend>Bread</legend>
+            <div class="qty-row"><label for="q-white">Country white sourdough <small>800 g</small></label><span class="qty-price">R85</span><input id="q-white" name="white" type="number" min="0" max="10" value="0" inputmode="numeric" data-price="85" data-name="Country white" /></div>
+            <div class="qty-row"><label for="q-whole">Wholewheat sourdough <small>800 g</small></label><span class="qty-price">R90</span><input id="q-whole" name="whole" type="number" min="0" max="10" value="0" inputmode="numeric" data-price="90" data-name="Wholewheat" /></div>
+            <div class="qty-row"><label for="q-rye">Rye &amp; caraway <small>1 kg</small></label><span class="qty-price">R105</span><input id="q-rye" name="rye" type="number" min="0" max="10" value="0" inputmode="numeric" data-price="105" data-name="Rye &amp; caraway" /></div>
+            <div class="qty-row"><label for="q-seed">Seeded loaf <small>900 g</small></label><span class="qty-price">R95</span><input id="q-seed" name="seed" type="number" min="0" max="10" value="0" inputmode="numeric" data-price="95" data-name="Seeded loaf" /></div>
+            <div class="qty-row"><label for="q-bag">Baguette</label><span class="qty-price">R40</span><input id="q-bag" name="baguette" type="number" min="0" max="10" value="0" inputmode="numeric" data-price="40" data-name="Baguette" /></div>
+            <label class="check"><input type="checkbox" name="slice" /> <span>Slice my loaves (free)</span></label>
+          </fieldset>
+
+          <fieldset class="order-group">
+            <legend>Pastries</legend>
+            <div class="qty-row"><label for="q-crois">Butter croissant</label><span class="qty-price">R32</span><input id="q-crois" name="croissant" type="number" min="0" max="24" value="0" inputmode="numeric" data-price="32" data-name="Croissant" /></div>
+            <div class="qty-row"><label for="q-pain">Pain au chocolat</label><span class="qty-price">R38</span><input id="q-pain" name="pain" type="number" min="0" max="24" value="0" inputmode="numeric" data-price="38" data-name="Pain au chocolat" /></div>
+            <div class="qty-row"><label for="q-bun">Cinnamon bun</label><span class="qty-price">R38</span><input id="q-bun" name="bun" type="number" min="0" max="24" value="0" inputmode="numeric" data-price="38" data-name="Cinnamon bun" /></div>
+            <div class="qty-row"><label for="q-knot">Cardamom knot</label><span class="qty-price">R40</span><input id="q-knot" name="knot" type="number" min="0" max="24" value="0" inputmode="numeric" data-price="40" data-name="Cardamom knot" /></div>
+            <div class="qty-row"><label for="q-tart">Melktert, whole</label><span class="qty-price">R260</span><input id="q-tart" name="melktert" type="number" min="0" max="4" value="0" inputmode="numeric" data-price="260" data-name="Melktert" /></div>
+          </fieldset>
+
+          <fieldset class="order-group">
+            <legend>Collection time</legend>
+            <div class="slots">
+              <label class="slot"><input type="radio" name="slot" value="07:00–08:00" required /><span>07:00–08:00</span></label>
+              <label class="slot"><input type="radio" name="slot" value="08:00–09:00" /><span>08:00–09:00</span></label>
+              <label class="slot"><input type="radio" name="slot" value="09:00–10:00" /><span>09:00–10:00</span></label>
+              <label class="slot"><input type="radio" name="slot" value="10:00–11:00" /><span>10:00–11:00</span></label>
+            </div>
+            <p class="hint">Not collected by 11:00? We keep it until we close at 14:00, then it goes to the church soup kitchen.</p>
+          </fieldset>
+
+          <fieldset class="order-group">
+            <legend>Your details</legend>
+            <div class="field-row">
+              <div class="field"><label for="o-name">Name (for the bag)</label><input id="o-name" name="name" type="text" autocomplete="name" required /></div>
+              <div class="field"><label for="o-phone">Cellphone</label><input id="o-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required /></div>
+            </div>
+            <div class="field"><label for="o-notes">Anything else? <small>(optional)</small></label><textarea id="o-notes" name="notes" rows="3" placeholder="e.g. well-baked crust, please"></textarea></div>
+          </fieldset>
+        </div>
+
+        <aside class="basket" aria-labelledby="basket-title">
+          <h2 id="basket-title">Your bag</h2>
+          <ul class="basket-list" id="basket-list">
+            <li class="basket-empty">Nothing yet. Add a loaf or two.</li>
+          </ul>
+          <p class="basket-total"><span>Pay on collection</span> <strong id="basket-total">R0</strong></p>
+          <button class="btn" type="submit">Send my order</button>
+          <p class="demo-note">This is a demo – nothing is sent.</p>
+          <p class="form-status" id="order-status" role="status"></p>
+        </aside>
+      </form>
+    </main>
+
+    <footer class="foot">
+      <dl class="facts">
+        <div><dt>Find us</dt><dd>123 Example Street, Philippolis</dd></div>
+        <div><dt>Hours</dt><dd>Tue–Sun 07:00–14:00 · closed Mondays</dd></div>
+        <div><dt>Call</dt><dd><a href="tel:0000000000">000 000 0000</a> (demo)</dd></div>
+        <div><dt>Email</dt><dd><a href="mailto:hello@example.co.za">hello@example.co.za</a></dd></div>
+      </dl>
+      <p class="concept-note"><a href="/designs/">Concept design by Duranex</a> · fictional business · <a href="/designs/credits/#suurdeeg-bakehouse">photo credits</a></p>
+    </footer>
+  </body>
+</html>
