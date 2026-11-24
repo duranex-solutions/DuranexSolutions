@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en-ZA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Suurdeeg Bakehouse | Sourdough in Philippolis (concept design)</title>
+    <meta name="description" content="Concept design by Duranex for a fictional Philippolis sourdough bakery: the baker’s day from 04:30 to sold out, with a live “out of the oven now” bake clock." />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#3b2a20" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Suurdeeg Bakehouse – concept design by Duranex" />
+    <meta property="og:description" content="A bakery website laid out as the baker’s day, hour by hour. Concept design, not a real business." />
+    <meta property="og:url" content="https://duranexsolutions.com/samples/suurdeeg-bakehouse/" />
+    <meta property="og:image" content="https://duranexsolutions.com/samples/suurdeeg-bakehouse/assets/img/croissants.webp" />
+    <meta property="og:locale" content="en_ZA" />
+    <link rel="icon" href="/samples/suurdeeg-bakehouse/assets/icon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/samples/suurdeeg-bakehouse/assets/fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/samples/suurdeeg-bakehouse/assets/fonts/karla-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/samples/suurdeeg-bakehouse/assets/site.css" />
+    <script src="/samples/suurdeeg-bakehouse/assets/site.js" defer></script>
+  </head>
+  <body class="page-home">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="masthead">
+      <a class="wordmark" href="/samples/suurdeeg-bakehouse/" aria-label="Suurdeeg Bakehouse, home">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="22" rx="17" ry="12" fill="#8a4b22" /><path d="M10 19c4-3 7-3 10 0M18 16c4-3 7-3 10 0M24 21c3-2 6-2 8 0" fill="none" stroke="#f2c46d" stroke-width="2.2" stroke-linecap="round" /></svg>
+        <span>Suurdeeg <em>Bakehouse</em></span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="/samples/suurdeeg-bakehouse/" aria-current="page">The day</a>
+        <a href="/samples/suurdeeg-bakehouse/menu/">Menu</a>
+        <a href="/samples/suurdeeg-bakehouse/pre-order/">Saturday pre-order</a>
+      </nav>
+    </header>
+
+    <aside class="clock" id="clock" aria-label="Bake clock">
+      <svg class="clock-dial" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="18" />
+        <path class="clock-ticks" d="M20 4v3M36 20h-3M20 36v-3M4 20h3" />
+        <line class="clock-h" id="clock-h" x1="20" y1="20" x2="20" y2="11" />
+        <line class="clock-m" id="clock-m" x1="20" y1="20" x2="20" y2="7" />
+        <circle class="clock-pin" cx="20" cy="20" r="1.8" />
+      </svg>
+      <div class="clock-text">
+        <p class="clock-head"><span id="clock-time">Tue–Sun</span> <span class="clock-tz" id="clock-tz">· ovens on 04:30</span></p>
+        <p class="clock-line" id="clock-line">Doors open 07:00 to 14:00, or until we sell out. Closed Mondays.</p>
+      </div>
+      <a class="clock-jump" id="clock-jump" href="#t-0430" hidden>Jump to now</a>
+      <p class="visually-hidden" id="clock-live" aria-live="polite"></p>
+    </aside>
+
+    <details class="try-time" id="try-time" hidden>
+      <summary>Viewing at night? Try another time</summary>
+      <div class="try-body">
+        <label for="try-range">Pretend it’s a Saturday at <output id="try-out" for="try-range">08:00</output></label>
+        <input type="range" id="try-range" min="240" max="900" step="15" value="480" />
+        <button type="button" class="btn-small" id="try-live">Back to the real time</button>
+      </div>
+    </details>
+
+    <main id="main">
+      <ol class="day" aria-label="The baker’s day, hour by hour">
+
+        <li class="stop stop--night stop--first" id="t-0430" data-t="270" data-kind="event" data-label="Ovens on">
+          <div class="stop-time"><time datetime="04:30">04:30</time></div>
+          <figure class="stop-photo torn-a">
+            <div class="torn"><img src="/samples/suurdeeg-bakehouse/assets/img/flour-dusting.webp" alt="Flour being dusted over shaped loaves on a linen couche, dark oven behind" width="560" height="840" fetchpriority="high" decoding="async" /></div>
+            <figcaption>Stock photo · flour on the couche</figcaption>
+          </figure>
+          <div class="stop-text">
+            <p class="stop-kicker">Ovens on</p>
+            <h1>Suurdeeg Bakehouse<span>Sourdough, slow, in Philippolis</span></h1>
+            <p class="lede">Sourdough, pastries and good coffee. The ovens go on at 04:30 and we close when the bread runs out.</p>
+            <p class="stop-facts">Tue–Sun 07:00–14:00 · 123 Example Street, Philippolis</p>
+            <p class="stop-actions"><a class="btn btn--butter" href="/samples/suurdeeg-bakehouse/menu/">See the menu</a> <a class="btn btn--line" href="/samples/suurdeeg-bakehouse/pre-order/">Pre-order for Saturday</a></p>
+          </div>
+        </li>
+
+        <li class="stop stop--dark stop--flip" id="t-0530" data-t="330" data-kind="bake" data-label="Country sourdough">
+          <div class="stop-time"><time datetime="05:30">05:30</time></div>
+          <figure class="stop-photo torn-b">
+            <div class="torn"><img src="/samples/suurdeeg-bakehouse/assets/img/scored-loaf.webp" alt="A long, floured sourdough loaf with a wheat-ear pattern scored into the crust" width="560" height="840" loading="lazy" decoding="async" /></div>
+            <figcaption>Stock photo · scored batard</figcaption>
+          </figure>
+          <div class="stop-text">
+            <p class="stop-kicker">First loaves out</p>
+            <h2>Country sourdough &amp; wholewheat</h2>
+            <p>The bread we’re named for: flour, water, salt and a starter we’ve fed every day since the first loaf. Twenty hours from mixing to the oven. It needs an hour on the rack before we cut it, because the crumb is still setting.</p>
+            <ul class="out-list">
+              <li><span>Country white, 800 g</span><span>R85</span></li>
+              <li><span>Wholewheat, 800 g</span><span>R90</span></li>
+              <li><span>Half loaf, either</span><span>R45</span></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="sunrise" aria-hidden="true"><span>06:00 · first light over the koppies</span></li>
+
+        <li class="stop" id="t-0630" data-t="390" data-kind="bake" data-label="Rye &amp; baguettes">
+          <div class="stop-time"><time datetime="06:30">06:30</time></div>
+          <figure class="stop-photo torn-a">
+            <div class="torn"><img src="/samples/suurdeeg-bakehouse/assets/img/rye-loaves.webp" alt="A pile of dark, crackled rye loaves, one cut open to show a dense crumb" width="640" height="640" loading="lazy" decoding="async" /></div>
+            <figcaption>Stock photo · rye</figcaption>
+          </figure>
+          <div class="stop-text">
+            <p class="stop-kicker">The dark breads</p>
+            <h2>Rye &amp; caraway, and the baguettes</h2>
+            <p>One hundred percent rye goes in while the oven is at its hottest. It’s dense, sour and keeps for a week. The baguettes follow it: short, crackly, and best eaten in the car park.</p>
+            <ul class="out-list">
+              <li><span>Rye &amp; caraway, 1 kg</span><span>R105</span></li>
+              <li><span>Baguette</span><span>R40</span></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="stop stop--brief" id="t-0700" data-t="420" data-kind="event" data-label="Doors open">
+          <div class="stop-time"><time datetime="07:00">07:00</time></div>
+          <div class="stop-text">
+            <p class="stop-kicker">Doors open</p>
+            <h2>Coffee’s on, door’s unlocked</h2>
+            <p>The first loaves have cooled, the machine is warm, and there’s usually a queue of farmers and early cyclists. Flat white R38, rooibos R25. <a href="/samples/suurdeeg-bakehouse/menu/#coffee">Full coffee list →</a></p>
+          </div>
+        </li>
+
+        <li class="stop stop--flip" id="t-0730" data-t="450" data-kind="bake" data-label="Croissants">
+          <div class="stop-time"><time datetime="07:30">07:30</time></div>
+          <figure class="stop-photo torn-b">
+            <div class="torn"><img src="/samples/suurdeeg-bakehouse/assets/img/croissants.webp" alt="Rows of golden croissants on a steel baking tray" width="720" height="479" loading="lazy" decoding="async" /></div>
+            <figcaption>Stock photo · croissants</figcaption>
+          </figure>
+          <div class="stop-text">
+            <p class="stop-kicker">Butter, folded in</p>
+            <h2>Croissants &amp; pain au chocolat</h2>
+            <p>Three days of work: the dough on Wednesday, the butter folded in on Thursday, shaped Friday night. One tray each morning. When it’s gone, it’s gone.</p>
+            <ul class="out-list">
+              <li><span>Butter croissant</span><span>R32</span></li>
+              <li><span>Pain au chocolat</span><span>R38</span></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="stop" id="t-0900" data-t="540" data-kind="bake" data-label="Cinnamon buns">
+          <div class="stop-time"><time datetime="09:00">09:00</time></div>
+          <figure class="stop-photo torn-a">
+            <div class="torn"><img src="/samples/suurdeeg-bakehouse/assets/img/cinnamon-buns.webp" alt="A tray of swirled cinnamon buns, golden on top, fresh from the oven" width="720" height="479" loading="lazy" decoding="async" /></div>
+            <figcaption>Stock photo · cinnamon buns</figcaption>
+          </figure>
+          <div class="stop-text">
+            <p class="stop-kicker">The sweet tray</p>
+            <h2>Cinnamon buns &amp; cardamom knots</h2>
+            <p>Made with the croissant offcuts and a brioche dough, glazed while they’re hot. This is the tray people set alarms for. Arrive at 09:00 and you’ll smell it from the street.</p>
+            <ul class="out-list">
+              <li><span>Cinnamon bun</span><span>R38</span></li>
+              <li><span>Cardamom knot</span><span>R40</span></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="stop stop--flip" id="t-1030" data-t="630" data-kind="bake" data-label="Seeded loaf &amp; melktert">
+          <div class="stop-time"><time datetime="10:30">10:30</time></div>
+          <figure class="stop-photo torn-b">
+            <div class="torn"><img src="/samples/suurdeeg-bakehouse/assets/img/sliced-loaf.webp" alt="Two slices of open-crumb sourdough on a wooden board, with a jar of jam" width="560" height="747" loading="lazy" decoding="async" /></div>
+            <figcaption>Stock photo · the crumb</figcaption>
+          </figure>
+          <div class="stop-text">
+            <p class="stop-kicker">Mid-morning</p>
+            <h2>Seeded loaf &amp; melktert</h2>
+            <p>Sunflower, linseed and pumpkin seeds soaked overnight, so the loaf stays moist for days. Next to it, a melktert in a sourdough-butter crust, cut once it’s cool enough to hold its shape.</p>
+            <ul class="out-list">
+              <li><span>Seeded loaf, 900 g</span><span>R95</span></li>
+              <li><span>Melktert, a slice</span><span>R35</span></li>
+              <li><span>Melktert, whole (order a day ahead)</span><span>R260</span></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="stop" id="t-1200" data-t="720" data-kind="bake" data-label="Flatbreads">
+          <div class="stop-time"><time datetime="12:00">12:00</time></div>
+          <figure class="stop-photo torn-a">
+            <div class="torn"><img src="/samples/suurdeeg-bakehouse/assets/img/flatbreads.webp" alt="Blistered flatbreads cooling on a wooden peel" width="720" height="482" loading="lazy" decoding="async" /></div>
+            <figcaption>Stock photo · flatbreads</figcaption>
+          </figure>
+          <div class="stop-text">
+            <p class="stop-kicker">Last bake of the day</p>
+            <h2>Olive &amp; rosemary flatbreads</h2>
+            <p>The oven is cooling, which is just right for flatbreads: a quick, blistered bake with olive oil, rosemary from the yard and coarse salt. Good for lunch, better with a braai.</p>
+            <ul class="out-list">
+              <li><span>Olive &amp; rosemary flatbread</span><span>R65</span></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="stop stop--flip" id="t-1300" data-t="780" data-kind="event" data-label="Tomorrow’s dough">
+          <div class="stop-time"><time datetime="13:00">13:00</time></div>
+          <figure class="stop-photo torn-b">
+            <div class="torn"><img src="/samples/suurdeeg-bakehouse/assets/img/kneading.webp" alt="Floury hands shaping a ball of dough on a wooden bench" width="720" height="492" loading="lazy" decoding="async" /></div>
+            <figcaption>Stock photo · shaping</figcaption>
+          </figure>
+          <div class="stop-text">
+            <p class="stop-kicker">Already thinking about tomorrow</p>
+            <h2>Starter fed, dough mixed</h2>
+            <p>While the shop sells the last loaves, the bench is floured again. Tomorrow’s dough is mixed, folded four times and shaped, then goes into the cold room for sixteen hours. That slow, cold rest is where the flavour comes from.</p>
+            <p class="stop-note">Want a loaf kept aside? <a href="/samples/suurdeeg-bakehouse/pre-order/">Pre-order for Saturday →</a></p>
+          </div>
+        </li>
+      </ol>
+    </main>
+
+    <footer class="stop stop--night stop--last" id="t-1400" data-t="840" data-kind="event" data-label="Closed">
+      <div class="stop-time"><time datetime="14:00">14:00</time></div>
+      <div class="stop-text">
+        <p class="stop-kicker">Sold out (usually)</p>
+        <h2>Closed. See you tomorrow.</h2>
+        <p>The ovens go back on at 04:30. The doors open at 07:00.</p>
+        <dl class="facts">
+          <div><dt>Find us</dt><dd>123 Example Street, Philippolis</dd></div>
+          <div><dt>Hours</dt><dd>Tue–Sun 07:00–14:00<br />Closed Mondays</dd></div>
+          <div><dt>Call</dt><dd><a href="tel:0000000000">000 000 0000</a> (demo)</dd></div>
+          <div><dt>Email</dt><dd><a href="mailto:hello@example.co.za">hello@example.co.za</a></dd></div>
+        </dl>
+        <p class="concept-note"><a href="/designs/">Concept design by Duranex</a> · fictional business · <a href="/designs/credits/#suurdeeg-bakehouse">photo credits</a></p>
+      </div>
+    </footer>
+  </body>
+</html>

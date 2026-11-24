@@ -1337,6 +1337,59 @@ p {
   }
 }
 
+/* /work/: sample designs teaser (concept sites, linked to /designs/) */
+.concepts-lead {
+  max-width: 44rem;
+  margin-top: var(--s-4);
+  color: var(--muted);
+}
+
+.concepts-thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-3);
+  margin: var(--s-6) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.concepts-thumbs a {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-1);
+  transition: transform var(--t-slow) var(--ease);
+}
+
+.concepts-thumbs a:hover {
+  transform: translateY(-3px);
+}
+
+.concepts-thumbs img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: top;
+}
+
+@media (min-width: 768px) {
+  .concepts-thumbs {
+    gap: var(--s-5);
+  }
+
+  .concepts-thumbs img {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+.plan-samples {
+  margin-top: var(--s-6);
+  color: var(--muted);
+}
+
 .process-note {
   display: grid;
   gap: var(--s-2);
