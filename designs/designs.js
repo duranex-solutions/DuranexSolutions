@@ -7,7 +7,7 @@
     "ironbark-plumbing": "Ironbark Plumbing & Geysers",
     "suurdeeg-bakehouse": "Suurdeeg Bakehouse",
     "lindela-ledger": "Lindela Ledger & Tax",
-    "fern-fringe": "Fern & Fringe Hair Studio",
+    "fynbos-fringe": "Fynbos & Fringe Hair Studio",
     "torque-bay": "Torque Bay Detailing",
     "ridgeline-security": "Ridgeline Armed Response",
   };

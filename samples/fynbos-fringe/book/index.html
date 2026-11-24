@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en-ZA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Request a booking | Fynbos &amp; Fringe Hair Studio (concept design)</title>
+    <meta name="description" content="Request a hair appointment at a fictional Durbanville studio. A demo form; nothing is sent. Concept design by Duranex." />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#fff8f3" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Book at Fynbos &amp; Fringe – concept design by Duranex" />
+    <meta property="og:description" content="A booking-request demo form for a fictional hair studio. Nothing is sent." />
+    <meta property="og:url" content="https://duranexsolutions.com/samples/fynbos-fringe/book/" />
+    <meta property="og:image" content="https://duranexsolutions.com/samples/fynbos-fringe/assets/img/soft-strands.webp" />
+    <meta property="og:locale" content="en_ZA" />
+    <link rel="icon" href="/samples/fynbos-fringe/assets/icon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/samples/fynbos-fringe/assets/fonts/bodoni-moda-italic-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/samples/fynbos-fringe/assets/fonts/jost-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/samples/fynbos-fringe/assets/site.css" />
+    <script src="/samples/fynbos-fringe/assets/site.js" defer></script>
+  </head>
+  <body class="page-inner">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="bar">
+      <a class="mark" href="/samples/fynbos-fringe/" aria-label="Fynbos and Fringe Hair Studio, home">Fynbos <i>&amp;</i> Fringe</a>
+      <nav class="nav" aria-label="Main">
+        <a href="/samples/fynbos-fringe/">Lookbook</a>
+        <a href="/samples/fynbos-fringe/services/">Prices</a>
+        <a href="/samples/fynbos-fringe/book/" class="nav-book" aria-current="page">Book</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <div class="book">
+        <div class="book-side">
+          <p class="look-kicker">Booking request</p>
+          <h1 class="mega"><i>Your</i> chair, <i>soon</i></h1>
+          <p class="spread-lede">Tell us what you’d like and when suits you. We reply on WhatsApp within a working day with a confirmed time, and for colour, a patch-test slot first.</p>
+          <figure class="book-photo">
+            <img src="/samples/fynbos-fringe/assets/img/soft-strands.webp" alt="Fine strands of light brown hair lifting in soft backlight." width="960" height="641" fetchpriority="high" />
+            <figcaption>Stock photo · Taylor Smith / Unsplash</figcaption>
+          </figure>
+          <dl class="book-facts">
+            <div><dt>Hours</dt><dd>Tue–Fri 08:30–17:30 · Sat 08:00–14:00</dd></div>
+            <div><dt>Where</dt><dd>123 Example Street, Durbanville</dd></div>
+            <div><dt>Call</dt><dd><a href="tel:0000000000">000 000 0000</a> (demo)</dd></div>
+          </dl>
+        </div>
+
+        <form class="form" data-demo data-book novalidate>
+          <fieldset class="fs">
+            <legend><span class="fs-no">01</span> What are we doing?</legend>
+            <div class="field">
+              <label for="b-service">Service</label>
+              <select id="b-service" name="service">
+                <optgroup label="Cuts">
+                  <option value="cut">Cut &amp; finish</option>
+                  <option value="curl">Curl cut</option>
+                  <option value="short">Short back &amp; sides</option>
+                </optgroup>
+                <optgroup label="Colour">
+                  <option value="roots">Root touch-up</option>
+                  <option value="full">Full colour</option>
+                  <option value="foils">Full head foils</option>
+                  <option value="balayage">Balayage</option>
+                  <option value="gloss">Toner &amp; gloss</option>
+                  <option value="consult">Colour consultation (free)</option>
+                </optgroup>
+                <optgroup label="Styling &amp; treatments">
+                  <option value="blowdry">Blow-dry</option>
+                  <option value="upstyle">Upstyle for an event</option>
+                  <option value="keratin">Keratin smoothing</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="field" data-shade-field hidden>
+              <label for="b-shade">Shade you liked</label>
+              <input id="b-shade" name="shade" type="text" readonly />
+            </div>
+            <div class="chips" role="radiogroup" aria-labelledby="b-len-label">
+              <p id="b-len-label" class="chips-label">Hair length</p>
+              <label class="chip"><input type="radio" name="length" value="short" /><span>Short</span></label>
+              <label class="chip"><input type="radio" name="length" value="medium" checked /><span>Medium</span></label>
+              <label class="chip"><input type="radio" name="length" value="long" /><span>Long</span></label>
+              <label class="chip"><input type="radio" name="length" value="xl" /><span>Extra long</span></label>
+            </div>
+            <p class="estimate" aria-live="polite" data-estimate></p>
+          </fieldset>
+
+          <fieldset class="fs">
+            <legend><span class="fs-no">02</span> When suits you?</legend>
+            <div class="field">
+              <label for="b-date">Preferred day</label>
+              <input id="b-date" name="date" type="date" />
+              <p class="field-help" data-date-help>We’re open Tuesday to Saturday.</p>
+            </div>
+            <div class="chips" role="radiogroup" aria-labelledby="b-time-label">
+              <p id="b-time-label" class="chips-label">Time of day</p>
+              <label class="chip"><input type="radio" name="time" value="morning" checked /><span>Morning</span></label>
+              <label class="chip"><input type="radio" name="time" value="midday" /><span>Midday</span></label>
+              <label class="chip"><input type="radio" name="time" value="afternoon" /><span>Afternoon</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="fs">
+            <legend><span class="fs-no">03</span> About you</legend>
+            <div class="field"><label for="b-name">Name</label><input id="b-name" name="name" type="text" autocomplete="name" required /></div>
+            <div class="field"><label for="b-phone">WhatsApp number</label><input id="b-phone" name="phone" type="tel" autocomplete="tel" required /></div>
+            <div class="field"><label for="b-notes">Anything we should know? <span class="opt">(optional)</span></label><textarea id="b-notes" name="notes" rows="3" placeholder="Last colour, a photo you’ll send, sensitive scalp…"></textarea></div>
+            <label class="check"><input type="checkbox" name="first" /> <span>This is my first colour with you (we’ll book a free patch test)</span></label>
+          </fieldset>
+
+          <div class="form-end">
+            <button class="btn" type="submit">Send request</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer class="foot">
+      <div class="foot-grid">
+        <p class="foot-mark">Fynbos <i>&amp;</i> Fringe</p>
+        <p>123 Example Street<br />Durbanville, Cape Town</p>
+        <p>Tue–Fri 08:30–17:30<br />Sat 08:00–14:00<br />Closed Sun &amp; Mon</p>
+        <p><a href="tel:0000000000">000 000 0000</a> (demo)<br /><a href="mailto:hello@example.co.za">hello@example.co.za</a></p>
+      </div>
+      <p class="concept-note"><a href="/designs/">Concept design by Duranex</a> · fictional business · <a href="/designs/credits/#fynbos-fringe">photo credits</a></p>
+    </footer>
+  </body>
+</html>
