@@ -31,8 +31,8 @@ Six concept websites for fictional South African businesses, a gallery to browse
     /designs/credits/index.html          Photo + font credits, one section per sample (noindex)
     /designs/designs.css                 Gallery + viewer styles (Duranex brand, loaded after /styles.css)
     /designs/designs.js                  Filters, hover/tap scroll, viewer logic
-    /assets/images/designs/<slug>-full.webp   Full-length desktop screenshot, 800px wide, ≤250 KB
-    /assets/images/designs/<slug>-full.jpg    Fallback, same size
+    /assets/images/designs/<slug>-full.webp   Full-length desktop screenshot (taken at 1280, saved 640 wide, ≤5000px tall, q75)
+    /scripts/screenshots.mjs             Local-only screenshot script (npx Playwright); /scripts/* is a 404 on Netlify
     /samples/<slug>/index.html           Sample home
     /samples/<slug>/<inner>/index.html   1–2 inner pages
     /samples/<slug>/assets/site.css      Sample's own CSS (nothing shared)
@@ -158,7 +158,7 @@ It's also linked from:
 - **Header copy:** "Sample designs. Six concept sites for made-up businesses, each built from scratch to show what a custom-coded site can look like. They're not templates and not for sale; yours would be designed around your business."
 - **Filter buttons:** All, Trades, Food, Professional, Beauty, Auto, Security. They are `<button aria-pressed>` and scroll sideways on mobile. Filtering sets `hidden` on cards, and an `aria-live` line reads "Showing 1 of 6". Without JS the buttons are hidden and all cards show.
 - **Cards:** industry tag, fictional name + town, one-line concept, signature named, a "View design ↗" button (stretched link to `/designs/view/?s=<slug>`), and a small "Open on its own" link to `/samples/<slug>/`.
-- **Screenshot:** sits in a fixed frame (4:5 on mobile, 16:10 from 768px). The `<picture>` holds the WebP with a JPG fallback, `loading="lazy"`, and alt text ("Full-page preview of the Ironbark Plumbing concept design").
+- **Screenshot:** sits in a fixed frame (4:5 on mobile, 16:10 from 768px). An `<img>` holds the WebP (no JPG fallback: every browser we target reads WebP), with width/height, `loading="lazy"`, and alt text ("Full-page preview of the Ironbark Plumbing concept design").
 - **Slow scroll:** on hover or `:focus-within`, `object-position` moves from top to bottom over about 10s (linear) and comes back quickly on leave. On touch (`hover: none`) a small "▶ Preview" button on the frame toggles `.is-scrolling`, so a tap doesn't follow the link by accident. Under reduced motion there's no scrolling: the button is hidden and the top of the page shows.
 - **Analytics:** `data-track="sample_view"` on the View links. `script.js` gains one handler, the same consent-gated pattern as `demo_click`.
 
@@ -213,7 +213,7 @@ It's also linked from:
 - [x] **Phase 6** – Fynbos & Fringe (home + /services/ + /book/)
 - [x] **Phase 7** – Torque Bay Detailing (home + /packages/)
 - [x] **Phase 8** – Ridgeline Armed Response (home + /services/ + /coverage/)
-- [ ] **Phase 9** – Screenshots (full-length WebP + JPG), gallery `/designs/`, viewer, credits page
+- [x] **Phase 9** – Screenshots (full-length WebP), gallery `/designs/` cards, viewer, credits page
 - [ ] **Phase 10** – Links (Websites, Work, footer on every main page), sitemap, `sample_view` event, full QA. QA covers:
   - 360/768/1280 and keyboard.
   - Reduced motion and no-JS.
@@ -337,6 +337,17 @@ Each sample phase covers: brief → build → its own definition-of-done checks 
 - **Fynbos:** the shade explorer no longer scrolls inside itself on short phones (375×667 was 62px over). The art and type are smaller under 760px tall.
 - **Torque Bay:** the hero buttons moved above a shorter spec list (6 rows → 4). The photo text is cut to one paragraph, and the small print moved to /packages/ (with payment added), so the home page has 5 sections and about 610 words instead of about 760. Configurator tests re-run and still pass.
 - Checked with Playwright behind the production CSP: no horizontal scroll, console errors or failed requests on any page of the 6 samples at 360 and 1280 (Lindela, Ironbark, Suurdeeg and Torque also at 320/768). Every home page has a primary action on the first screen at 360 and 1280. Ironbark's ledger photos load only when a row is opened (by design).
+
+**Phase 9 (2026-11-24), screenshots + gallery cards:**
+- New `scripts/screenshots.mjs` (local only, not part of the site; `netlify.toml` now sends `/scripts/*` to the 404 page). Run from the project folder: `npx -y -p playwright node scripts/screenshots.mjs` (all six) or add slugs to redo one, e.g. `... screenshots.mjs torque-bay`. It serves the folder on a local port, opens each sample home at 1280×800 with reduced motion, animations and transitions off, scrolls once so lazy images load, takes a full-page PNG, then resizes it in Chromium's canvas to 640 wide (cropped from the top if taller than 5000px) and saves WebP q0.75 to `/assets/images/designs/<slug>-full.webp`. No extra packages; it prints the size and any 4xx or JS errors.
+- Results: Ironbark 640×1541 (56 KB), Suurdeeg 640×3014 (141 KB), Lindela 640×1575 (47 KB), Fynbos 640×2729 (88 KB), Torque Bay 640×2336 (69 KB), Ridgeline 640×656 (35 KB). None needed the 5000px crop. No errors or 404s.
+- Because the shots use reduced motion, Fynbos shows its vertical stack of the 7 looks (not the sideways strip) – it reads well as a full-page preview. Torque Bay's sticky car sits at the top with white space below it, which is how the page really lays out. Suurdeeg's bake clock shows the time the script ran.
+- **Changed from the plan:** 640 wide (not 800) and WebP only (no JPG fallback), as Luan asked for this phase. §1 and the card spec are updated.
+- Gallery cards: the "Preview coming soon" placeholders are replaced by the screenshots (`<img>` with width/height, lazy, alt "Full-page preview of the <Name> concept design"). Each card's one-liner is now a two-sentence description from its brief (layout + mood). The slow scroll uses a per-card `--scroll-time` (4–12 s by page height) so all cards move at about the same speed; the placeholder gradients became a plain loading colour per sample. Unused `.design-frame-note` styles removed.
+- Checked with Playwright: all 6 images load (640 natural width), no console errors or 404s, no horizontal scroll at 1280 or on a Pixel 7. Desktop hover moves the image and it returns on leave. Touch shows 6 "▶ Preview" buttons; a tap scrolls the image, flips to "■ Stop" and doesn't follow the link. Reduced motion: no movement on hover and no Preview buttons.
+- Viewer and credits page: no change needed this phase (the viewer was built in phase 2, and each sample added its own credits section in phases 3–8).
+- Re-run the script whenever a sample's home page changes.
+- Next: phase 10 (links, sitemap, `sample_view` event, full QA). Still open from phase 2: `docs/SAMPLES.md`; the WhatsApp [PLACEHOLDER] number in `designs.js`.
 
 ## 8. Questions for Luan (answered 2026-11-24)
 
